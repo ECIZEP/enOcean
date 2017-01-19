@@ -1,0 +1,126 @@
+<?php
+    session_start();
+    include("functions.php");
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ICON CONTROL</title>
+	<link rel="stylesheet" type="text/css" href="../css/initial.css">
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.6">
+	<!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<!--  header start -->
+	<header class="header yellow_white">
+		<div class="sidebar-toggle">
+			<i class="fa fa-bars"></i>
+		</div>
+		<a href="dashboard.php" class="logo">
+			ICAN 
+			<span>CONTROL</span>
+		</a>
+		<div class="nav-self pull-right">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				<img src="<?php echo get_photoUrl(); ?>" width="30" height="30">
+				<span class="nickname"><?php echo get_nickname(); ?></span>
+				<b class="caret"></b>
+			</a>
+			<ul class="dropdown-menu extented" role="menu">
+		      	<li>
+		      		<a href="profile.php">
+		      			<i class="fa fa-user"></i>
+		      			个人信息
+		      		</a>
+		      	</li>
+		      	<li>
+		      		<a href="safe_setting.php">
+		      			<i class="fa fa-cog"></i>
+		      			设置
+		      		</a>
+		      	</li>
+		      	<li>
+		      		<a href="#">
+		      			<i class="fa fa-bell-o"></i>
+		      			通知
+		      		</a>
+		      	</li>
+		      	<li>
+		      		<a href="#">
+		      			<i class="fa fa-key"></i>
+		      			注销登录
+		      		</a>
+		      	</li>
+		    </ul>
+		</div>
+	</header>
+	<!--  header end -->
+	<!--  sidebar navigation start -->
+	<aside>
+		<div class="sidebar">
+			<ul class="sidebar-menu" id="sidebar">
+				<li class="submenu">
+					<a  href="#">
+						<i class="fa fa-dashboard"></i>
+						<span>控制台</span>
+					</a>
+
+				</li>
+				<li class="submenu">
+					<a href="profile.php">
+						<i class="fa fa-user"></i>
+						<span>个人信息</span>
+					</a>
+				</li>
+				<li class="submenu">
+					<a href="safe_setting.php">
+						<i class="fa fa-plus-circle"></i>
+						<span>安全设置</span>
+					</a>
+				</li>
+				<li class="submenu">
+					<a class="" href="#">
+						<i class="fa fa-laptop"></i>
+						<span>我的设备</span>
+						<span class="folder-icon"></span>
+					</a>
+					<ul class="sub">
+						<li><a href="device.php">空调</a></li>
+						<li><a href="#">电视机</a></li>
+						<li><a href="#">小灯</a></li>
+						<li><a href="#">插座</a></li>
+						<li><a href="#">电风扇</a></li>
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#">
+						<i class="fa fa-plus-square-o"></i>
+						<span>添加设备</span>
+						<span class="folder-icon"></span>
+					</a>
+					<ul class="sub">
+						<li><a href="#">设备一</a></li>
+						<li><a href="#">设备二</a></li>
+						
+					</ul>
+				</li>
+				<li class="submenu">
+					<a href="#">
+						<i class="fa fa-gears"></i>
+						<span>操作日志</span>
+					</a>
+				</li>
+				
+			</ul>
+		</div>
+	</aside>
+	<!--  sidebar navigation end -->

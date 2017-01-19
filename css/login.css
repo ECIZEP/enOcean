@@ -1,0 +1,235 @@
+ body{
+   background-color: #f9f9f7;
+   font-size: 14px;
+ }
+ .header{
+   height: 59px;
+   border-bottom: 1px solid #e8e7e3;
+ }
+
+ .font-art{
+   font-size: 30px;
+   font-weight: bolder;
+   font-family: Helvetica,Arial,sans-serif;
+ }
+ .logo{
+   line-height: 60px;
+   padding-left: 5%;
+ }
+
+ .container{
+   margin: 0px auto;
+   width: 940px;
+   padding-top: 30px;
+ }
+ .login{
+   background: url(../images/imac.png) left top no-repeat;
+   background-size: 940px 778px;
+   padding: 38px 38px 267px;
+ }
+
+
+ .login-screen{
+   background-color: #1abc9c;
+   min-height: 359px;
+   height: 359px;
+   padding: 60px 199px 55px 306px;
+   position: relative;
+ }
+
+
+ .login-icon{
+   left: 160px;
+   position: absolute;
+   top: 150px;
+   width: 96px;
+   color: white;
+ }
+
+ .login-icon > img {
+  display: block;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.login-icon > h4 {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 34px;
+  opacity: .95;
+}
+
+.login-icon > h4 small{
+  color: inherit;
+  display: block;
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.login-form {
+  background-color: #edeff1;
+  padding: 24px 23px 20px;
+  position: relative;
+  border-radius: 0px 0px 6px 6px;
+}
+
+.login-form:before {
+  content: "";
+  border-style: solid;
+  border-width: 12px 12px 12px 0;
+  border-color: transparent #eceff1 transparent transparent;
+  height: 0px;
+  position: absolute;
+  left: -12px;
+  top: 35px;
+  width: 0;
+  -webkit-transform: rotate(360deg);
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.login-form .login-field:focus {
+  border-color: #1abc9c;
+}
+
+.login-form .login-field {
+  border-color: transparent;
+  font-size: 17px;
+  text-indent: 3px;
+}
+
+.form-group.focus .form-control, .form-control:focus{
+  border-color: #1abc9c;
+  outline: 0;
+  box-shadow: none;
+}
+
+.form-control, .select2-search input[type="text"] {
+  border: 2px solid #bdc3c7;
+  color: #34495e;
+  font-size: 15px;
+  line-height: 1.467;
+  padding: 8px 12px;
+  height: 42px;
+  border-radius: 6px;
+  box-shadow: none;
+  -webkit-transition: border 0.25s linear, color 0.25s linear, background-color 0.25s linear;
+  transition: border 0.25s linear, color 0.25s linear, background-color 0.25s linear;
+}
+
+.btn {
+  border: none;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.4;
+  border-radius: 4px;
+  padding: 10px 15px;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -webkit-transition: border 0.25s linear, color 0.25s linear, background-color 0.25s linear;
+  transition: border 0.25s linear, color 0.25s linear, background-color 0.25s linear;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: #1abc9c;
+}
+
+.btn-lg, .btn-group-lg > .btn {
+  padding: 10px 19px;
+  font-size: 17px;
+  line-height: 1.471;
+  border-radius: 6px;
+}
+.btn-primary:hover, .btn-primary.hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  color: #ffffff;
+  background-color: #48c9b0;
+  border-color: #48c9b0;
+}
+
+
+.login-link {
+  color: #bfc9ca;
+  display: block;
+  font-size: 13px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+a.login-link:hover{
+  color: #1abc9c;
+  text-decoration: none;
+}
+
+.tab{
+ width: 100%;
+ background-color: #edeff1;
+ margin-bottom: 0px;
+ border-radius: 6px 6px 0px 0px;
+ font-size: 0px;
+ text-align: center;
+}
+
+.tab li {
+ display: inline-block;
+ width: 50%;
+ font-size: 18px;
+ padding: 10px 0px;
+ color: black;
+ cursor: pointer;
+}
+
+.tab .inactive{
+ background-color: #34495e;
+ color: white;
+}
+
+
+
+
+
+.login-form .login-field {
+ box-sizing: border-box;
+ border-color: transparent;
+ font-size: 16px;
+ padding-bottom: 9px;
+ padding-top: 9px;
+ text-indent: 3px;
+ width: 100%;
+ border: 2px solid #dce4ec;
+ color: #34495e;
+ -webkit-border-radius: 6px;
+ -moz-border-radius: 6px;
+ border-radius: 6px;
+ -webkit-box-shadow: none;
+ -moz-box-shadow: none;
+ box-shadow: none;
+}
+
+.login-form .login-field-icon{
+  display: inline-block;
+  color: #bfc9ca;
+  font-size: 20px;
+  position: absolute;
+  line-height: 42px;
+  right: 15px;
+  top: 0px;
+  -webkit-transition: all .25s;
+  transition: all .25s;
+}
+
+.login-form .login-field:focus + .login-field-icon {
+  color: #1abc9c;
+}
+
+
+.none{
+ display: none;
+}
