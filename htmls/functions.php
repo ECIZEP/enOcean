@@ -69,22 +69,69 @@
   		return $account["personal"];
   	}
 
+  	function fileExtName ($fStr) {
+        $retval = "";
+        $pt = strrpos($fStr, ".");
+        if ($pt) $retval = substr($fStr, $pt+1, strlen($fStr) - $pt);
+        return ($retval);
+    }
+
+    function update_account_all(){
+    	session_start();
+    	$nickname = $_POST["nickname"];
+    	$personal = $_POST["personal"];
+    	
+    	$uploaddir = "../upload/{$_SESSION["username"]}/";
+    	$ext = fileExtName($_FILES['file']['name']);
+    	$ext = strtolower($ext);
+    	if($ext!="jpg" && $ext!="gif" && $ext!="png") {
+    		echo "file_type_error";
+    		return;
+    	}
+    	if($_FILES["file"]["size"] > 500000){
+    		echo "file_over_size";
+    		return;
+    	}
+    	if(!is_dir($uploaddir))
+    	{
+    		if(!mkdir($uploaddir))
+    		{
+    			echo "file_folder_create_failed";
+    			return;
+    		}
+    	}
+    	$uploadfile = $uploaddir.$_SESSION["username"]."_avatar.".$ext;
+
+    	if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
+    		$sql = "update account set nickname = '{$nickname}',personal = '{$personal}',photoUrl = '{$uploadfile}' where username = '{$_SESSION["username"]}'";
+    	} else {
+    		$sql = "update account set nickname = '{$nickname}',personal = '{$personal}' where username = '{$_SESSION["username"]}'";
+    	}
+    	
+    	if(DBManager::update_mysql($sql)){
+    		echo "update_account_success";
+    		return;
+    	}else{
+    		echo "update_account_failed";
+    		return;
+    	}
+    }
 
 
-	if($_SERVER['REQUEST_METHOD'] == "GET"){
-		if(isset($_GET["type"])){
-			switch ($_GET["type"]) {
+	if($_SERVER['REQUEST_METHOD'] == "POST"){
+		if(isset($_POST["type"])){
+			switch ($_POST["type"]) {
 				//profile update
-				case "update_account":
-					$sql = $_GET["sql"];
+				case "update_account_all":
+					update_account_all();
+					break;
+				case "update_account_info":
+					$sql = $_POST['sql'];
 					if(DBManager::update_mysql($sql)){
 						echo "update_account_success";
 					}else{
 						echo "update_account_failed";
 					}
-					break;
-				default:
-					
 					break;
 			}
 		}

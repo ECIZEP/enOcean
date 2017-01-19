@@ -168,8 +168,22 @@ if(modify){
   }
   var inputNickname = document.getElementById('nickname-profile');
   var inputPersonal = document.getElementById('personal-profile');
+  var inputFile = document.getElementById('file');
+  var btnRemove = document.getElementById('photo-remove');
   inputNickname.onchange = enableUpdate;
   inputPersonal.onchange = enableUpdate;
+
+  inputFile.onchange = function(){
+    enableUpdate();
+    console.log(inputFile.value);
+  }
+
+  //delete input file
+  btnRemove.onclick = function(){
+    $('.fileupload-preview').empty();
+    $('.fileupload.fileupload-exists').removeClass('fileupload-exists').addClass('fileupload-new');
+    inputFile.value = "";
+  }
 
   function enableUpdate(){
     btnUpdate.disabled = false;
@@ -188,34 +202,73 @@ if(modify){
     }
   }
 
+
+  //ajax post update user infomation
   function ajaxUpdateProfile(username,nickname,personal){
     var xmlHttp = GetXmlHttpObject();
     var sql = "update account set nickname = '" + nickname + "',personal = '" + personal + "' where username = '" + username + "'";
-    console.log(sql);
-    if (xmlHttp == null)
+    var data = "type=update_account_info&sql=" + sql;
+    if(xmlHttp == null)
     {
       toastr.error("Browser does not support HTTP Request");
       return;
     }
-    var url="../htmls/functions.php?type=update_account&sql=" + sql;
+    var url="../htmls/functions.php";
     xmlHttp.onreadystatechange = function(){
       if(xmlHttp.readyState == 4){
         if(xmlHttp.status == 200){
-          if(xmlHttp.responseText == "update_account_success"){
-            $('.nickname').html(nickname);
-            toastr.success("个人信息更新成功！");
-            disableUpdate();
-          }else if(xmlHttp.responseText == "update_account_failed"){
-            toastr.error("更新失败，请重试！");
+          switch(xmlHttp.responseText){
+            case "update_account_success" :
+                if(inputFile.value != ""){
+                  var photoUrl = "../upload/" + username + "/" + username +"_avatar." + inputFile.files[0].type.split("/")[1];
+                  console.log(photoUrl);
+                  $('.photoUrl').attr("src",photoUrl);
+                }
+                $('.nickname').html(nickname);
+                toastr.success("个人信息更新成功！");
+                disableUpdate();
+                break;
+            case "update_account_failed" :
+                toastr.error("更新失败，请重试！");
+                break;
+            case "file_type_error" :
+                toastr.error("上传文件格式错误，请上传jpg,gif或者png格式的图片");
+                break;
+            case "file_over_size" :
+                toastr.error("上传文件太大，请上传小于500kb的图片");
+                break;
+            case "file_folder_create_failed" :
+                toastr.error("服务器出了点问题，文件夹创建失败，请重试");
+                break;
           }
         }else{
           toastr.error("请求出错，错误信息：" + xmlHttp.status);
         }
       }
     }
-    xmlHttp.open("GET",url);
-    xmlHttp.send(null);
+    if(window.FormData) {
+      if(inputFile.value == ""){
+        xmlHttp.open("POST",url);
+        xmlHttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        xmlHttp.send(data);
+      }else{
+        var formData = new FormData();
+        formData.append('type',"update_account_all");
+        formData.append('nickname',nickname);
+        formData.append('personal',personal);
+        formData.append('file', inputFile.files[0]);
+        xmlHttp.open("POST",url);
+        xmlHttp.send(formData);
+      }
+    }else{
+        toastr.error("您的浏览器不支持FormData方式上传头像文件，无法更新头像，请使用Chrome等现代浏览器");
+        xmlHttp.open("POST",url);
+        xmlHttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        xmlHttp.send(data);
+    }
+    
   }
+
 })();
 
 

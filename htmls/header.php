@@ -31,7 +31,7 @@
 		</a>
 		<div class="nav-self pull-right">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				<img src="<?php echo get_photoUrl(); ?>" width="30" height="30">
+				<img class="photoUrl" src="<?php echo get_photoUrl(); ?>" width="30" height="30">
 				<span class="nickname"><?php echo get_nickname(); ?></span>
 				<b class="caret"></b>
 			</a>

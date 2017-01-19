@@ -6,8 +6,8 @@
 	<div class="row">
 		<div class="profile-header clearfix">
 			<div class="col-sm-3 text-right">
-				<a href="#" class="head-img">
-					<img src="<?php echo get_photoUrl(); ?>">
+				<a class="head-img">
+					<img class="photoUrl" src="<?php echo get_photoUrl(); ?>">
 				</a>
 			</div>
 			<div class="col-sm-9 text-left bind-info">
@@ -19,7 +19,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="panel panel-info" style="">
+	<div class="panel panel-info">
 		<div class="panel-body bg-white">
 			<form class="form-horizontal tasi-form" method="get">
 				<div class="form-group">
@@ -40,9 +40,9 @@
 								<span class="btn btn-white btn-file">
 									<span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
 									<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-									<input type="file" class="default">
+									<input id="file" type="file" class="default">
 								</span>
-								<a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> Remove</a>
+								<a id="photo-remove" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> Remove</a>
 							</div>
 						</div>
 					</div>
