@@ -12,6 +12,7 @@
     $checks=$_POST["verification"];
     if($checks==$_SESSION["check_checks"]){
       include("db.class.php");
+
       $username = $_POST["username"];
       $password = $_POST["password"];
       $sql = "select  *  from account where username='{$username}'  limit 1 ";

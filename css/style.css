@@ -124,13 +124,12 @@ a.logo span{
 	background-color: #2a3542;
 	overflow-y: auto;
 	z-index: 998;
-	padding-top:10px; 
 	width: 210px;
 	outline: none;
 }
 
 .sidebar-menu{
-	padding: 0px 10px 0px 10px;
+	padding: 10px 10px 0px 10px;
 }
 
 ul.sidebar-menu li{
@@ -252,6 +251,9 @@ ul.sub li a:hover{
     -webkit-border-radius: 4px 4px 0 0;
     padding: 30px 40px;
     text-align: center;
+}
+
+.row-margin{
     margin:0px 10px;
 }
 
@@ -265,8 +267,6 @@ ul.sub li a:hover{
 .head-img img{
 	border-radius: 50%;
     -webkit-border-radius: 50%;
-	width: 110px;
-	height: 110px;
 }
 
 .bind-info{
@@ -299,6 +299,237 @@ ul.sub li a:hover{
 .form-horizontal .control-label{
 	padding-top: 7px;
 }
+
+
+/* dashboard layout */
+.state-overview .terques {
+    background: #6ccac9;
+}
+
+.state-overview .red {
+    background: #ff6c60;
+}
+
+.state-overview .yellow {
+    background: #f8d347;
+}
+
+.state-overview .blue {
+    background: #57c8f2;
+}
+
+.state-overview .symbol {
+    width: 40%;
+    padding: 25px 15px;
+    -webkit-border-radius: 4px 0px 0px 4px;
+    border-radius: 4px 0px 0px 4px;
+}
+
+.state-overview .symbol, .state-overview .value {
+    display: inline-block;
+    text-align: center;
+}
+
+.state-overview .symbol i {
+    color: #fff;
+    font-size: 50px;
+}
+
+.state-overview .value {
+    width: 58%;
+    padding-top: 21px;
+    float: right;
+}
+
+.state-overview .value h1 {
+    font-weight: 300;
+}
+
+.state-overview .value h1, .state-overview .value p {
+    margin: 0;
+    padding: 0;
+    color: #c6cad6;
+}
+
+.profile-nav ul > li {
+    border-bottom: 1px solid #ebeae6;
+    margin-top: 0;
+    line-height: 30px;
+}
+
+.profile-nav ul > li > a {
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    color: #89817f;
+    border-left: 5px solid #fff;
+}
+
+.profile-nav ul > li > a > i {
+    font-size: 16px;
+    padding-right: 10px;
+    color: #bcb3aa;
+}
+
+.r-activity {
+    margin: 3px 0 0;
+    font-size: 12px;
+}
+
+.profile-nav .nav li a:hover{
+    border-left: 5px solid #ff766c;
+}
+
+.no-padding>div:first-child{
+    padding-left: 0px;
+}
+
+.no-padding>div:last-child{
+    padding-right: 0px;
+}
+
+
+/* 操作记录 */
+
+.profile-activity{
+    padding-top: 25px;
+}
+
+.activity {
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+}
+
+.activity.alt {
+    width: 100%;
+    float: right;
+    margin-bottom: 10px;
+}
+
+.activity span, .activity.alt span {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    background: #eee;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+}
+
+.activity span {
+    float: left;
+}
+
+.activity.alt span {
+    float: right;
+}
+
+
+
+.activity.terques span {
+    background: #8dd7d6;
+}
+
+.activity.terques h4 {
+    color: #8dd7d6;
+}
+.activity.purple span {
+    background: #b984dc;
+}
+
+.activity.purple h4 {
+    color: #b984dc;
+}
+.activity.blue span {
+    background: #90b4e6;
+}
+
+.activity.blue h4 {
+    color: #90b4e6;
+}
+.activity.green span {
+    background: #aec785;
+}
+
+.activity.green h4 {
+    color: #aec785;
+}
+
+.activity h4 {
+    margin-top:0 ;
+    font-size: 16px;
+}
+
+.activity p {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+
+
+.activity .activity-desk .arrow {
+    border-bottom: 8px solid transparent;
+    border-top: 8px solid transparent;
+    display: block;
+    height: 0;
+    left: -7px;
+    position: absolute;
+    top: 13px;
+    width: 0;
+}
+
+.activity-desk .arrow-alt {
+    border-bottom: 8px solid transparent;
+    border-top: 8px solid transparent;
+    display: block;
+    height: 0;
+    right: -7px;
+    position: absolute;
+    top: 13px;
+    width: 0;
+}
+
+.activity .activity-desk .arrow {
+    border-right: 8px solid #F4F4F4 !important;
+}
+
+.activity-desk .arrow-alt {
+    border-left: 8px solid #F4F4F4 !important;
+}
+
+
+
+.activity .activity-desk i, .activity.alt .activity-desk i {
+    float: left;
+    font-size: 18px;
+    margin-right: 10px;
+    color: #bebebe;
+}
+
+.activity .activity-desk {
+    margin-left: 70px;
+    position: relative;
+}
+
+.activity.alt .activity-desk {
+    margin-right: 70px;
+    position: relative;
+}
+
+.activity.alt .activity-desk .panel {
+    float: right;
+    position: relative;
+}
+
+.activity-desk .panel {
+    background: #F4F4F4 ;
+    display: inline-block;
+}
+
+
+
 
 /* 网页脚部 */
 footer{
@@ -487,6 +718,9 @@ footer{
 .bound-s {
     margin-bottom: 15px;
 }
+
+
+
 
 /* bootstrap reset */
 /*anchor*/

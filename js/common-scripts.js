@@ -41,9 +41,9 @@ $('.sidebar-toggle').click(function(){
   }else{
     if($('div.sidebar').css("top") == "60px"){
       var top = 59 - parseInt($('div.sidebar').css("height"));
-      $('div.sidebar').animate({top:top + "px"},400);
+      $('div.sidebar').animate({top:top + "px"},200);
     }else{
-      $('div.sidebar').animate({top:"60px"},400);
+      $('div.sidebar').animate({top:"60px"},200);
     }
   }
 });

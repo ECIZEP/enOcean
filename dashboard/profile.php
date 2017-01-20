@@ -4,10 +4,10 @@
 <!-- profile content start -->
 <div class="content">
 	<div class="row">
-		<div class="profile-header clearfix">
+		<div class="profile-header row-margin clearfix">
 			<div class="col-sm-3 text-right">
 				<a class="head-img">
-					<img class="photoUrl" src="<?php echo get_photoUrl(); ?>">
+					<img class="photoUrl" width="110" height="110" src="<?php echo get_photoUrl(); ?>">
 				</a>
 			</div>
 			<div class="col-sm-9 text-left bind-info">

@@ -75,7 +75,7 @@
 		<div class="sidebar">
 			<ul class="sidebar-menu" id="sidebar">
 				<li class="submenu">
-					<a  href="#">
+					<a  href="./index.php">
 						<i class="fa fa-dashboard"></i>
 						<span>控制台</span>
 					</a>
