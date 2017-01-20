@@ -6,6 +6,6 @@
 	<script src="../js/jquery.nicescroll.js"></script>
 	<script src="../assets/toastr/toastr.min.js"></script>
 	<script src="../assets/bootstap-fileupload/bootstrap-fileupload.js"></script>
-	<script src="../js/common-scripts.js"></script>
+	<script src="../js/common-scripts.js?v=1"></script>
 </body>
 </html>

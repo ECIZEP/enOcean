@@ -83,7 +83,7 @@ function ajaxRegisterPost(username,password,email){
 		toastr.error("Browser does not support HTTP Request");
 		return;
 	}
-	var url="../register.php";
+	var url="./register.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 			if (xmlHttp.status == 200) {
@@ -126,7 +126,7 @@ function ajaxLoginPost(username,password,verification){
 		toastr.error("Browser does not support HTTP Request");
 		return;
 	} 
-	var url="../login.php";
+	var url="./login.php";
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 			if (xmlHttp.status == 200) {
@@ -144,7 +144,7 @@ function ajaxLoginPost(username,password,verification){
 						document.getElementById('login-verify').value = "";
 						break;
 					case "3" :
-						window.location.href = "../htmls/profile.php";
+						window.location.href = "../dashboard/profile.php";
 						window.event.returnValue = false;
 						break;
 				}

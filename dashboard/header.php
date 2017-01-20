@@ -12,13 +12,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
 	<title>ICON CONTROL</title>
 	<link rel="stylesheet" type="text/css" href="../css/initial.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.6">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.7">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 		window.location="http://www.baidu.com";
@@ -31,7 +31,7 @@
 		<div class="sidebar-toggle">
 			<i class="fa fa-bars"></i>
 		</div>
-		<a href="../index.php" class="logo">
+		<a class="logo">
 			ICAN 
 			<span>CONTROL</span>
 		</a>

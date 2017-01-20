@@ -21,15 +21,31 @@ $(".sidebar").niceScroll({styler:"fb",cursorcolor:"#e8403f", cursorwidth: '3', c
 
 
 //sidebar show/hide animate
-$('i.fa-bars').click(function(){
-  if($('div.content').css("marginLeft") == "0px"){
-    $('div.content').animate({marginLeft:'210px'},400);
-    $('div.sidebar').animate({marginLeft:'0px'},400);
-  }else{
-    $('div.content').animate({marginLeft:'0px'},400);
-    $('div.sidebar').animate({marginLeft:'-210px'},400);
+$('div.sidebar').ready(function(){
+  if(document.body.clientWidth <= 768){
+    var top = 59 - parseInt($('div.sidebar').css("height"));
+    $('div.sidebar').css("top",top+"px");
+    setTimeout("$('div.sidebar').css('display','block');",100);
   }
+});
 
+$('.sidebar-toggle').click(function(){
+  if(document.body.clientWidth > 768){
+    if($('div.content').css("marginLeft") == "0px"){
+      $('div.content').animate({marginLeft:'210px'},400);
+      $('div.sidebar').animate({marginLeft:'0px'},400);
+    }else{
+      $('div.content').animate({marginLeft:'0px'},400);
+      $('div.sidebar').animate({marginLeft:'-210px'},400);
+    }
+  }else{
+    if($('div.sidebar').css("top") == "60px"){
+      var top = 59 - parseInt($('div.sidebar').css("height"));
+      $('div.sidebar').animate({top:top + "px"},400);
+    }else{
+      $('div.sidebar').animate({top:"60px"},400);
+    }
+  }
 });
 
 //sidebar menu animate
@@ -68,28 +84,6 @@ $('i.fa-bars').click(function(){
   }
 })();
 
-/*$('ul#sidebar').on('click','li',function(e){
-      var ul = this.getElementsByTagName('ul')[0];
-
-      if(ul){
-        if($(ul).css("display") == 'block'){
-          $(ul).animate({height:'0px'},400,function(){
-            $(ul).css("display","none");
-            $(ul).css("height","");
-          });
-        }else{
-          myheight = $(ul).css('height');
-          $(ul).css("display","block");
-
-          $(ul).animate({height: myheight + 'px'},400,function(){
-            $(ul).css("display","block");
-          });
-          
-        }
-      }
-      
-    });
-*/
 /*panel animate---device*/
 jQuery('.panel .tools .fa-chevron-down').click(function () {
   var el = jQuery(this).parents(".panel").children(".panel-body");
@@ -172,8 +166,8 @@ if(modify){
   var inputPersonal = document.getElementById('personal-profile');
   var inputFile = document.getElementById('file');
   var btnRemove = document.getElementById('photo-remove');
-  inputNickname.onkeypress = enableUpdate;
-  inputPersonal.onkeypress = enableUpdate;
+  inputNickname.onkeypress = inputNickname.onchange = enableUpdate;
+  inputPersonal.onkeypress = inputPersonal.onchange = enableUpdate;
 
   inputFile.onchange = function(){
     enableUpdate();
@@ -215,7 +209,7 @@ if(modify){
       toastr.error("Browser does not support HTTP Request");
       return;
     }
-    var url="../htmls/functions.php";
+    var url="./functions.php";
     xmlHttp.onreadystatechange = function(){
       if(xmlHttp.readyState == 4){
         if(xmlHttp.status == 200){
@@ -308,7 +302,7 @@ function GetXmlHttpObject()
             toastr.error("Browser does not support HTTP Request");
             return;
           }
-          var url = "../htmls/functions.php?type=change_email&email=" + inputValue;
+          var url = "./functions.php?type=change_email&email=" + inputValue;
           xmlHttp.onreadystatechange = function(){
             if(xmlHttp.readyState == 4){
               if(xmlHttp.status == 200){
@@ -364,7 +358,7 @@ function GetXmlHttpObject()
       }else{
         $.ajax({
           type: "GET",
-          url: "../htmls/functions.php",
+          url: "./functions.php",
           dataType:'json',
           data: {
             type: "change_phoneNumber",
@@ -399,7 +393,7 @@ function GetXmlHttpObject()
         var password = document.getElementById('password');
         $.ajax({
           type: "GET",
-          url: "../htmls/functions.php",
+          url: "./functions.php",
           dataType:'json',
           data: {
             type: "change_password",
@@ -432,6 +426,9 @@ function GetXmlHttpObject()
     $('#address').keypress(function(){
       $('#addressBtn').attr("disabled",false);
     });
+    $('#address').change(function(){
+      $('#addressBtn').attr("disabled",false);
+    });
 
     $('#addressBtn').click(function(){
       if($('#address').val() == ""){
@@ -439,7 +436,7 @@ function GetXmlHttpObject()
       }else{
         $.ajax({
           type: "GET",
-          url: "../htmls/functions.php",
+          url: "./functions.php",
           dataType:'json',
           data: {
             type: "change_address",

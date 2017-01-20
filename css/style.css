@@ -9,7 +9,7 @@ header.header{
 	right: 0;
 	top: 0;
 	z-index: 999;
-	padding-left: 20px;
+	padding-left: 10px;
 }
 .yellow_white{
 	background-color: #ffffff;
@@ -19,6 +19,7 @@ header.header{
 	line-height: 60px;
 	display: inline-block;
 	cursor: pointer;
+    padding: 0px 10px;
 }
 
 a.logo{
@@ -1050,16 +1051,17 @@ ul {
 		bottom: initial;
 		padding-top: 0px;
 		width: 100%;
+        display: none;
 	}
 	.content{
 		margin-left: 0px!important;
 	}
 	.header.header{
-		padding-left: 10px;
+		padding-left: 0px;
 	}
 	a.logo{
 		font-size: 17px;
-		padding-left: 10px;
+		padding-left: 0px;
 	}
 
 	.nav-self{

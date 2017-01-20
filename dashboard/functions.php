@@ -143,7 +143,7 @@
         return ;
       }else{
         include("../send_email.php");
-        $body = "亲爱的用户，您在本站的账号【".get_username()."】申请更换邮箱为：</br>".$email."</br>如果以上您的个人操作，请点击下面的链接确定更换绑定邮箱</br></br>http://enoecan.com/register.php?type=change_email_confirm&email=".$email."&token=".get_token()."</br></br>如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问</br>如果此次请求非你本人所发，请忽略本邮件。</br>";
+        $body = "亲爱的用户，您在本站的账号【".get_username()."】申请更换邮箱为：</br>".$email."</br>如果以上您的个人操作，请点击下面的链接确定更换绑定邮箱</br></br>http://sunriseteam.cn/enOcean/register.php?type=change_email_confirm&email=".$email."&token=".get_token()."</br></br>如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问</br>如果此次请求非你本人所发，请忽略本邮件。</br>";
         $subject = "【ICAN CONTROL更改邮箱】";
         if(send_register_email($subject,$body,get_username(),get_email())){
           echo "change_email_send";
