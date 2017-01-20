@@ -88,7 +88,9 @@
 
     /*profile uodate information*/
     function update_account_all(){
-    	session_start();
+    	if(!isset($_SESSION)){
+        session_start();
+      }
     	$nickname = $_POST["nickname"];
     	$personal = $_POST["personal"];
     	// get upload directory for storing avatar
@@ -153,7 +155,55 @@
       }
     }
 
-    
+    //jquery json example -- safe-setting page
+    function change_phoneNumber($phoneNumber){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "update account set phoneNumber = '{$phoneNumber}' where username = '{$_SESSION["username"]}'";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"change_phoneNumber_success"}';
+        exit;
+      }else{
+        echo '{"state":"change_phoneNumber_failed"}';
+        exit;
+      }
+    }
+
+    // change password  --safe-setting page
+    function change_password($password,$new_password){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      if($password != DBManager::query_account_by_username($_SESSION["username"])["password"]){
+        echo '{"state":"password_incorrect"}';
+      }else{
+        $sql = "update account set password = '{$new_password}' where username = '{$_SESSION["username"]}'";
+        if(DBManager::update_mysql($sql)){
+          echo '{"state":"change_password_success"}';
+          exit;
+        }else{
+          echo '{"state":"change_password_failed"}';
+          exit;
+        }
+      }
+      
+    }
+
+    // change address --safe-setting page
+    function change_address($address){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "update account set address = '{$address}' where username = '{$_SESSION["username"]}'";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"change_address_success"}';
+        exit;
+      }else{
+        echo '{"state":"change_address_failed"}';
+        exit;
+      }
+    }
 
     if($_SERVER['REQUEST_METHOD'] == "POST"){
       if(isset($_POST["type"])){
@@ -177,6 +227,15 @@
         switch ($_GET["type"]) {
           case "change_email":
               change_email($_GET["email"]);
+              break;
+          case "change_phoneNumber":
+              change_phoneNumber($_GET["phoneNumber"]);
+              break;
+          case "change_password":
+              change_password($_GET["password"],$_GET["newPassword"]);
+              break;
+          case "change_address":
+              change_address($_GET["address"]);
               break;
         }
       }

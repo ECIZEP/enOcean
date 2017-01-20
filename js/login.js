@@ -87,7 +87,7 @@ function ajaxRegisterPost(username,password,email){
 	xmlHttp.onreadystatechange = function(){
 		if(xmlHttp.readyState == 4){
 			if (xmlHttp.status == 200) {
-				console.log(xmlHttp.responseText);
+				toastr.clear();
 				switch(xmlHttp.responseText){
 					case "register_name_email_exist" :
 						toastr.info("邮箱和用户名已经存在");
@@ -115,6 +115,7 @@ function ajaxRegisterPost(username,password,email){
 	xmlHttp.open("POST",url);
 	xmlHttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 	xmlHttp.send(data);
+	toastr.info("请求正在提交中......");
 }
 
 function ajaxLoginPost(username,password,verification){

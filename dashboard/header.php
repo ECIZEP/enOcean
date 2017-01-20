@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.5">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.6">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 		window.location="http://www.baidu.com";

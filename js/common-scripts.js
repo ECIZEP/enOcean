@@ -109,7 +109,6 @@ jQuery('.fa.fa-times').click(function () {
 
 
 $('.switch-animate').click(function(){
-  console.log(this);
   if(jQuery(this).hasClass("switch-on")){
     jQuery(this).removeClass("switch-on").addClass("switch-off");
   }else{
@@ -159,6 +158,8 @@ if(modify){
 }
 
 
+
+
 /*content modified--profile */
 
 (function(){
@@ -171,8 +172,8 @@ if(modify){
   var inputPersonal = document.getElementById('personal-profile');
   var inputFile = document.getElementById('file');
   var btnRemove = document.getElementById('photo-remove');
-  inputNickname.onchange = enableUpdate;
-  inputPersonal.onchange = enableUpdate;
+  inputNickname.onkeypress = enableUpdate;
+  inputPersonal.onkeypress = enableUpdate;
 
   inputFile.onchange = function(){
     enableUpdate();
@@ -226,6 +227,7 @@ if(modify){
                   $('.photoUrl').attr("src",photoUrl);
                 }
                 $('.nickname').html(nickname);
+                toastr.clear();
                 toastr.success("个人信息更新成功！");
                 disableUpdate();
                 break;
@@ -260,6 +262,7 @@ if(modify){
         formData.append('file', inputFile.files[0]);
         xmlHttp.open("POST",url);
         xmlHttp.send(formData);
+        toastr.info("请求正在提交中......");
       }
     }else{
         toastr.error("您的浏览器不支持FormData方式上传头像文件，无法更新头像，请使用Chrome等现代浏览器");
@@ -291,42 +294,173 @@ function GetXmlHttpObject()
 
 (function(){
   //change email
-  document.getElementById('myModal1Confirm').onclick = function(){
-     var inputValue = document.getElementById('myModal1Input').value;
-     var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
-     if(inputValue == "" || !reg.test(inputValue)){
-        toastr.info("请输入正确的邮箱地址");
-     }else{
-        var xmlHttp = GetXmlHttpObject();
-        if(xmlHttp == null)
-        {
-          toastr.error("Browser does not support HTTP Request");
-          return;
-        }
-        var url = "../htmls/functions.php?type=change_email&email=" + inputValue;
-        xmlHttp.onreadystatechange = function(){
-          if(xmlHttp.readyState == 4){
-            if(xmlHttp.status == 200){
-                switch(xmlHttp.responseText){
-                  case "change_email_exit":
-                      toastr.info("该邮箱已被注册，请换一个试试");
-                      break;
-                  case "change_email_send":
-                      toastr.success("新邮箱激活认证邮件已发送到原邮箱，请查收激活！");
-                      $('#myModal1').modal('hide');
-                      break;
-                  case "change_email_failed":
-                      toastr.error("不可知的原因，激活邮件发送失败，请重试！");
-                      break;
-                }
-            }else{
-              toastr.error("发生错误：" + request.status);
+  var modal1 = document.getElementById('myModal1Confirm');
+  if(modal1){
+     modal1.onclick = function(){
+       var inputValue = document.getElementById('myModal1Input').value;
+       var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+       if(inputValue == "" || !reg.test(inputValue)){
+          toastr.info("请输入正确的邮箱地址");
+       }else{
+          var xmlHttp = GetXmlHttpObject();
+          if(xmlHttp == null)
+          {
+            toastr.error("Browser does not support HTTP Request");
+            return;
+          }
+          var url = "../htmls/functions.php?type=change_email&email=" + inputValue;
+          xmlHttp.onreadystatechange = function(){
+            if(xmlHttp.readyState == 4){
+              if(xmlHttp.status == 200){
+                  toastr.clear();
+                  switch(xmlHttp.responseText){
+                    case "change_email_exit":
+                        toastr.info("该邮箱已被注册，请换一个试试");
+                        break;
+                    case "change_email_send":
+                        toastr.success("新邮箱激活认证邮件已发送到原邮箱，请查收激活！");
+                        $('#myModal1').modal('hide');
+                        break;
+                    case "change_email_failed":
+                        toastr.error("不可知的原因，激活邮件发送失败，请重试！");
+                        break;
+                  }
+              }else{
+                toastr.error("发生错误：" + request.status);
+              }
             }
           }
-        }
-        xmlHttp.open("GET",url);
-        xmlHttp.send(null);
-        toastr.info("请求正在提交中......");
-     }
-  };
-})();
+          xmlHttp.open("GET",url);
+          xmlHttp.send(null);
+          toastr.info("请求正在提交中......");
+       }
+    };
+  }
+ 
+  //change phonenumber
+  var sendMessage = document.getElementById('sendMessage');
+  if(sendMessage){
+    sendMessage.onclick = function(){
+      this.disabled = "true";
+      this.innerHTML = "<span id='text'>60</span>秒后再次发送";
+      timeCount();
+    }
+
+    timeCount = function(){
+      time = parseInt(document.getElementById('text').innerHTML) - 1;
+      if(time == 0){
+        document.getElementById('sendMessage').disabled = false;
+        document.getElementById('sendMessage').innerHTML = '发送验证码';
+      }else{
+        document.getElementById('text').innerHTML = time;
+        setTimeout("timeCount()",1000);
+      }
+    }
+
+    document.getElementById('myModal2Confirm').onclick = function(){
+      var inputValue = document.getElementById('myModal2Input').value;
+      if(inputValue == "" || inputValue.length != 11){
+        toastr.info("请填写正确的手机号码！");
+      }else{
+        $.ajax({
+          type: "GET",
+          url: "../htmls/functions.php",
+          dataType:'json',
+          data: {
+            type: "change_phoneNumber",
+            phoneNumber:inputValue
+          },
+          success: function(data){
+            if(data.state == "change_phoneNumber_success"){
+              $('#myModal2').modal('hide');
+              $('#phoneLabel').text("你当前的手机号是：" + inputValue);
+              toastr.success("手机绑定成功！");
+            }else if(data.state == "change_phoneNumber_failed"){
+              toastr.success("手机绑定失败，请重试！");
+            }
+          },
+          error: function(){
+            toastr.clear();
+            toastr.error("发生错误：");
+          }
+        });
+      }
+    };
+  }
+
+  //change password
+  var modal3 =  document.getElementById('myModal3Confirm');
+  if(modal3){
+    modal3.onclick = function(){
+      if($('#newPassword').val() != $('#newPassword2').val()){
+        toastr.info("两次输入的新密码不一致");
+        $('#newPassword2').val("");
+      }else{
+        var password = document.getElementById('password');
+        $.ajax({
+          type: "GET",
+          url: "../htmls/functions.php",
+          dataType:'json',
+          data: {
+            type: "change_password",
+            password:password.value,
+            newPassword:$('#newPassword2').val()
+          },
+          success: function(data){
+            if(data.state == "change_password_success"){
+              $('#myModal3').modal('hide');
+              toastr.success("密码修改成功！");
+            }else if(data.state == "change_password_failed"){
+              toastr.error("密码修改失败，请重试！");
+            }else if(data.state == "password_incorrect"){
+              toastr.error("原密码输入错误");
+              password.value = "";
+            }
+          },
+          error: function(){
+            toastr.clear();
+            toastr.error("发生错误：");
+          }
+        });
+      }
+      
+    }
+  }
+
+  //change address
+  if($('#address')){
+    $('#address').keypress(function(){
+      $('#addressBtn').attr("disabled",false);
+    });
+
+    $('#addressBtn').click(function(){
+      if($('#address').val() == ""){
+        toastr.info("地址不能为空");
+      }else{
+        $.ajax({
+          type: "GET",
+          url: "../htmls/functions.php",
+          dataType:'json',
+          data: {
+            type: "change_address",
+            address: $('#address').val()
+          },
+          success: function(data){
+            if(data.state == "change_address_success"){
+              $('#myModal3').modal('hide');
+              toastr.success("地址修改成功！");
+            }else if(data.state == "change_address_failed"){
+              toastr.error("地址修改失败，请重试！");
+            }
+          },
+          error: function(){
+            toastr.clear();
+            toastr.error("发生错误：");
+          }
+        });
+      }
+    });
+  }
+
+})(jQuery);
+

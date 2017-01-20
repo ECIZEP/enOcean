@@ -22,7 +22,7 @@
 
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">换绑手机</label>
-							<label class="col-sm-6 col-xs-8 control-label">
+							<label class="col-sm-6 col-xs-8 control-label" id="phoneLabel">
 								你当前的手机号是：<?php echo get_phone_number()?>
 							</label>
 							<div class="col-sm-4 col-xs-12">
@@ -39,10 +39,10 @@
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">联系地址</label>
 							<div class="col-sm-6 col-xs-8">
-								<input type="text" class="form-control round-input" value="<?php echo get_address()?>">
+								<input type="text" id="address" class="form-control round-input" value="<?php echo get_address()?>">
 							</div>
 							<div class="col-sm-4 col-xs-12">
-								<button type="button" class="btn btn-info" disabled="true"><i class="fa fa-pencil"></i> 更改</button>
+								<button type="button" id="addressBtn" class="btn btn-info" disabled="true"><i class="fa fa-pencil"></i> 更改</button>
 							</div>
 						</div>
 						
@@ -94,9 +94,13 @@
 					<form class="form-horizontal">
 					<div class="form-group last">
 							<label class="control-label col-md-3">更改的手机号</label>
-							<div class="col-md-6">
-								<input size="16" type="text" class="form-control">
+							<div class="col-md-6 margin">
+								<input size="16" id="myModal2Input" type="text" class="form-control">
 							</div>
+							<div class="col-md-3 margin">
+								<button class="btn btn-success" id="sendMessage" type="button">发送验证码</button>
+							</div>
+							
 						</div>
 					</form>
 
@@ -123,19 +127,19 @@
 						<div class="form-group">
 							<label class="control-label col-md-3">输入原密码</label>
 							<div class="col-md-6">
-								<input size="16" type="text" class="form-control">
+								<input size="16" type="password" id="password" class="form-control">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-md-3">输入新密码</label>
 							<div class="col-md-6">
-								<input size="16" type="text" class="form-control">
+								<input size="16" type="password" id="newPassword" class="form-control">
 							</div>
 						</div>
 						<div class="form-group last">
 							<label class="control-label col-md-3">再输入一遍新密码</label>
 							<div class="col-md-6">
-								<input size="16" type="text" class="form-control">
+								<input size="16" type="password" id="newPassword2" class="form-control">
 							</div>
 						</div>
 					</form>
