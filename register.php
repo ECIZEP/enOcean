@@ -47,8 +47,7 @@
         return true;
     }
 
-    function send_register_email($body){
-        global $password,$username,$email;
+    function send_register_email($body,$username,$email){
         require_once("assets/phpmail/class.phpmailer.php");
         require_once("assets/phpmail/class.smtp.php"); 
         $mail  = new PHPMailer(); 
@@ -88,7 +87,7 @@
             http://enoecan.com/register.php?verify=".$token."</br>
             如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效</br>
             如果此次激活请求非你本人所发，请忽略本邮件。</br>";
-            if(send_register_email($body)){
+            if(send_register_email($body,$username,$email)){
                 echo "activated_sendmail_success";
                 exit;
             }else{
@@ -113,16 +112,16 @@
          $nowtime = time();
          if($result){
             if($result['0'][token_exptime] < $nowtime){
-                header("Location:msg.php?m=activated_exptime");
+                header("Location:index.php?m=activated_exptime");
                 exit;
             }else{
                 $sql = "update account set activated = '1' where token = '{$token}'";
                 $success = DBManager::update_mysql($sql);
                 if($success){
-                    header("Location:msg.php?m=actived_finished");
+                    header("Location:index.php?m=actived_finished");
                     exit;
                 }else{
-                    header("Location:msg.php?m=actived_failed");
+                    header("Location:index.php?m=actived_failed");
                     exit;
                 }
             }

@@ -15,6 +15,7 @@ toastr.options = {
   "hideMethod": "fadeOut"
 };
 
+
 // custom sidebar scrollbar
 $(".sidebar").niceScroll({styler:"fb",cursorcolor:"#e8403f", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: '', scrollspeed: 60});
 
@@ -285,3 +286,17 @@ function GetXmlHttpObject()
   }
   return objXMLHttp;
 }
+
+/*safe setting*/
+
+(function(){
+  document.getElementById('myModal1Confirm').onclick = function(){
+     var inputValue = document.getElementById('myModal1Input').value;
+     var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+     if(inputValue == "" || !reg.test(inputValue)){
+        toastr.info("请输入正确的邮箱地址");
+     }else{
+        
+     }
+  };
+})();

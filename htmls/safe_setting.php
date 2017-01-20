@@ -12,33 +12,37 @@
 					<form class="form-horizontal tasi-form" method="get">
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">更改邮箱</label>
-							<label class="col-sm-6 col-xs-8 control-label">你当前的邮箱是：839435418@qq.com</label>
+							<label class="col-sm-6 col-xs-8 control-label">
+								你当前的邮箱是：<?php echo get_email()?>		
+							</label>
 							<div class="col-sm-4 col-xs-12">
-								<button type="button" class="btn btn-info "><i class="fa fa-refresh"></i> 更改</button>
+								<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1"><i class="fa fa-pencil"></i> 更改</button>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">换绑手机</label>
-							<label class="col-sm-6 col-xs-8 control-label">你当前的手机号是：156******78</label>
+							<label class="col-sm-6 col-xs-8 control-label">
+								你当前的手机号是：<?php echo get_phone_number()?>
+							</label>
 							<div class="col-sm-4 col-xs-12">
-								<button type="button" class="btn btn-info "><i class="fa fa-refresh"></i> 更改</button>
+								<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil"></i> 更改</button>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">更改密码</label>
 							<label class="col-sm-6 col-xs-8 control-label">建议您90天更换一次密码</label>
 							<div class="col-sm-4 col-xs-12">
-								<button type="button" class="btn btn-info "><i class="fa fa-refresh"></i> 更改</button>
+								<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal3"><i class="fa fa-pencil"></i> 更改</button>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">联系地址</label>
 							<div class="col-sm-6 col-xs-8">
-								<input type="text" class="form-control round-input" value="北京昌平区华北电力大学">
+								<input type="text" class="form-control round-input" value="<?php echo get_address()?>">
 							</div>
 							<div class="col-sm-4 col-xs-12">
-								<button type="button" class="btn btn-info "><i class="fa fa-refresh"></i> 更改</button>
+								<button type="button" class="btn btn-info" disabled="true"><i class="fa fa-pencil"></i> 更改</button>
 							</div>
 						</div>
 						
@@ -49,6 +53,102 @@
 	</div>
 </div>
 
+<!-- modal start -->
+<div class="modal fade modal-dialog-center" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">修改邮箱</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+					<div class="form-group last">
+							<label class="control-label col-md-3">更改的邮箱</label>
+							<div class="col-md-6">
+								<input size="16" id="myModal1Input" type="text" class="form-control">
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-warning" id="myModal1Confirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-dialog-center" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">换绑手机</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+					<div class="form-group last">
+							<label class="control-label col-md-3">更改的手机号</label>
+							<div class="col-md-6">
+								<input size="16" type="text" class="form-control">
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-warning" id="myModal2Confirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-dialog-center" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">修改密码</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-md-3">输入原密码</label>
+							<div class="col-md-6">
+								<input size="16" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3">输入新密码</label>
+							<div class="col-md-6">
+								<input size="16" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="form-group last">
+							<label class="control-label col-md-3">再输入一遍新密码</label>
+							<div class="col-md-6">
+								<input size="16" type="text" class="form-control">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-warning" id="myModal3Confirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal end -->
 
 <?php 
 	include("footer.php");

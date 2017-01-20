@@ -173,4 +173,4 @@ function GetXmlHttpObject()
 
 (function() {  
 	tabSwitcher();
-})(jQuery)  
+})(window.jQuery);

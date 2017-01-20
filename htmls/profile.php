@@ -21,7 +21,7 @@
 	</div>
 	<div class="panel panel-info">
 		<div class="panel-body bg-white">
-			<form class="form-horizontal tasi-form" method="get">
+			<form class="form-horizontal tasi-form">
 				<div class="form-group">
 					<label class="col-sm-2 col-xs-4 control-label">用户名</label>
 					<div class="col-sm-10 col-xs-8">
@@ -38,11 +38,11 @@
 							<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 10px;"></div>
 							<div>
 								<span class="btn btn-white btn-file">
-									<span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
-									<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
+									<span class="fileupload-new"><i class="fa fa-paper-clip"></i>选择图片</span>
+									<span class="fileupload-exists"><i class="fa fa-undo"></i> 更换</span>
 									<input id="file" type="file" class="default">
 								</span>
-								<a id="photo-remove" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> Remove</a>
+								<a id="photo-remove" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> 移除</a>
 							</div>
 						</div>
 					</div>

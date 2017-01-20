@@ -1,11 +1,4 @@
 <?php
-	include("../db.class.php");
-	if(!empty($_SESSION['username'])){
-		$account = DBManager::query_account_by_username($_SESSION['username']);
-	}else{
-		header("../index.html");
-	}
-
   	function get_username(){
   		global $account;
   		if($account["username"]){
@@ -63,6 +56,11 @@
   		}
   		
   	}
+
+    function get_address(){
+      global $account;
+      return $account["address"];
+    }
 
   	function get_personal(){
   		global $account;

@@ -601,6 +601,8 @@ a:hover {
     overflow:hidden;
 }
 
+/**/
+
 .modal-content {
     box-shadow: none;
     border: none;
@@ -1084,4 +1086,11 @@ ul {
 		margin-bottom: 10px;
 		line-height: 150%;
 	}
+
+    /* dialog */
+    .modal-open .modal-dialog{
+        margin: 0px;
+        padding: 10px;
+        width: 100%;
+    }
 } 

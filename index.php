@@ -3,11 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" type="text/css" href="css/initial.css">
 	<link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="assets/toastr/toastr.min.css">
-  <link rel="stylesheet" type="text/css" href="css/login.css">
-  <title>智能家居管理系统</title>
+	<link rel="stylesheet" type="text/css" href="assets/toastr/toastr.min.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<title>智能家居管理系统</title>
+	<!--[if lt IE 9]>
+	 <script type="text/javascript">
+		window.location="http://www.baidu.com";
+	 </script>
+    <![endif]-->
 </head>
 <body>
 	<div class="header">
@@ -72,6 +78,27 @@
 	</div>
   <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   <script src="assets/toastr/toastr.min.js"></script>
-	<script src="js/login.js"></script>
+  <script src="js/login.js"></script>
+  <?php 
+  	$msg = "";
+	switch($_GET["m"]) {
+        case    "activated_exptime"  :
+            $msg = "激活有效期已过，请重新注册账号";
+            break;
+        case    "actived_finished"  :
+            $msg = "邮箱激活成功，可以正常使用了<br />";
+            break; 
+        case    "actived_failed"  :
+            $msg = "邮箱激活失败，请重试<br />";
+            break; 
+        default:
+        	$msg = "";
+        	break;
+    }
+    if($msg != ""){
+    	echo "<script type='text/javascript'>toastr.info('{$msg}');</script>";
+    }
+    
+  ?>
 </body>
 </html>
