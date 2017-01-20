@@ -100,8 +100,8 @@ function ajaxRegisterPost(username,password,email){
 						break;
 					case "activated_sendmail_success" :
 						toastr.success("注册成功，激活邮件已发送，请检查邮件并激活账号");
-						var lis = document.getElementById('tabs').getElementsByTagName('li');
-						lis[0].onclick();
+						/*var lis = document.getElementById('tabs').getElementsByTagName('li');
+						lis[0].onclick();*/
 						break;
 					case "activated_sendmail_failed" :
 						toastr.error("注册失败，请重试");

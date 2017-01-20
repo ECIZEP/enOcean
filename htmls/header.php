@@ -1,14 +1,12 @@
 <?php
-    session_start();
-    include("../db.class.php");
-	if(isset($_SESSION['username'])){
-		$account = DBManager::query_account_by_username($_SESSION['username']);
-	}else{
-		header("Location:../index.php");
-		exit;
-	}
+  	session_start();
+	if(!isset($_SESSION['username'])){
+      header("Location:../index.php");
+      exit;
+    }
     include("functions.php");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +20,9 @@
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
 	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.5">
 	<!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	 <script type="text/javascript">
+		window.location="http://www.baidu.com";
+	 </script>
     <![endif]-->
 </head>
 <body>

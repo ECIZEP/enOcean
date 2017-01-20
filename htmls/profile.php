@@ -29,6 +29,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="col-sm-2 col-xs-4 control-label">昵称</label>
+					<div class="col-sm-10 col-xs-8">
+						<input type="text" id="nickname-profile" class="form-control" value="<?php echo get_nickname(); ?>">
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="col-sm-2 col-xs-4 control-label">修改头像</label>
 					<div class="col-sm-10 col-xs-8">
 						<div class="fileupload fileupload-new" data-provides="fileupload"><input type="hidden">
@@ -45,12 +51,6 @@
 								<a id="photo-remove" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> 移除</a>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 col-xs-4 control-label">昵称</label>
-					<div class="col-sm-10 col-xs-8">
-						<input type="text" id="nickname-profile" class="form-control" value="<?php echo get_nickname(); ?>">
 					</div>
 				</div>
 				<div class="form-group">

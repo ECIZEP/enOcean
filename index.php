@@ -91,6 +91,12 @@
         case    "actived_failed"  :
             $msg = "邮箱激活失败，请重试<br />";
             break; 
+        case    "change_email_success":
+        	$msg = "邮箱更换成功！";
+        	break; 
+        case    "change_email_failed":
+        	$msg = "邮箱更换失败，请重试！";
+        	break;
         default:
         	$msg = "";
         	break;

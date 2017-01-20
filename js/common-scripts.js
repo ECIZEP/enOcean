@@ -290,13 +290,43 @@ function GetXmlHttpObject()
 /*safe setting*/
 
 (function(){
+  //change email
   document.getElementById('myModal1Confirm').onclick = function(){
      var inputValue = document.getElementById('myModal1Input').value;
      var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
      if(inputValue == "" || !reg.test(inputValue)){
         toastr.info("请输入正确的邮箱地址");
      }else{
-        
+        var xmlHttp = GetXmlHttpObject();
+        if(xmlHttp == null)
+        {
+          toastr.error("Browser does not support HTTP Request");
+          return;
+        }
+        var url = "../htmls/functions.php?type=change_email&email=" + inputValue;
+        xmlHttp.onreadystatechange = function(){
+          if(xmlHttp.readyState == 4){
+            if(xmlHttp.status == 200){
+                switch(xmlHttp.responseText){
+                  case "change_email_exit":
+                      toastr.info("该邮箱已被注册，请换一个试试");
+                      break;
+                  case "change_email_send":
+                      toastr.success("新邮箱激活认证邮件已发送到原邮箱，请查收激活！");
+                      $('#myModal1').modal('hide');
+                      break;
+                  case "change_email_failed":
+                      toastr.error("不可知的原因，激活邮件发送失败，请重试！");
+                      break;
+                }
+            }else{
+              toastr.error("发生错误：" + request.status);
+            }
+          }
+        }
+        xmlHttp.open("GET",url);
+        xmlHttp.send(null);
+        toastr.info("请求正在提交中......");
      }
   };
 })();
