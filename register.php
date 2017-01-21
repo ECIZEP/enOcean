@@ -85,7 +85,7 @@
             $sql .= " values ('{$username}','{$password}','','','','{$email}','{$regitserData}','','0','{$token}','{$token_exptime}')";
             DBManager::register_account($sql,$username);
             $body = "亲爱的用户，感谢您在我站注册了新帐号：".$username."请点击链接激活您的帐号，并及时登录网站完善个人信息</br></br>
-            http://sunriseteam.cn/enOcean/register.php?verify=".$token."</br></br>
+            <a href='http://sunriseteam.cn/enOcean/register.php?verify=".$token."'>http://sunriseteam.cn/enOcean/register.php?verify=".$token."</a></br></br>
             如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效</br>
             如果此次激活请求非你本人所发，请忽略本邮件。</br>";
             $subject = "【ICAN CONTROL账号激活】";

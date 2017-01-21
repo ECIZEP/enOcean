@@ -137,6 +137,7 @@ ul.sidebar-menu li{
 	position: relative;
 	border-radius: 4px;
 	-webkit-border-radius: 4px;
+    cursor: pointer;
 }
 
 ul.sidebar-menu li:last-child{
@@ -157,9 +158,6 @@ ul.sidebar-menu li:hover,ul.sidebar-menu li:focus,ul.sidebar-menu li.active{
 	
 }
 
-ul.sidebar-menu li ul li a{
-
-}
 
 ul.sidebar-menu li a i{
 	position: relative;
@@ -184,7 +182,7 @@ ul.sidebar-menu li:hover i,ul.sidebar-menu li:focus i,ul.sidebar-menu li.active 
 	margin-right: 13px;
 }
 
-ul.sidebar-menu li a.active .folder-icon{
+ul.sidebar-menu li.active .folder-icon{
 	background-position: 0px -17px;
 }
 

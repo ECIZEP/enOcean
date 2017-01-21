@@ -25,7 +25,8 @@
 			self::$connect = mysql_connect(self::$host,self::$username,self::$password);
 			if(!self::$connect) {
 				die("mysql error:".mysql_error());
-			} 
+			}
+			mysql_query("set names utf8");
 			mysql_select_db(self::$dbname);
 		}
 
@@ -39,7 +40,7 @@
 		//查询数据库，返回一个数组
 		public static function query_mysql($sql_str){
 			self::connect_mysql();
-
+			
 			$result = mysql_query($sql_str);
 			$result_array = array();
 			$i = 0;

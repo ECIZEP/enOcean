@@ -267,7 +267,7 @@ include("header.php");
 		<div class="col-lg-6">
 			<section class="panel ">
 				<header class="panel-heading">
-					Timeline
+					操作记录
 					<span class="tools pull-right">
 						<a class="fa fa-chevron-down" href="javascript:;"></a>
 						<a class="fa fa-times" href="javascript:;"></a>

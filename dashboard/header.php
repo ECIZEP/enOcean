@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.7">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.8">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 		window.location="http://www.baidu.com";
@@ -79,7 +79,6 @@
 						<i class="fa fa-dashboard"></i>
 						<span>控制台</span>
 					</a>
-
 				</li>
 				<li class="submenu">
 					<a href="profile.php">
@@ -94,7 +93,7 @@
 					</a>
 				</li>
 				<li class="submenu">
-					<a class="" href="#">
+					<a>
 						<i class="fa fa-laptop"></i>
 						<span>我的设备</span>
 						<span class="folder-icon"></span>
@@ -108,14 +107,14 @@
 					</ul>
 				</li>
 				<li class="submenu">
-					<a href="#">
-						<i class="fa fa-plus-square-o"></i>
+					<a>
+						<i class="fa fa-plus"></i>
 						<span>添加设备</span>
 						<span class="folder-icon"></span>
 					</a>
 					<ul class="sub">
-						<li><a href="#">设备一</a></li>
-						<li><a href="#">设备二</a></li>
+						<li><a href="#">添加设备</a></li>
+						<li><a href="#">添加控制器</a></li>
 						
 					</ul>
 				</li>
