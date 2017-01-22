@@ -205,6 +205,32 @@
       }
     }
 
+    //delete logbook --logbook page
+    function delete_single_log($logDate,$password){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      if(!check_password($password)){
+        echo '{"state":"password_wrong"}';
+      }else{
+        
+        $sql = "delete from logbook where username = '{$_SESSION["username"]}' and logDate = '{$logDate}'";
+        if(DBManager::update_mysql($sql)){
+          echo '{"state":"delete_single_log_success"}';
+        }else{
+          echo '{"state":"delete_single_log_failed"}';
+        }
+      }
+    }
+
+    function check_password($password){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "select password from account where username = '{$_SESSION["username"]}'";
+      return DBManager::query_mysql($sql)["0"]["password"] == $password;
+    }
+
     if($_SERVER['REQUEST_METHOD'] == "POST"){
       if(isset($_POST["type"])){
         switch ($_POST["type"]) {
@@ -237,7 +263,11 @@
           case "change_address":
               change_address($_GET["address"]);
               break;
+          case "delete_single_log":
+              delete_single_log($_GET["logDate"],$_GET["password"]);
+              break;
         }
       }
     }
+
 ?>

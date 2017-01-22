@@ -62,7 +62,7 @@ include("header.php");
 					</div>
 					<ul class="nav nav-pills nav-stacked">
 						<li>
-							<a> 
+							<a href="./logbook.php"> 
 								最近操作
 								<span class="label label-info pull-right r-activity"><i class="fa fa-gears"></i></span>
 							</a>

@@ -49,10 +49,7 @@ function getPagination($pageCount){
 	}else{
 		echo '<li class="disabled"><a href="'.$_SERVER['PHP_SELF'].'?page='.$pageCount.'">尾页</a></li>';
 	}
-	
-
 }
-
 
 ?>
 
@@ -70,16 +67,19 @@ function getPagination($pageCount){
 				<div class="panel-body">
 					<div class="row no-padding">
 						<div class="col-sm-8 col-xs-8">
-							<select name="minbeds" id="minbeds" style="width: auto;display: inline-block;" class="form-control bound-s">
-								<option>10</option>
-								<option>20</option>
-								<option>30</option>
+							<button style="vertical-align: top;" id="checkall" class="btn btn-primary">
+								<i class="fa fa-check"></i>
+								<span>全选</span>
+							</button>
+							<select name="minbeds" id="minbeds" style="width: auto;display: inline-block;padding: 0px" class="form-control bound-s">
+								<option>10条/每页</option>
+								<option>20条/每页</option>
+								<option>30条/每页</option>
 							</select>
-							&nbsp;&nbsp;&nbsp;条/每页
 						</div>
 						<div class="col-sm-4 col-xs-4">
 							<div class="btn-group pull-right">
-								<button class="btn btn-danger" ><i class="fa fa-trash-o"></i> 批量删除
+								<button class="btn btn-danger" id="deleteMore"><i class="fa fa-trash-o"></i> 批量删除
 								</button>
 							</div>
 						</div>
@@ -98,11 +98,12 @@ function getPagination($pageCount){
 								foreach ($records as $key => $value) {
 									echo '<td><label class="label_check c_off"><input name="sample-checkbox-02" id="checkbox-03" value="1" type="checkbox">&nbsp;</label></td><td>';
 									echo $value["logDate"]."</td><td>".$value["content"]."</td>";
-									echo '<td><button type="button" class="btn btn-danger btn-sm">&nbsp;<i class="fa fa-trash-o "></i>&nbsp;</button></td></tr>';
+									echo '<td><button type="button" class="btn btn-danger btn-sm" data-logdate="'.$value["logDate"].'" data-toggle="modal" data-target="#logModal1" >&nbsp;<i class="fa fa-trash-o "></i>&nbsp;</button></td></tr>';
 								}
 							?>
 						</tbody>
 					</table>
+
 					<div class="row no-padding">
 						<div class="col-sm-4">
 							<div class="dataTables_info" id="hidden-table-info_info"><?php echo getCountString($start,$sql_count);?></div>
@@ -118,6 +119,36 @@ function getPagination($pageCount){
 		</div>
 	</div>
 </section>
+
+<!-- modal dialog start -->
+<div class="modal fade modal-dialog-center" id="logModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">删除操作安全验证</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+					<div class="form-group last">
+							<label class="control-label col-md-4">请输入密码完成操作：</label>
+							<div class="col-md-8">
+								<input size="16" id="logModal1Input" type="password" class="form-control">
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-warning" data-logdate="" id="logModal1Confirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal dialog end -->
 
 <?php 
 include("footer.php");

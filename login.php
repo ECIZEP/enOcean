@@ -17,11 +17,11 @@
       $password = $_POST["password"];
       $sql = "select  *  from account where username='{$username}'  limit 1 ";
       $result_array = DBManager::query_mysql($sql);
-      //账号未激活
+      /*//账号未激活
       if($result_array['0']["activated"] == 0){
         echo "0";
         exit;
-      }
+      }*/
       //密码不正确
       if($password != $result_array['0']["password"]) {
         echo "1";

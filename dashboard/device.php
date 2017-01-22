@@ -8,7 +8,7 @@ include("header.php");
 		<div class="col-md-12">
 			<section class="panel">
 				<header class="panel-heading">
-					空调——设备控制器
+					空调
 					<span class="tools pull-right">
 						<button class="btn btn-success btn-xs"><i class="fa fa-plus"></i> 添加控制器</button>
 						<a href="javascript:;" class="fa fa-chevron-down"></a>

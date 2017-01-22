@@ -465,12 +465,88 @@ function GetXmlHttpObject()
 
 /*logbook page*/
 
+
 (function(){
+
+  //check box animation
   $('.label_check > input').click(function(event){
     if($(this).parent().hasClass('c_on')){
       $(this).parent().removeClass('c_on').addClass('c_off');
     }else{
       $(this).parent().removeClass('c_off').addClass('c_on');
+    }
+  });
+
+  //check all and not check
+  $('#checkall').click(function(){
+    if($('#checkall > i').hasClass('fa-check')){
+      $('#checkall > i').removeClass('fa-check').addClass('fa-remove');
+      $('#checkall > span').html("全不选");
+      $('.label_check > input').parent().removeClass('c_off').addClass('c_on');
+    }else{
+      $('#checkall > i').removeClass('fa-remove').addClass('fa-check');
+      $('#checkall > span').html("全选");
+      $('.label_check > input').parent().removeClass('c_on').addClass('c_off');
+    }
+  });
+
+  //pass the logDate to the modal
+  $('.btn.btn-danger.btn-sm').click(function(){
+    $('#logModal1Confirm')[0].dataset.logdate = this.dataset.logdate;
+    
+  });
+
+  //delete all log
+  $('#deleteMore').click(function(){
+    if($('.label_check').hasClass('c_on')){
+      this.addClass('clicked');
+      $('#logModal1').modal('show');
+    }else{
+      toastr.info("请勾选要删除的操作记录！");
+    }
+  });
+
+  //modal confirm 
+  $('#logModal1Confirm').click(function(){
+    var password = $('#logModal1Input').val(); 
+    if(password.length < 6){
+      toastr.info("密码位数不正确，至少6位");
+    }else{
+      $.ajax({
+          type: "GET",
+          url: "./functions.php",
+          dataType:'json',
+          data: {
+            type: "delete_single_log",
+            password: password,
+            logDate: this.dataset.logdate
+          },
+          success: function(data){
+            if(data.state == "password_wrong"){
+              toastr.error("密码错误，请重新输入");
+              $('#logModal1Input').val("");
+            }else if(data.state == "delete_single_log_success"){
+              toastr.success("删除成功");
+              $('#logModal1').modal('hide');
+              //delete the logdate in view
+              $('.btn.btn-danger.btn-sm').each(function(){
+                if(this.dataset.logdate == $('#logModal1Confirm')[0].dataset.logdate){
+                  $(this).parent().parent().remove();
+                  //reset the dateset logdate value of the dialog confirm button
+                  $('#logModal1Confirm')[0].dataset.logdate = "";
+                }
+              });
+              //reset the password in modal input
+              $('#logModal1Input').val("");
+            }else if(data.state == "delete_single_log_failed"){
+              toastr.error("删除失败，请重试");
+            }
+          },
+          error: function(){
+            toastr.clear();
+            toastr.error("发生错误：");
+          }
+        });
     }
   });
 })(jQuery);
