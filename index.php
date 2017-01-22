@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/initial.css">
 	<link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css?v=1">
 	<title>智能家居管理系统</title>
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
@@ -42,7 +42,7 @@
 		              <label class="login-field-icon fa fa-lock" for="login-pass"></label>
 		            </div>
 					
-					     <div class="form-group">
+					<div class="form-group">
 		              <input style="width: 60%" type="text" class="form-control login-field" value="" placeholder="输入验证码" id="login-verify">
 		              <label style="right: 140px" class="login-field-icon fa fa-eye"></label>
 		              <img style="padding:0px 5px;" src="checks.php" align="top">
@@ -56,20 +56,18 @@
 		              <input type="text" class="form-control login-field" value="" placeholder="输入用户名" id="register-name">
 		              <label class="login-field-icon fa fa-user" ></label>
 		            </div>
-
 		            <div class="form-group">
 		              <input type="password" class="form-control login-field"  placeholder="输入密码" id="register-pass">
 		              <label class="login-field-icon fa fa-lock" ></label>
 		            </div>
-
 		            <div class="form-group">
-		              <input type="password" class="form-control login-field"  placeholder="再次输入密码" id="register-passagain">
-		              <label class="login-field-icon fa fa-lock"></label>
+		              <input type="email" class="form-control login-field" value="" placeholder="输入手机号" id="register-phoneNumber">
+		              <label class="login-field-icon fa fa-tablet" style="font-size: 17px;"></label>
 		            </div>
-
-					      <div class="form-group">
-		              <input type="email" class="form-control login-field" value="" placeholder="输入邮箱" id="register-email">
-		              <label class="login-field-icon fa fa-envelope" style="font-size: 17px;"></label>
+		            <div class="form-group">
+		              <input style="width: 60%" type="text" class="form-control login-field" value="" placeholder="输入验证码" id="register-verify">
+		              <label style="right: 140px" class="login-field-icon fa  fa-keyboard-o"></label>
+		              <button style="float: right;" class="btn btn-success" id="sendMessage" type="button">发送验证码</button>
 		            </div>
 		            <button value="注册" class="btn btn-primary btn-large btn-block" onclick="validate_form(this);" type="submit">注册</button>
           		</div>
@@ -78,7 +76,7 @@
 	</div>
   <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   <script src="assets/toastr/toastr.min.js"></script>
-  <script src="js/login.js?v=1"></script>
+  <script src="js/login.js?v=1.2"></script>
   <?php 
   	$msg = "";
   	if(isset($_GET["m"])){

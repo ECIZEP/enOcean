@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.8">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.9">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 		window.location="http://www.baidu.com";
@@ -31,9 +31,9 @@
 		<div class="sidebar-toggle">
 			<i class="fa fa-bars"></i>
 		</div>
-		<a class="logo">
-			ICAN 
-			<span>CONTROL</span>
+		<a class="logo"> 
+			<span>WGCX</span>
+			物联
 		</a>
 		<div class="nav-self pull-right">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -119,7 +119,7 @@
 					</ul>
 				</li>
 				<li class="submenu">
-					<a href="#">
+					<a href="./logbook.php">
 						<i class="fa fa-gears"></i>
 						<span>操作日志</span>
 					</a>

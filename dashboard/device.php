@@ -31,7 +31,7 @@ include("header.php");
 								<td><a href="#">1</a></td>
 								<td class="hidden-phone">电源开关</td>
 								<td>开关</td>
-								<td><span class="label label-info label-mini">未绑定</span></td>
+								<td><span class="label label-info label-mini">已绑定</span></td>
 								<td>
 									<button id="modify" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -46,7 +46,7 @@ include("header.php");
 								</td>
 								<td class="hidden-phone">温度控制</td>
 								<td>多值型</td>
-								<td><span class="label label-danger label-mini">已掉线</span></td>
+								<td><span class="label label-info label-mini">已绑定</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -57,7 +57,7 @@ include("header.php");
 								<td><a href="#">3</a></td>
 								<td class="hidden-phone">屏幕开关</td>
 								<td>开关</td>
-								<td><span class="label label-success label-mini">已连接</span></td>
+								<td><span class="label label-info label-mini">已绑定</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -72,7 +72,7 @@ include("header.php");
 								</td>
 								<td class="hidden-phone">空调模式</td>
 								<td>多值型</td>
-								<td><span class="label label-success label-mini">已连接</span></td>
+								<td><span class="label label-info label-mini">已绑定</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -83,7 +83,7 @@ include("header.php");
 								<td><a href="#">9</a></td>
 								<td class="hidden-phone">功率监控</td>
 								<td>数值型</td>
-								<td><span class="label label-primary label-mini">待定</span></td>
+								<td><span class="label label-info label-mini">已绑定</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>

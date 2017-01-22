@@ -2,13 +2,17 @@
     header("Content-Type: text/plain;charset=utf-8"); 
     include("send_email.php");
     if($_SERVER['REQUEST_METHOD'] == "POST"){
-    //来自注册的post请求
-        $password = $_POST["password"];
-        $username = $_POST["username"];
-        $email = $_POST["email"];
-        if($password && $username && $email){
-            register_func();
+        //来自注册的post请求
+        if(isset($_POST["type"]) && $_POST["type"] == "register"){
+            $password = $_POST["password"];
+            $username = $_POST["username"];
+            $phoneNumber = $_POST["phoneNumber"];
+            $verifycode = $_POST["verifycode"];
+            if($password && $username && $verifycode && $phoneNumber){
+                register_func();
+            }
         }
+        
     }elseif($_SERVER['REQUEST_METHOD'] == "GET"){
     //来自激活的get请求
         if(isset($_GET["verify"])){
@@ -22,7 +26,6 @@
     }
 
     function change_email_confirm($email,$token){
-
       include("db.class.php");
       if($email && $token){
         $sql = "update account set email = '{$email}' where token = '{$token}'";
@@ -50,50 +53,58 @@
     activated_sendmail_failed   账号激活邮件发送失败
     */
     function check_account(){
-        global $password,$username,$email;
+
+        global $password,$username,$verifycode,$phoneNumber;
         include("db.class.php");
         //用户名是否已经存在并已经激活
         $sql_1 = "select  *  from account where username='{$username}'  limit 1 ";
         $result_username = DBManager::query_mysql($sql_1);
         //邮箱是否已经注册
-        $sql_2 = "select  *  from account where email='{$email}'  limit 1 ";
-        $result_email = DBManager::query_mysql($sql_2);
-        if($result_username && $result_username["0"]["activated"] == 1 && $result_email){
-            echo "register_name_email_exist";
+        $sql_2 = "select  *  from account where phoneNumber='{$phoneNumber}'  limit 1 ";
+        $result_phoneNumber = DBManager::query_mysql($sql_2);
+        if($result_username && $result_phoneNumber){
+            echo "register_name_phoneNumber_exist";
             exit;
-        } elseif ($result_username && $result_username["0"]["activated"] == 1) {
+        } elseif ($result_username) {
             echo "register_name_exist";
             exit;
-        } elseif ($result_email && $result_username["0"]["activated"] == 1){
-            echo "register_email_exist";
+        } elseif ($result_phoneNumber){
+            echo "register_phoneNumber_exist";
+            exit;
+        }
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        if(isset($_SESSION["verifycode"]) && $_SESSION["verifycode"] == $verifycode){
+            return true;
+        }else{
+            echo "register_verifycode_wrong";
             exit;
         }
         return true;
     }
 
     
-
-
     function register_func(){
-        global $password,$username,$email;
+        global $password,$username,$phoneNumber;
         if(check_account()){
             $regitserData = date("Y-m-d H:i:s");
-            $nowtime = time();
+           /* $nowtime = time();
             $token_exptime = $nowtime+60*60*24;//过期时间为24小时后
-            $token = md5($username.$email.$nowtime); //创建用于激活识别码
-            $sql = "insert into account (username,password,nickname,address,phoneNumber,email,registerDate,lastLoginDate,activated,token,token_exptime) ";
-            $sql .= " values ('{$username}','{$password}','','','','{$email}','{$regitserData}','','0','{$token}','{$token_exptime}')";
-            DBManager::register_account($sql,$username);
-            $body = "亲爱的用户，感谢您在我站注册了新帐号：".$username."请点击链接激活您的帐号，并及时登录网站完善个人信息</br></br>
+            $token = md5($username.$email.$nowtime); //创建用于激活识别码*/
+            $sql = "insert into account (username,password,phoneNumber,registerDate) ";
+            $sql .= " values ('{$username}','{$password}','{$phoneNumber}','{$regitserData}')";
+            ;
+            /*$body = "亲爱的用户，感谢您在我站注册了新帐号：".$username."请点击链接激活您的帐号，并及时登录网站完善个人信息</br></br>
             <a href='http://sunriseteam.cn/enOcean/register.php?verify=".$token."'>http://sunriseteam.cn/enOcean/register.php?verify=".$token."</a></br></br>
             如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效</br>
             如果此次激活请求非你本人所发，请忽略本邮件。</br>";
-            $subject = "【ICAN CONTROL账号激活】";
-            if(send_register_email($subject,$body,$username,$email)){
-                echo "activated_sendmail_success";
+            $subject = "【WGCX智能家居-账号激活】";*/
+            if(DBManager::register_account($sql,$username)){
+                echo "register_success";
                 exit;
             }else{
-                echo "activated_sendmail_failed";
+                echo "register_failed";
                 exit;
             }
             

@@ -121,6 +121,7 @@
 }
 
 .btn {
+  cursor: pointer;
   border: none;
   font-size: 15px;
   font-weight: normal;
@@ -140,6 +141,18 @@
 .btn-primary {
   color: #ffffff;
   background-color: #1abc9c;
+}
+
+.btn-success{
+  background-color: #78CD51;
+  border-color: #78CD51;
+  color: #FFFFFF;
+}
+
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
+    background-color: #6dbb4a;
+    border-color: #6dbb4a;
+    color: #FFFFFF;
 }
 
 .btn-lg, .btn-group-lg > .btn {

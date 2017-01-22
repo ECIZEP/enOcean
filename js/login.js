@@ -43,7 +43,7 @@ function validate_form(obj){
 		var username = document.getElementById('login-name').value;
 		var password = document.getElementById('login-pass').value;
 		var verification = document.getElementById('login-verify').value;
-		if(username.length < 5 || password.length < 6){
+		if(username.length < 6 || password.length < 6){
 			toastr.info("用户名或者密码位数少于6位！");
 			return false;
 		}
@@ -55,29 +55,25 @@ function validate_form(obj){
 	}else if(obj.value == "注册"){
 		var username = document.getElementById('register-name').value;
 		var password = document.getElementById('register-pass').value;
-		var passAgain = document.getElementById('register-passagain').value;
-		var email = document.getElementById('register-email').value;
-		if(username.length < 6 || password.length < 6 || passAgain.length < 6 || email.length < 6){
+		var phoneNumber = document.getElementById('register-phoneNumber').value;
+		var verifycode = document.getElementById('register-verify').value;
+		if(username.length < 6 || password.length < 6 || verifycode.length != 6){
 			toastr.info("请将表单填写完整，并确定用户名和密码不少于6位");
 			return false;
 		}
-		if(password != passAgain){
-			toastr.info("两次密码输入不一致，请核实");
+		var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+		if(!reg.test(phoneNumber)){
+			toastr.info("手机号码格式不正确！");
 			return false;
 		}
-		var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
-		if(!reg.test(email)){
-			toastr.info("邮箱格式不正确！");
-			return false;
-		}
-		ajaxRegisterPost(username,password,email);
+		ajaxRegisterPost(username,password,phoneNumber,verifycode);
 	}
 	return false;
 }
 
-function ajaxRegisterPost(username,password,email){
+function ajaxRegisterPost(username,password,phoneNumber,verifycode){
 	var xmlHttp = GetXmlHttpObject();
-	var data = "username=" + username + "&password=" + password + "&email=" + email;
+	var data = "type=register&username=" + username + "&password=" + password + "&phoneNumber=" + phoneNumber + "&verifycode=" + verifycode;
 	if (xmlHttp == null)
 	{
 		toastr.error("Browser does not support HTTP Request");
@@ -89,21 +85,24 @@ function ajaxRegisterPost(username,password,email){
 			if (xmlHttp.status == 200) {
 				toastr.clear();
 				switch(xmlHttp.responseText){
-					case "register_name_email_exist" :
-						toastr.info("邮箱和用户名已经存在");
+					case "register_verifycode_wrong" :
+						toastr.error("验证码不正确！");
 						break;
 					case "register_name_exist" :
-						toastr.error("用户名已经存在");
+						toastr.info("用户名已经被注册");
 						break;
-					case "register_email_exist" :
-						toastr.error("邮箱已经存在");
+					case "register_name_phoneNumber_exist":
+						toastr.info("用户名和手机号都已经被注册");
 						break;
-					case "activated_sendmail_success" :
-						toastr.success("注册成功，激活邮件已发送，请检查邮件并激活账号");
+					case "register_phoneNumber_exist":
+						toastr.info("手机号已经被注册");
+						break;
+					case "register_success" :
+						toastr.success("注册成功，你可以登录账户了");
 						/*var lis = document.getElementById('tabs').getElementsByTagName('li');
 						lis[0].onclick();*/
 						break;
-					case "activated_sendmail_failed" :
+					case "register_failed" :
 						toastr.error("注册失败，请重试");
 						break;
 				}
@@ -132,9 +131,9 @@ function ajaxLoginPost(username,password,verification){
 			if (xmlHttp.status == 200) {
 				console.log(xmlHttp.responseText);
 				switch(xmlHttp.responseText){
-					case "0" :
+/*					case "0" :
 						toastr.error("该账号未激活,请查收激活邮件");
-						break;
+						break;*/
 					case "1" :
 						toastr.error("密码不正确");
 						document.getElementById('login-pass').value = "";
@@ -144,7 +143,7 @@ function ajaxLoginPost(username,password,verification){
 						document.getElementById('login-verify').value = "";
 						break;
 					case "3" :
-						window.location.href = "../dashboard/profile.php";
+						window.location.href = "../dashboard/index.php";
 						window.event.returnValue = false;
 						break;
 				}
@@ -174,4 +173,63 @@ function GetXmlHttpObject()
 
 (function() {  
 	tabSwitcher();
+	var sendMessage = document.getElementById('sendMessage');
+	if(sendMessage){
+		sendMessage.onclick = function(){
+			this.disabled = "true";
+			$(this).removeClass('btn-success');
+			this.innerHTML = "<span id='text'>60</span>秒后发送";
+
+			var phoneNumber = $('#register-phoneNumber').val();
+			console.log(phoneNumber);
+			var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+			if(!reg.test(phoneNumber)){
+				toastr.info("手机格式不正确！");
+				return;
+			}
+
+			$.ajax({
+				type: "GET",
+				url: "./message/sendMessage.php",
+				dataType:'json',
+				data: {
+					type: "sendVerifycode",
+					phoneNumber:phoneNumber
+				},
+				success: function(data){
+					if(data.state == "sendVerifycode_success"){
+						toastr.success("验证码已发送，请查收");
+					}else if(data.state == "sendVerifycode_failed"){
+						toastr.success("验证码发送出错，请重试获取");
+						document.getElementById('text').innerHTML = 1;
+					}
+				},
+				error: function(){
+					toastr.clear();
+					toastr.error("验证码请求错误");
+				}
+			});
+			timeCount();
+		}
+
+
+		timeCount = function(){
+			time = parseInt(document.getElementById('text').innerHTML) - 1;
+			if(time == 0){
+				var sendMessage = document.getElementById('sendMessage');
+				sendMessage.disabled = false;
+				$(sendMessage).addClass('btn-success');
+				sendMessage.innerHTML = '发送验证码';
+			}else{
+				document.getElementById('text').innerHTML = time;
+				setTimeout("timeCount()",1000);
+			}
+		}
+	}
+
+
+	function sendVerifycode(){
+
+	}
+
 })(window.jQuery);

@@ -38,7 +38,7 @@ a.logo span{
 	display: inline-block;
 	position: relative;
 	margin-top: 8px;
-	margin-right: 30px;
+	margin-right: 20px;
 }
 .nav-self a.dropdown-toggle{
 	display: block;
@@ -527,7 +527,11 @@ ul.sub li a:hover{
 }
 
 
-
+.dataTables_info{
+    padding: 15px 0;
+    margin: 0px;
+    line-height: 34px;
+}
 
 /* 网页脚部 */
 footer{
@@ -538,6 +542,41 @@ footer{
 }
 
 /* flat-ui-component */
+
+/*checkbox & radio style*/
+
+
+.label_check {
+    padding-left: 20px;
+     display: block;
+    cursor: pointer;
+    line-height: 20px;
+    font-weight: 300;
+    margin-bottom: 0px;
+}
+
+.label_radio {
+    background: url(../images/radio-off.png) no-repeat;
+}
+
+.label_check {
+    background: url(../images/check-off.png) no-repeat;
+}
+
+label.c_on {
+    background: url(../images/check-on.png) no-repeat;
+    
+}
+
+label.r_on {
+    background: url(../images/radio-on.png) no-repeat;
+}
+
+.label_check input,
+.label_radio input {
+    position: absolute;
+    left: -9999px;
+}
 
 /*----switch ----*/
 .has-switch {
@@ -1278,7 +1317,7 @@ ul {
 
 @media screen and (max-width: 768px){
 	.sidebar{
-		position: absolute;
+		position: fixed;
 		top: 60px;
 		bottom: initial;
 		padding-top: 0px;
@@ -1331,4 +1370,5 @@ ul {
     .modal-open .modal-dialog .margin{
         margin:10px 0px;
     }
+
 } 

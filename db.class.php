@@ -54,6 +54,14 @@
 			return $result_array;
 		}
 
+		//更新数据库
+		public static function update_mysql($sql){
+			self::connect_mysql();
+        	$isUpdated = mysql_query($sql);
+        	self::close_mysql();
+        	return $isUpdated;
+		}
+
 		public static function query_account_by_username($username){
 			$sql = "select * from account where username ='{$username}'";
 			return self::query_mysql($sql)["0"];
@@ -63,23 +71,17 @@
 		public static function register_account($sql,$username){
         	self::connect_mysql();
         	if(!mysql_query($sql)) {
-            	die("注册用户失败！");
-        	}
+            	return false;        	
+            }
         	self::close_mysql();
         	//创建用户信息文件夹
         	if(!is_dir("./upload/{$username}")){
         		mkdir("./upload/{$username}");
         	}
-            
+        	return true;
 		}
 
-		//更新数据库
-		public static function update_mysql($sql){
-			self::connect_mysql();
-        	$isUpdated = mysql_query($sql);
-        	self::close_mysql();
-        	return $isUpdated;
-		}
+		
 	}
 
 
