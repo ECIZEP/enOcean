@@ -11,7 +11,7 @@
 	<title>智能家居管理系统</title>
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
-		window.location="http://www.baidu.com";
+		document.write("请使用现代浏览器浏览本网站，就算用IE，最低版本IE9，什么年代了，还用IE8，我都不想说你");
 	 </script>
     <![endif]-->
 </head>
@@ -24,7 +24,7 @@
 			<div class="login-screen">
 				<div class="login-icon">
 		            <img src="images/Compas.png" alt="Welcome to I Control">
-		            <h4>Welcome to <small>I Control</small></h4>
+		            <h4>智能家居<small>WGCX物联</small></h4>
 		        </div>
 		        <ul class="tab" id="tabs">
 		        	<li class="">登录</li>

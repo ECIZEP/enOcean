@@ -10,6 +10,7 @@
   */
   function check_login(){
     $checks=$_POST["verification"];
+    strtolower($checks);
     if($checks==$_SESSION["check_checks"]){
       include("db.class.php");
 

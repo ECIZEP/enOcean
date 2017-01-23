@@ -10,6 +10,7 @@ include("header.php");
 				<header class="panel-heading">
 					空调
 					<span class="tools pull-right">
+						<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> 编辑设备</button>
 						<button class="btn btn-success btn-xs"><i class="fa fa-plus"></i> 添加控制器</button>
 						<a href="javascript:;" class="fa fa-chevron-down"></a>
 						<a href="javascript:;" class="fa fa-times"></a>
@@ -31,7 +32,7 @@ include("header.php");
 								<td><a href="#">1</a></td>
 								<td class="hidden-phone">电源开关</td>
 								<td>开关</td>
-								<td><span class="label label-info label-mini">已绑定</span></td>
+								<td>OFF</td>
 								<td>
 									<button id="modify" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -46,7 +47,7 @@ include("header.php");
 								</td>
 								<td class="hidden-phone">温度控制</td>
 								<td>多值型</td>
-								<td><span class="label label-info label-mini">已绑定</span></td>
+								<td>27</td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -57,7 +58,7 @@ include("header.php");
 								<td><a href="#">3</a></td>
 								<td class="hidden-phone">屏幕开关</td>
 								<td>开关</td>
-								<td><span class="label label-info label-mini">已绑定</span></td>
+								<td>ON</td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -72,7 +73,7 @@ include("header.php");
 								</td>
 								<td class="hidden-phone">空调模式</td>
 								<td>多值型</td>
-								<td><span class="label label-info label-mini">已绑定</span></td>
+								<td>制冷模式</td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -83,7 +84,7 @@ include("header.php");
 								<td><a href="#">9</a></td>
 								<td class="hidden-phone">功率监控</td>
 								<td>数值型</td>
-								<td><span class="label label-info label-mini">已绑定</span></td>
+								<td>100W</td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>

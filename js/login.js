@@ -176,18 +176,15 @@ function GetXmlHttpObject()
 	var sendMessage = document.getElementById('sendMessage');
 	if(sendMessage){
 		sendMessage.onclick = function(){
-			this.disabled = "true";
-			$(this).removeClass('btn-success');
-			this.innerHTML = "<span id='text'>60</span>秒后发送";
-
 			var phoneNumber = $('#register-phoneNumber').val();
-			console.log(phoneNumber);
 			var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
 			if(!reg.test(phoneNumber)){
 				toastr.info("手机格式不正确！");
 				return;
 			}
-
+			this.disabled = "true";
+			$(this).removeClass('btn-success');
+			this.innerHTML = "<span id='text'>60</span>秒后发送";
 			$.ajax({
 				type: "GET",
 				url: "./message/sendMessage.php",

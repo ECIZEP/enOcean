@@ -2,7 +2,7 @@
     header("Content-Type: text/plain;charset=utf-8"); 
     include("send_email.php");
     if($_SERVER['REQUEST_METHOD'] == "POST"){
-        //来自注册的post请求
+        //register post request
         if(isset($_POST["type"]) && $_POST["type"] == "register"){
             $password = $_POST["password"];
             $username = $_POST["username"];
@@ -14,12 +14,12 @@
         }
         
     }elseif($_SERVER['REQUEST_METHOD'] == "GET"){
-    //来自激活的get请求
+        //email activating request
         if(isset($_GET["verify"])){
             activate_account($_GET["verify"],$_GET["email"]);
         }
 
-    //来自更换邮箱的get请求
+        //change email request
         if(isset($_GET["type"]) && $_GET["type"] == "change_email_confirm"){
             change_email_confirm($_GET["email"],$_GET["token"]);
         }
@@ -30,7 +30,6 @@
       if($email && $token){
         $sql = "update account set email = '{$email}' where token = '{$token}'";
         if(DBManager::update_mysql($sql)){
-
           header("Location:index.php?m=change_email_success");
           exit;
         }else{
@@ -55,10 +54,10 @@
     function check_account(){
         global $password,$username,$verifycode,$phoneNumber;
         include("db.class.php");
-        //用户名是否已经存在
+        //is username existing?
         $sql_1 = "select  *  from account where username='{$username}'  limit 1 ";
         $result_username = DBManager::query_mysql($sql_1);
-        //电话号码是否已经注册
+        //have phoneNumber been registered?
         $sql_2 = "select  *  from account where phoneNumber='{$phoneNumber}'  limit 1 ";
         $result_phoneNumber = DBManager::query_mysql($sql_2);
         if($result_username && $result_phoneNumber){

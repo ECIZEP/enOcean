@@ -40,7 +40,6 @@
 		//查询数据库，返回一个数组
 		public static function query_mysql($sql_str){
 			self::connect_mysql();
-			
 			$result = mysql_query($sql_str);
 			$result_array = array();
 			$i = 0;

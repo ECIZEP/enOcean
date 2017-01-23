@@ -13,15 +13,19 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+	<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
+	<META HTTP-EQUIV="expires" CONTENT="0">
 	<title>ICON CONTROL</title>
 	<link rel="stylesheet" type="text/css" href="../css/initial.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?ver=1.6">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
-		window.location="http://www.baidu.com";
+	 	document.getElementsByTagName('body')[0].innerHTML = "";
+		document.write("请使用现代浏览器浏览本网站，就算用IE，最低版本IE9，什么年代了，还用IE8，我都不想说你");
 	 </script>
     <![endif]-->
 </head>
@@ -113,8 +117,8 @@
 						<span class="folder-icon"></span>
 					</a>
 					<ul class="sub">
-						<li><a href="#">添加设备</a></li>
-						<li><a href="#">添加控制器</a></li>
+						<li><a data-toggle="modal" data-target="#addDeviceModal">添加设备</a></li>
+						<li><a data-toggle="modal" data-target="#addControllerModal">添加控制器</a></li>
 						
 					</ul>
 				</li>

@@ -48,6 +48,41 @@ $('.sidebar-toggle').click(function(){
 	}
 });
 
+//add device
+$('#addDeviceModalConfirm').click(function(){
+  var deviceName = $('#deviceName').val();
+  var deviceRemark = $('#deviceRemark').val();
+  if(deviceName == "" || deviceRemark == ""){
+    toastr.info("请把表单输入完整!");
+  }else{
+    var selectCon = document.getElementById('select-device');
+    var initialName = selectCon.options[selectCon.selectedIndex].text;
+    $.ajax({
+          type: "GET",
+          url: "./functions.php",
+          dataType:'json',
+          data: {
+            type: "add_device",
+            deviceName: deviceName,
+            deviceRemark: deviceRemark,
+            initialName:initialName
+          },
+          success: function(data){
+            if(data.state == "add_device_success"){
+              $('#addDeviceModal').modal('hide');
+              toastr.success("设备添加成功，刷新页面即可加载新数据！");
+            }else if(data.state == "add_device_failed"){
+              toastr.error("设备添加成功，刷新页面即可加载新数据！");
+            }
+          },
+          error: function(){
+            toastr.clear();
+            toastr.error("发生错误：");
+          }
+        });
+  }
+});
+
 //sidebar menu animate
 (function(){
 	var sidebarItems = document.getElementById('sidebar').getElementsByTagName('li');

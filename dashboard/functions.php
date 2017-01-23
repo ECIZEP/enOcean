@@ -85,8 +85,29 @@
       return ($retval);
     }
 
+    function getUnbindDeviceOption(){
+      $sql = "select devicename from devices where owner = 'root'";
+      $resultArray = DBManager::query_mysql($sql);
+      foreach ($resultArray as $key => $value) {
+        echo "<option>".$value["devicename"]."</option>";
+      }
+    }
 
-    /*profile uodate information*/
+
+    function addDevice($initialName,$devicename,$remark){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "update devices set devicename = '{$devicename}',remark = '{$remark}',owner = '{$_SESSION["username"]}' where devicename = '{$initialName}' and owner = 'root'";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"add_device_success"}';
+      }else{
+        echo '{"state":"add_device_failed"}';
+      }
+    }
+
+
+    /*profile update information*/
     function update_account_all(){
     	if(!isset($_SESSION)){
         session_start();
@@ -95,7 +116,7 @@
     	$personal = $_POST["personal"];
     	// get upload directory for storing avatar
     	$uploaddir = "../upload/{$_SESSION["username"]}/";
-      // get images extension
+      // get image extension
     	$ext = fileExtName($_FILES['file']['name']);
     	$ext = strtolower($ext);
       // only jpg,gif,png allowed
@@ -151,11 +172,11 @@
           $nowtime = time();
           $token_exptime = $nowtime+60*60*24;//过期时间为24小时后
           $token = md5(get_username().$email.$nowtime); //创建用于激活识别码*/
-          $body = "亲爱的用户，感谢您在我站注册了新帐号：".get_username()."请点击链接激活您的帐号，并及时登录网站完善个人信息</br></br>
+          $body = "亲爱的用户，您在本站的账号【".get_username()."】绑定邮箱，请点击链接激活绑定</br></br>
             <a href='http://sunriseteam.cn/enOcean/register.php?verify=".$token."&email=".$email."'>http://sunriseteam.cn/enOcean/register.php?verify=".$token."&email=".$email."</a></br></br>
             如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效</br>
             如果此次激活请求非你本人所发，请忽略本邮件。</br>";
-          $subject = "【WGCX物联-账号激活】";
+          $subject = "【WGCX物联-邮箱绑定】";
           $username = get_username();
           $sql = "update account set token = '{$token}',token_exptime = '{$token_exptime}' where username = '{$username}'";
           DBManager::update_mysql($sql);
@@ -258,12 +279,9 @@
           echo '{"state":"batch_delete_log_failed"}';
         }
       }
-  /*    $logDateString = str_replace(',','',$logDateString);
-      $logDateString = str_replace('"','',$logDateString);
-      $logDateArray = str_split($logDateString,19);*/
-   /*   print_r($sql);*/
     }
 
+    //logbook page 
     function check_password($password){
       if(!isset($_SESSION)){
         session_start();
@@ -271,6 +289,7 @@
       $sql = "select password from account where username = '{$_SESSION["username"]}'";
       return DBManager::query_mysql($sql)["0"]["password"] == $password;
     }
+
 
     if($_SERVER['REQUEST_METHOD'] == "POST"){
       if(isset($_POST["type"])){
@@ -309,6 +328,9 @@
               break;
           case "batch_delete_log":
               batch_delete_log($_GET["logDate"],$_GET["password"]);
+              break;
+          case "add_device":
+              addDevice($_GET["initialName"],$_GET["deviceName"],$_GET["deviceRemark"]);
               break;
         }
       }

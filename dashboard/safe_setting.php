@@ -1,6 +1,7 @@
 <?php 
 	include("header.php");
 ?>
+<!-- main content start -->
 <div class="content">
 	<div class="row">
 		<div class="col-md-12">
@@ -52,8 +53,9 @@
 		</div>
 	</div>
 </div>
+<!-- main content end -->
 
-<!-- modal start -->
+<!-- modal dialog start -->
 <div class="modal fade modal-dialog-center" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog ">
 		<div class="modal-content-wrap">
@@ -125,20 +127,20 @@
 				<div class="modal-body">
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label class="control-label col-md-3">输入原密码</label>
-							<div class="col-md-6">
+							<label class="control-label col-md-4">输入原密码</label>
+							<div class="col-md-8">
 								<input size="16" type="password" id="password" class="form-control">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-md-3">输入新密码</label>
-							<div class="col-md-6">
+							<label class="control-label col-md-4">输入新密码</label>
+							<div class="col-md-8">
 								<input size="16" type="password" id="newPassword" class="form-control">
 							</div>
 						</div>
 						<div class="form-group last">
-							<label class="control-label col-md-3">再输入一遍新密码</label>
-							<div class="col-md-6">
+							<label class="control-label col-md-4">再输入一遍新密码</label>
+							<div class="col-md-8">
 								<input size="16" type="password" id="newPassword2" class="form-control">
 							</div>
 						</div>
@@ -152,7 +154,6 @@
 		</div>
 	</div>
 </div>
-<!-- modal end -->
 
 <?php 
 	include("footer.php");

@@ -1,6 +1,7 @@
 <?php 
 include("header.php");
 ?>
+<!-- main content start -->
 <div class="content">
 	<div class="row state-overview">
 		<div class="col-lg-3 col-sm-6">
@@ -427,7 +428,9 @@ include("header.php");
 		</div>
 	</div>
 </div>
+<!-- main content end -->
 
+<!-- modal dialog start -->
 <?php 
 include("footer.php");
 ?>
