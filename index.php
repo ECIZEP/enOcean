@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/initial.css">
 	<link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="css/login.css?v=1">
+	<link rel="stylesheet" type="text/css" href="css/login.css?v=2.1">
 	<title>智能家居管理系统</title>
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
@@ -76,7 +76,7 @@
 	</div>
   <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   <script src="assets/toastr/toastr.min.js"></script>
-  <script src="js/login.js?v=1.2"></script>
+  <script src="js/login.js?v=1.3"></script>
   <?php 
   	$msg = "";
   	if(isset($_GET["m"])){

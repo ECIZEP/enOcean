@@ -143,9 +143,28 @@
         return ;
       }else{
         include("../send_email.php");
-        $body = "亲爱的用户，您在本站的账号【".get_username()."】申请更换邮箱为：</br>".$email."</br>如果以上您的个人操作，请点击下面的链接确定更换绑定邮箱</br></br>http://sunriseteam.cn/enOcean/register.php?type=change_email_confirm&email=".$email."&token=".get_token()."</br></br>如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问</br>如果此次请求非你本人所发，请忽略本邮件。</br>";
-        $subject = "【WGCX智能家居-更改邮箱】";
-        if(send_register_email($subject,$body,get_username(),get_email())){
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        if(get_email() == "未绑定邮箱"){
+          $target_email = $email;
+          $nowtime = time();
+          $token_exptime = $nowtime+60*60*24;//过期时间为24小时后
+          $token = md5(get_username().$email.$nowtime); //创建用于激活识别码*/
+          $body = "亲爱的用户，感谢您在我站注册了新帐号：".get_username()."请点击链接激活您的帐号，并及时登录网站完善个人信息</br></br>
+            <a href='http://sunriseteam.cn/enOcean/register.php?verify=".$token."&email=".$email."'>http://sunriseteam.cn/enOcean/register.php?verify=".$token."&email=".$email."</a></br></br>
+            如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效</br>
+            如果此次激活请求非你本人所发，请忽略本邮件。</br>";
+          $subject = "【WGCX物联-账号激活】";
+          $username = get_username();
+          $sql = "update account set token = '{$token}',token_exptime = '{$token_exptime}' where username = '{$username}'";
+          DBManager::update_mysql($sql);
+        }else{
+          $target_email = get_email();
+          $body = "亲爱的用户，您在本站的账号【".get_username()."】申请更换邮箱为：</br>".$email."</br>如果以上您的个人操作，请点击下面的链接确定更换绑定邮箱</br></br><a href='http://sunriseteam.cn/enOcean/register.php?type=change_email_confirm&email=".$email."&token=".get_token()."'>http://sunriseteam.cn/enOcean/register.php?type=change_email_confirm&email=".$email."&token=".get_token()."</a></br></br>如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问</br>如果此次请求非你本人所发，请忽略本邮件。</br>";
+          $subject = "【WGCX物联-更改邮箱】";
+        }
+        if(send_register_email($subject,$body,get_username(),$target_email)){
           echo "change_email_send";
           return ;
         }else{

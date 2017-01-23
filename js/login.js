@@ -143,7 +143,7 @@ function ajaxLoginPost(username,password,verification){
 						document.getElementById('login-verify').value = "";
 						break;
 					case "3" :
-						window.location.href = "../dashboard/index.php";
+						window.location.href = "./dashboard/index.php";
 						window.event.returnValue = false;
 						break;
 				}

@@ -12,7 +12,7 @@
         $mail->Port       = 465;                    // SMTP服务器的端口号
         $mail->Username   = "839435418@qq.com";  // SMTP服务器用户名
         $mail->Password   = "ikzfldeshyltbeaa";        // SMTP服务器密码
-        $mail->SetFrom('839435418@qq.com', 'ICAN CONTROL官方安全中心');    // 设置发件人地址和名称
+        $mail->SetFrom('839435418@qq.com', 'WGCX物联官方安全中心');    // 设置发件人地址和名称
         $mail->AddReplyTo("邮件回复人地址","邮件回复人名称"); 
                                                     // 设置邮件回复人地址和名称
         $mail->Subject    = $subject;          // 设置邮件标题

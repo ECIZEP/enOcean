@@ -16,7 +16,7 @@
     }elseif($_SERVER['REQUEST_METHOD'] == "GET"){
     //来自激活的get请求
         if(isset($_GET["verify"])){
-            activate_account($_GET["verify"]);
+            activate_account($_GET["verify"],$_GET["email"]);
         }
 
     //来自更换邮箱的get请求
@@ -53,13 +53,12 @@
     activated_sendmail_failed   账号激活邮件发送失败
     */
     function check_account(){
-
         global $password,$username,$verifycode,$phoneNumber;
         include("db.class.php");
-        //用户名是否已经存在并已经激活
+        //用户名是否已经存在
         $sql_1 = "select  *  from account where username='{$username}'  limit 1 ";
         $result_username = DBManager::query_mysql($sql_1);
-        //邮箱是否已经注册
+        //电话号码是否已经注册
         $sql_2 = "select  *  from account where phoneNumber='{$phoneNumber}'  limit 1 ";
         $result_phoneNumber = DBManager::query_mysql($sql_2);
         if($result_username && $result_phoneNumber){
@@ -89,17 +88,9 @@
         global $password,$username,$phoneNumber;
         if(check_account()){
             $regitserData = date("Y-m-d H:i:s");
-           /* $nowtime = time();
-            $token_exptime = $nowtime+60*60*24;//过期时间为24小时后
-            $token = md5($username.$email.$nowtime); //创建用于激活识别码*/
+           
             $sql = "insert into account (username,password,phoneNumber,registerDate) ";
             $sql .= " values ('{$username}','{$password}','{$phoneNumber}','{$regitserData}')";
-            ;
-            /*$body = "亲爱的用户，感谢您在我站注册了新帐号：".$username."请点击链接激活您的帐号，并及时登录网站完善个人信息</br></br>
-            <a href='http://sunriseteam.cn/enOcean/register.php?verify=".$token."'>http://sunriseteam.cn/enOcean/register.php?verify=".$token."</a></br></br>
-            如果以上链接无法点击，请将它复制到你的浏览器地址栏中进入访问，该链接24小时内有效</br>
-            如果此次激活请求非你本人所发，请忽略本邮件。</br>";
-            $subject = "【WGCX智能家居-账号激活】";*/
             if(DBManager::register_account($sql,$username)){
                 echo "register_success";
                 exit;
@@ -118,19 +109,18 @@
     actived_finished   激活成功
     actived_failed     激活失败
     */
-    function activate_account($token){
+    function activate_account($token,$email){
          include("db.class.php");
          $sql = "select username,token_exptime from account where activated = '0' and token='{$token}'";
          $result = DBManager::query_mysql($sql);
          $nowtime = time();
          if($result){
-            if($result['0'][token_exptime] < $nowtime){
+            if($result['0']["token_exptime"] < $nowtime){
                 header("Location:index.php?m=activated_exptime");
                 exit;
             }else{
-                $sql = "update account set activated = '1' where token = '{$token}'";
-                $success = DBManager::update_mysql($sql);
-                if($success){
+                $sql = "update account set activated = '1',email = '{$email}' where token = '{$token}'";
+                if(DBManager::update_mysql($sql)){
                     header("Location:index.php?m=actived_finished");
                     exit;
                 }else{
@@ -138,6 +128,8 @@
                     exit;
                 }
             }
+         }else{
+            echo "sdf";
          }
     }
     
