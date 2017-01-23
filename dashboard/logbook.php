@@ -93,10 +93,10 @@ function getPagination($pageCount){
 								<th>删除</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="logTable">
 							<?php 
 								foreach ($records as $key => $value) {
-									echo '<td><label class="label_check c_off"><input name="sample-checkbox-02" id="checkbox-03" value="1" type="checkbox">&nbsp;</label></td><td>';
+									echo '<td class="td_check"><label class="label_check c_off"><input name="sample-checkbox-02" id="checkbox-03" value="1" type="checkbox">&nbsp;</label></td><td>';
 									echo $value["logDate"]."</td><td>".$value["content"]."</td>";
 									echo '<td><button type="button" class="btn btn-danger btn-sm" data-logdate="'.$value["logDate"].'" data-toggle="modal" data-target="#logModal1" >&nbsp;<i class="fa fa-trash-o "></i>&nbsp;</button></td></tr>';
 								}

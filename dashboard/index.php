@@ -106,17 +106,17 @@ include("header.php");
 					<table class="table table-bordered table-striped table-advance table-hover">
 						<thead>
 							<tr>
-								<th>序列号</th>
 								<th class="hidden-phone">名称</th>
 								<th>备注</th>
+								<th>状态</th>
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td><a href="#">1</a></td>
 								<td class="hidden-phone">空调</td>
 								<td>主卧的空调</td>
+								<td><span class="label label-info label-mini">未绑定</span></td>
 								<td>
 									<button id="modify" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-info-circle"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -124,13 +124,9 @@ include("header.php");
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<a href="#">
-										2
-									</a>
-								</td>
 								<td class="hidden-phone">电视机</td>
 								<td>客厅的那个</td>
+								<td><span class="label label-info label-mini">未绑定</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -138,9 +134,9 @@ include("header.php");
 								</td>
 							</tr>
 							<tr>
-								<td><a href="#">3</a></td>
 								<td class="hidden-phone">小灯</td>
 								<td>小明桌子上的</td>
+								<td><span class="label label-info label-mini">未绑定</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -148,13 +144,9 @@ include("header.php");
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<a href="#">
-										6
-									</a>
-								</td>
 								<td class="hidden-phone">插座</td>
 								<td>电脑桌旁的那个</td>
+								<td><span class="label label-info label-mini">未绑定</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
@@ -162,9 +154,9 @@ include("header.php");
 								</td>
 							</tr>
 							<tr>
-								<td><a href="#">9</a></td>
 								<td class="hidden-phone">电风扇</td>
 								<td>奶奶房间的</td>
+								<td><span class="label label-success label-mini">已连接</span></td>
 								<td>
 									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>

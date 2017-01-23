@@ -467,7 +467,6 @@ function GetXmlHttpObject()
 
 
 (function(){
-
   //check box animation
   $('.label_check > input').click(function(event){
     if($(this).parent().hasClass('c_on')){
@@ -499,7 +498,7 @@ function GetXmlHttpObject()
   //delete all log
   $('#deleteMore').click(function(){
     if($('.label_check').hasClass('c_on')){
-      this.addClass('clicked');
+      $(this).addClass('clicked');
       $('#logModal1').modal('show');
     }else{
       toastr.info("请勾选要删除的操作记录！");
@@ -512,7 +511,60 @@ function GetXmlHttpObject()
     if(password.length < 6){
       toastr.info("密码位数不正确，至少6位");
     }else{
-      $.ajax({
+      if($('#deleteMore').hasClass('clicked')){
+        console.log("批量删除");
+        var logDateArray = new Array();
+        $('#deleteMore').removeClass('clicked');
+        $('.label_check.c_on').parent().next().each(function(){
+          logDateArray.push(this.innerHTML);
+        });
+        $.ajax({
+          type: "GET",
+          url: "./functions.php",
+          dataType:'json',
+          data: {
+            type: "batch_delete_log",
+            password: password,
+            logDate: JSON.stringify(logDateArray)
+          },
+          success: function(data){
+            if(data.state == "password_wrong"){
+              toastr.error("密码错误，请重新输入");
+              $('#logModal1Input').val("");
+            }else if(data.state == "batch_delete_log_success"){
+              toastr.success("删除成功");
+              $('#logModal1').modal('hide');
+              //delete the logdate in view
+              $('#logTable').children().each(function(){
+                //save this object reference using that
+                var that = this;
+                $(this).children('td.td_check').each(function(that){
+                  return function(){
+                    if($(this).children('label').hasClass('c_on')){
+                      //set remove-flag for remove them
+                      //setTimeout will lose this local context scope chain
+                      $(that).addClass("remove-flag");
+                      $(that).animate({"opacity":"0"},1000);
+                      setTimeout("$('.remove-flag').remove();",1000);
+                    }
+                  }
+                }(that));
+              });
+              //reset the password in modal input
+              $('#logModal1Input').val("");
+            }else if(data.state == "batch_delete_log_failed"){
+              $('#logModal1').modal('hide');
+              toastr.error("删除失败，请重试");
+            }
+          },
+          error: function(){
+            $('#logModal1').modal('hide');
+            toastr.clear();
+            toastr.error("发生错误：");
+          }
+        });
+      }else{
+        $.ajax({
           type: "GET",
           url: "./functions.php",
           dataType:'json',
@@ -531,7 +583,9 @@ function GetXmlHttpObject()
               //delete the logdate in view
               $('.btn.btn-danger.btn-sm').each(function(){
                 if(this.dataset.logdate == $('#logModal1Confirm')[0].dataset.logdate){
-                  $(this).parent().parent().remove();
+                  window.one = $(this).parent().parent();
+                  $(this).parent().parent().animate({"opacity":"0"},1000);
+                  setTimeout("$(window.one).remove();window.one = null;",1000);
                   //reset the dateset logdate value of the dialog confirm button
                   $('#logModal1Confirm')[0].dataset.logdate = "";
                 }
@@ -547,6 +601,7 @@ function GetXmlHttpObject()
             toastr.error("发生错误：");
           }
         });
+      }
     }
   });
 })(jQuery);

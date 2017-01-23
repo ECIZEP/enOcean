@@ -1302,6 +1302,9 @@ ul {
     word-break: break-word;
 }
 
+tr{
+    opacity: 1;
+}
 
 
 .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {

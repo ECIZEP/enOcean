@@ -213,7 +213,6 @@
       if(!check_password($password)){
         echo '{"state":"password_wrong"}';
       }else{
-        
         $sql = "delete from logbook where username = '{$_SESSION["username"]}' and logDate = '{$logDate}'";
         if(DBManager::update_mysql($sql)){
           echo '{"state":"delete_single_log_success"}';
@@ -221,6 +220,29 @@
           echo '{"state":"delete_single_log_failed"}';
         }
       }
+    }
+
+    //batch delete logbook 
+    function batch_delete_log($logDateString,$password){
+      $logDateString = str_replace('[','(',$logDateString);
+      $logDateString = str_replace(']',')',$logDateString);
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      if(!check_password($password)){
+        echo '{"state":"password_wrong"}';
+      }else{
+        $sql = "delete from logbook where logDate in {$logDateString} and username = '{$_SESSION["username"]}'";
+        if(DBManager::update_mysql($sql)){
+          echo '{"state":"batch_delete_log_success"}';
+        }else{
+          echo '{"state":"batch_delete_log_failed"}';
+        }
+      }
+  /*    $logDateString = str_replace(',','',$logDateString);
+      $logDateString = str_replace('"','',$logDateString);
+      $logDateArray = str_split($logDateString,19);*/
+   /*   print_r($sql);*/
     }
 
     function check_password($password){
@@ -265,6 +287,9 @@
               break;
           case "delete_single_log":
               delete_single_log($_GET["logDate"],$_GET["password"]);
+              break;
+          case "batch_delete_log":
+              batch_delete_log($_GET["logDate"],$_GET["password"]);
               break;
         }
       }
