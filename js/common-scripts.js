@@ -86,25 +86,88 @@ $('#addDeviceModalConfirm').click(function(){
 //add controller
 $('#controllerType').change(function(){
   switch(this.selectedIndex){
+    //switcher
     case 0:
       $('.selectMode').addClass('hide');
       $('.sliderMode').addClass('hide');
       break;
+    //selector
     case 1:
       $('.selectMode').removeClass('hide');
       $('.sliderMode').addClass('hide');
       break;
+    //slider
     case 2:
       $('#modeName').text("输入滑块控制范围");
       $('.selectMode').addClass('hide');
       $('.sliderMode').removeClass('hide');
       break;
+    //observer
     case 3:
       $('#modeName').text("输入数值正常范围");
       $('.selectMode').addClass('hide');
       $('.sliderMode').removeClass('hide');
 
   }
+});
+
+
+$('#addControllerConfirm').click(function(){
+  var controllerName = $('#controllerName').val();
+  var deviceSelecter = $('#select-bindDevice')[0];
+  var deviceId = deviceSelecter.options[deviceSelecter.selectedIndex].value;
+  var typeId = $('#controllerType').get(0).selectedIndex + 1;
+  console.log(typeId);
+  var modeNames = $('#modeNamesInput').val();
+  var minValue = "0";
+  var maxValue = "1";
+  switch(typeId){
+    //switcher
+    case 1:
+      var minValue = "0";
+      var maxValue = "1";
+      modeNames = "";
+      break;
+    //selector
+    case 2:
+      var minValue = "0";
+      var maxValue = modeNames.split(" ").length.toString();
+      break;
+    //slider and observer
+    case 3:
+    case 4:
+      var minValue = $('#minValueInput').val();
+      var maxValue = $('#maxValueInput').val();
+      modeNames = "";
+      break;
+  }
+  $.ajax({
+    type: "GET",
+    url: "./functions.php",
+    dataType:'json',
+    data: {
+      type: "add_controller",
+      controllerType: typeId,
+      controllerName: controllerName,
+      deviceId:deviceId,
+      modeNames:modeNames,
+      minValue:minValue,
+      maxValue:maxValue
+    },
+    success: function(data){
+      if(data.state == "add_controller_success"){
+        toastr.success("添加成功");
+        $('#addControllerModal').modal('hide');
+        $('#controllerName').val("");
+      }else if(data.state == "add_controller_failed"){
+        toastr.error("添加失败，请重试");
+      }
+    },
+    error: function(){
+      toastr.clear();
+      toastr.error("发生错误：");
+    }
+  });
 });
 
 //sidebar menu animate
@@ -171,6 +234,7 @@ $('.switch-animate').click(function(){
 
 
 /*panel slider animate---device*/
+
 var startX;
 var animate = false;
 var rangeWidth;
@@ -343,6 +407,8 @@ function GetXmlHttpObject()
 	return objXMLHttp;
 }
 
+
+
 /*safe setting*/
 
 (function(){
@@ -390,35 +456,44 @@ function GetXmlHttpObject()
   	};
   }
 
-  //change phonenumber
-  var sendMessage = document.getElementById('sendMessage');
-  if(sendMessage){
-  	sendMessage.onclick = function(){
-      var inputValue = document.getElementById('changePhoneInput').value;
-      var phoneNumber = $('#phoneLabel > span').text();
-      var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
-      if(!reg.test(inputValue)){
-        toastr.info("手机格式不正确！");
-        return;
+  
+    //send verifycode button animation
+    $('.sendMessage').click(function(){
+      if(this.value == "change_phoneNumber"){
+        //modify phoneNumber
+        var inputValue = document.getElementById('changePhoneInput').value;
+        //check the new phone number
+        var reg = /^1[3|4|5|7|8][0-9]{9}$/; 
+        if(!reg.test(inputValue)){
+          toastr.info("手机格式不正确！");
+          return;
+        }
+      }else if(this.value == "delete_device"){
+        //delete device
       }
-  		this.disabled = "true";
-  		this.innerHTML = "<span class='Secondtext'>60</span>秒再发送";
-  		sendVerifycode("change_phoneNumber",phoneNumber);
+      this.disabled = "true";
+      this.innerHTML = "<span class='Secondtext'>60</span>秒再发送";
+      //here the action goes
+      //sendVerifycode(this.value,this.dataset.phonenumber);
       timeCount();
-  	}
-
+    });
+  	
+    //Countdown 
   	timeCount = function(){
   		time = parseInt($('.Secondtext').text()) - 1;
   		if(time == 0){
-  			document.getElementById('sendMessage').disabled = false;
-  			document.getElementById('sendMessage').innerHTML = '发送验证码';
+  			$('.sendMessage').get(0).disabled = false;
+  			$('.sendMessage').text('发送验证码');
   		}else{
   			$('.Secondtext').text(time);
   			setTimeout("timeCount()",1000);
   		}
   	}
 
-  	document.getElementById('changePhoneConfirm').onclick = function(){
+    //
+
+    //change phonenumber
+  	$('#changePhoneConfirm').click(function(){
   		var inputValue = document.getElementById('changePhoneInput').value;
   		if(inputValue == "" || inputValue.length != 11){
   			toastr.info("请填写正确的手机号码！");
@@ -451,8 +526,7 @@ function GetXmlHttpObject()
   				}
   			});
   		}
-  	};
-  }
+  	});
 
   //send verifycode
   //type:the action

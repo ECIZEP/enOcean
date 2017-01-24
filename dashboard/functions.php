@@ -84,6 +84,10 @@
       return ($retval);
     }
 
+    function IndexOfModeName($modeNames,$index){
+       return explode(" ",$modeNames)[$index]; 
+    }
+
     //show unbinded device for binding device
     function getUnbindDeviceOption(){
       $sql = "select devicename from devices where owner = 'root'";
@@ -106,7 +110,20 @@
       }
     }
 
-    //show device header
+    //delete device
+    function deleteDevice($deviceId){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "selete devices where deviceId='{$deviceId}' and owner = '{$_SESSION["username"]}'";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"delete_device_success"}';
+      }else{
+        echo '{"state":"delete_device_failed"}';
+      }
+    }
+
+    //show device
     function getDeviceString($templet){
       if(!isset($_SESSION)){
         session_start();
@@ -117,7 +134,7 @@
         if($templet == "header"){
           echo "<li><a href='device.php?unique=".$value["deviceId"]."'>{$value["devicename"]}</a></li>";
         }else if($templet == "addController"){
-          echo "<option>{$value["devicename"]}</option>";
+          echo "<option value='{$value["deviceId"]}'>{$value["devicename"]}</option>";
         }else if($templet == "table"){
           echo "<tr><td>{$value["devicename"]}</td><td>{$value["remark"]}</td>";
           if($value["connectState"] == "0"){
@@ -131,6 +148,22 @@
       }
     }
 
+    //add controller
+    function addController($controllerType,$controllerName,$deviceId,$modeNames,$minValue,$maxValue){
+      $sql = "insert into controller(deviceId,controName,typeId,minValue,maxValue_,modeNames) values('{$deviceId}','{$controllerName}','{$controllerType}','{$minValue}','{$maxValue}','$modeNames')";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"add_controller_success"}';
+      }else{
+        echo '{"state":"add_controller_failed"}';
+      }
+    }
+
+
+    function getControllerTypeName(){
+      $sql = "select typeName from type";
+      return DBManager::query_mysql($sql);
+    }
+
     /*profile update information*/
     function update_account_all(){
     	if(!isset($_SESSION)){
@@ -140,7 +173,7 @@
     	$personal = $_POST["personal"];
     	// get upload directory for storing avatar
     	$uploaddir = "../upload/{$_SESSION["username"]}/";
-      // get image extension
+      // get image extension name
     	$ext = fileExtName($_FILES['file']['name']);
     	$ext = strtolower($ext);
       // only jpg,gif,png allowed
@@ -153,7 +186,7 @@
     		echo "file_over_size";
     		return;
     	}
-      // directory exist?
+      // directory exist? otherwise create it
     	if(!is_dir($uploaddir))
     	{
     		if(!mkdir($uploaddir))
@@ -364,6 +397,12 @@
               break;
           case "add_device":
               addDevice($_GET["initialName"],$_GET["deviceName"],$_GET["deviceRemark"]);
+              break;
+          case "delete_device":
+              delete_device($_GET["deviceId"]);
+              break;
+          case "add_controller":
+              addController($_GET["controllerType"],$_GET["controllerName"],$_GET["deviceId"],$_GET["modeNames"],$_GET["minValue"],$_GET["maxValue"]);
               break;
         }
       }

@@ -1,5 +1,30 @@
 <?php 
 include("header.php");
+
+if($_SERVER['REQUEST_METHOD'] == "GET"){
+	if(isset($_GET["unique"])){
+		$sql = "select * from tablecontroller where deviceId = '{$_GET["unique"]}'";
+		$resultArray = DBManager::query_mysql($sql);
+	}
+}
+
+function printController($resultArray){
+	foreach ($resultArray as $key => $value) {
+		echo '<tr><td>'.$value["controName"].'</td><td>'.$value["typeName"].'</td><td>';
+		if($value["typeName"] == "开关"){
+			if($value["data"] == "0"){
+				echo "OFF</td>";
+			}elseif($value["data"] == "1"){
+				echo "ON</td>";
+			}
+		}elseif($value["typeName"] == "下拉选择"){
+
+		}else{
+			echo $value["data"]."</td>";
+		}
+		echo '<td><button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button></td></tr>';
+	}
+}
 ?>
 <script src="../js/echarts.js"></script>
 <!-- main content start -->
@@ -32,7 +57,6 @@ include("header.php");
 					<table class="table table-bordered table-striped table-advance table-hover">
 						<thead>
 							<tr>
-								<th>序列号</th>
 								<th class="hidden-phone">名称</th>
 								<th>类型</th>
 								<th>状态</th>
@@ -40,23 +64,8 @@ include("header.php");
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><a href="#">1</a></td>
-								<td class="hidden-phone">电源开关</td>
-								<td>开关</td>
-								<td>OFF</td>
-								<td>
-									<button id="modify" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-check"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<a href="#">
-										2
-									</a>
-								</td>
+							<?php printController($resultArray);?>
+							<!-- <tr>
 								<td class="hidden-phone">温度控制</td>
 								<td>多值型</td>
 								<td>27</td>
@@ -67,7 +76,6 @@ include("header.php");
 								</td>
 							</tr>
 							<tr>
-								<td><a href="#">3</a></td>
 								<td class="hidden-phone">屏幕开关</td>
 								<td>开关</td>
 								<td>ON</td>
@@ -78,11 +86,6 @@ include("header.php");
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<a href="#">
-										6
-									</a>
-								</td>
 								<td class="hidden-phone">空调模式</td>
 								<td>多值型</td>
 								<td>制冷模式</td>
@@ -93,7 +96,6 @@ include("header.php");
 								</td>
 							</tr>
 							<tr>
-								<td><a href="#">9</a></td>
 								<td class="hidden-phone">功率监控</td>
 								<td>数值型</td>
 								<td>100W</td>
@@ -102,7 +104,7 @@ include("header.php");
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
 									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
 								</td>
-							</tr>
+							</tr> -->
 
 						</tbody>
 					</table>
@@ -305,8 +307,8 @@ include("header.php");
 					<div class="form-group last">
 							<label class="control-label col-md-4">请输入验证码：</label>
 							<div class="col-md-8">
-								<input size="16" type="text" class="form-control btn-input">
-								<button class="btn btn-success pull-right" type="button">发送验证码</button>
+								<input size="16" type="text" class="form-control btn-input verifycodeInput">
+								<button value="delete_device" data-phoneNumber="<?php echo get_phone_number();?>" class="btn btn-success pull-right sendMessage" type="button">发送验证码</button>
 							</div>
 						</div>
 					</form>
@@ -314,7 +316,7 @@ include("header.php");
 				</div>
 				<div class="modal-footer">
 					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-warning" data-logdate="" id="logModal1Confirm" type="button">确定</button>
+					<button class="btn btn-warning" id="deleteDeviceConfirm" type="button">确定</button>
 				</div>
 			</div>
 		</div>

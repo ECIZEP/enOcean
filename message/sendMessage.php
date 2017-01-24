@@ -35,6 +35,8 @@
             sendVerifycode("注册账号操作",$_GET["phoneNumber"]);
         }elseif(isset($_GET["type"]) && $_GET["type"] == "change_phoneNumber"){
             sendVerifycode("修改绑定手机号码操作",$_GET["phoneNumber"]);
+        }elseif(isset($_GET["type"]) && $_GET["type"] == "delete_device") {
+            sendVerifycode("删除设备操作",$_GET["phoneNumber"]);
         }
     }
     

@@ -104,7 +104,7 @@
 							<label class="control-label col-md-4">验证码</label>
 							<div class="col-md-8">
 								<input size="16" type="text" class="form-control btn-input verifycodeInput">
-								<button class="btn btn-success pull-right" id="sendMessage" type="button">发送验证码</button>
+								<button value="change_phoneNumber" data-phoneNumber="<?php echo get_phone_number();?>" class="btn btn-success pull-right sendMessage" type="button">发送验证码</button>
 							</div>
 							
 						</div>

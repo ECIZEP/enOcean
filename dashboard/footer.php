@@ -53,7 +53,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-4">请选择所属设备</label>
 								<div class="col-md-8">
-									<select id="select-bindDevice" style="width: auto;display: inline-block;vertical-align: middle;" class="form-control">
+									<select id="select-bindDevice" class="form-control btn-input">
 										<?php getDeviceString("addController");?>
 									</select>
 								</div>
@@ -67,11 +67,13 @@
 							<div class="form-group last">
 								<label class="control-label col-md-4">选择控制器类型</label>
 								<div class="col-md-8">
-									<select name="minbeds" id="controllerType" style="width: auto;display: inline-block;vertical-align: middle;" class="form-control">
-										<option>开关</option>
-										<option>选择模式</option>
-										<option>滑块控制</option>
-										<option>数值监控</option>
+									<select name="minbeds" id="controllerType" class="form-control btn-input">
+										<?php 
+											$typeArray = getControllerTypeName();
+											foreach ($typeArray as $key => $value) {
+												echo "<option>".$value["typeName"]."</option>";
+											}
+										?>
 									</select>
 								</div>
 							</div>
@@ -79,7 +81,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-4">输入模式名(空格隔开)</label>
 									<div class="col-md-8">
-										<input  size="16" type="text" class="form-control">
+										<input id="modeNamesInput"  size="16" type="text" class="form-control">
 									</div>
 								</div>
 							</div>
@@ -87,9 +89,9 @@
 								<div class="form-group">
 									<label class="control-label col-md-4" id="modeName">输入滑块控制范围</label>
 									<div class="col-md-8">
-										<input style="display: inline-block;width: initial;" size="16" type="text" class="form-control" placeholder="最小值">
-										——
-										<input style="display: inline-block;width: initial;" size="16" type="text" class="form-control" placeholder="最大值">
+										<input id="minValueInput" size="12" type="text" class="form-control btn-input" placeholder="最小值">
+										—
+										<input id="maxValueInput" size="12" type="text" class="form-control btn-input" placeholder="最大值">
 									</div>
 								</div>
 							</div>
@@ -97,7 +99,7 @@
 					</div>
 					<div class="modal-footer">
 						<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-						<button class="btn btn-warning" id="controllerModalConfirm" type="button">确定</button>
+						<button class="btn btn-warning" id="addControllerConfirm" type="button">确定</button>
 					</div>
 				</div>
 			</div>
@@ -109,6 +111,6 @@
 	<script src="../js/jquery.nicescroll.js"></script>
 	<script src="../assets/toastr/toastr.min.js"></script>
 	<script src="../assets/bootstap-fileupload/bootstrap-fileupload.js"></script>
-	<script src="../js/common-scripts.js?v=1.4"></script>
+	<script src="../js/common-scripts.js?v=1.5"></script>
 </body>
 </html>
