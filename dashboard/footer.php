@@ -1,3 +1,4 @@
+
 	<div class="modal fade modal-dialog-center" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModal" aria-hidden="true">
 		<div class="modal-dialog ">
 			<div class="modal-content-wrap">
@@ -52,28 +53,44 @@
 							<div class="form-group">
 								<label class="control-label col-md-4">请选择所属设备</label>
 								<div class="col-md-8">
-									<select name="minbeds" id="minbeds" style="width: auto;display: inline-block;vertical-align: middle;" class="form-control">
-										<option>DFGSDFH001</option>
-										<option>SDGASDG342</option>
-										<option>SDGAGASD32</option>
+									<select id="select-bindDevice" style="width: auto;display: inline-block;vertical-align: middle;" class="form-control">
+										<?php getDeviceString("addController");?>
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-md-4">输入控制器的名称</label>
 								<div class="col-md-8">
-									<input size="16" type="text" id="deviceName" class="form-control">
+									<input size="16" type="text" id="controllerName" class="form-control">
 								</div>
 							</div>
 							<div class="form-group last">
 								<label class="control-label col-md-4">选择控制器类型</label>
 								<div class="col-md-8">
-									<select name="minbeds" id="minbeds" style="width: auto;display: inline-block;vertical-align: middle;" class="form-control">
+									<select name="minbeds" id="controllerType" style="width: auto;display: inline-block;vertical-align: middle;" class="form-control">
 										<option>开关</option>
 										<option>选择模式</option>
 										<option>滑块控制</option>
 										<option>数值监控</option>
 									</select>
+								</div>
+							</div>
+							<div class="selectMode hide">
+								<div class="form-group">
+									<label class="control-label col-md-4">输入模式名(空格隔开)</label>
+									<div class="col-md-8">
+										<input  size="16" type="text" class="form-control">
+									</div>
+								</div>
+							</div>
+							<div class="sliderMode ObserveMode hide">
+								<div class="form-group">
+									<label class="control-label col-md-4" id="modeName">输入滑块控制范围</label>
+									<div class="col-md-8">
+										<input style="display: inline-block;width: initial;" size="16" type="text" class="form-control" placeholder="最小值">
+										——
+										<input style="display: inline-block;width: initial;" size="16" type="text" class="form-control" placeholder="最大值">
+									</div>
 								</div>
 							</div>
 						</form>
@@ -92,6 +109,6 @@
 	<script src="../js/jquery.nicescroll.js"></script>
 	<script src="../assets/toastr/toastr.min.js"></script>
 	<script src="../assets/bootstap-fileupload/bootstrap-fileupload.js"></script>
-	<script src="../js/common-scripts.js"></script>
+	<script src="../js/common-scripts.js?v=1.4"></script>
 </body>
 </html>

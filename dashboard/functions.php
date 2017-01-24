@@ -60,7 +60,6 @@
   				return "未绑定手机";
   			}
   		}
-  		
   	}
 
     function get_address(){
@@ -85,6 +84,7 @@
       return ($retval);
     }
 
+    //show unbinded device for binding device
     function getUnbindDeviceOption(){
       $sql = "select devicename from devices where owner = 'root'";
       $resultArray = DBManager::query_mysql($sql);
@@ -93,7 +93,7 @@
       }
     }
 
-
+    //add device
     function addDevice($initialName,$devicename,$remark){
       if(!isset($_SESSION)){
         session_start();
@@ -106,6 +106,30 @@
       }
     }
 
+    //show device header
+    function getDeviceString($templet){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "select * from devices where owner = '{$_SESSION["username"]}'";
+      $resultArray = DBManager::query_mysql($sql);
+      foreach ($resultArray as $key => $value) {
+        if($templet == "header"){
+          echo "<li><a href='device.php?unique=".$value["deviceId"]."'>{$value["devicename"]}</a></li>";
+        }else if($templet == "addController"){
+          echo "<option>{$value["devicename"]}</option>";
+        }else if($templet == "table"){
+          echo "<tr><td>{$value["devicename"]}</td><td>{$value["remark"]}</td>";
+          if($value["connectState"] == "0"){
+            echo "<td><span class='label label-info label-mini'>未连接</span></td>";
+          }else if($value["connectState"] == "1"){
+            echo "<td><span class='label label-success label-mini'>已连接</span></td>";
+          }
+          echo '<td><button data-toggle="modal" data-target="#modifyDevice" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>&nbsp;<button data-toggle="modal" data-target="#deleteDevice" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></td></tr>';
+        }
+        
+      }
+    }
 
     /*profile update information*/
     function update_account_all(){
@@ -196,9 +220,18 @@
     }
 
     //jquery json example -- safe-setting page
-    function change_phoneNumber($phoneNumber){
+    function change_phoneNumber($verifycode,$phoneNumber){
       if(!isset($_SESSION)){
         session_start();
+      }
+      $sql = "select username from account where phoneNumber = '{$phoneNumber}'";
+      if(DBManager::query_mysql($sql)){
+        echo '{"state":"phoneNumber_exit"}';
+        exit;
+      }
+      if($verifycode != $_SESSION["verifycode"]){
+        echo '{"state":"verifycode_wrong"}';
+        exit;
       }
       $sql = "update account set phoneNumber = '{$phoneNumber}' where username = '{$_SESSION["username"]}'";
       if(DBManager::update_mysql($sql)){
@@ -315,7 +348,7 @@
               change_email($_GET["email"]);
               break;
           case "change_phoneNumber":
-              change_phoneNumber($_GET["phoneNumber"]);
+              change_phoneNumber($_GET["verifycode"],$_GET["phoneNumber"]);
               break;
           case "change_password":
               change_password($_GET["password"],$_GET["newPassword"]);

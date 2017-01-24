@@ -10,13 +10,25 @@ include("header.php");
 				<header class="panel-heading">
 					空调
 					<span class="tools pull-right">
-						<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> 编辑设备</button>
-						<button class="btn btn-success btn-xs"><i class="fa fa-plus"></i> 添加控制器</button>
+						<button class="btn btn-success btn-xs">已连接</button>
 						<a href="javascript:;" class="fa fa-chevron-down"></a>
 						<a href="javascript:;" class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body">
+					<div class="row no-padding" style="margin-bottom: 15px;">
+						<div class="col-sm-8 col-xs-8">
+							<button data-toggle="modal" data-target="#modifyDevice" style="vertical-align: top;" class="btn btn-primary">
+								<i class="fa fa-pencil"></i> 编辑设备
+							</button>
+							<button data-toggle="modal" data-target="#addControllerModal" class="btn btn-success"><i class="fa fa-plus"></i> 添加控制器
+							</button>
+						</div>
+						<div class="col-sm-4 col-xs-4">
+							<button data-toggle="modal" data-target="#deleteDevice" class="btn btn-danger pull-right"><i class="fa fa-trash-o"></i> 删除设备
+							</button>
+						</div>
+					</div>
 					<table class="table table-bordered table-striped table-advance table-hover">
 						<thead>
 							<tr>
@@ -36,7 +48,7 @@ include("header.php");
 								<td>
 									<button id="modify" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-check"></i></button>
 									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button>
 								</td>
 							</tr>
 							<tr>
@@ -226,7 +238,39 @@ include("header.php");
 </div>
 <!-- main content end -->
 
-<!-- modal start -->
+<!-- modal dialog start -->
+<div class="modal fade modal-dialog-center" id="modifyDevice" tabindex="-1" role="dialog" aria-labelledby="addDeviceModal" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">修改设备信息</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-md-4">设备名称：</label>
+							<div class="col-md-8">
+								<input size="16" type="text" id="modifyDeviceName" class="form-control">
+							</div>
+						</div>
+						<div class="form-group last">
+							<label class="control-label col-md-4">设备的备注：</label>
+							<div class="col-md-8">
+								<input size="16" type="text" id="modifyDeviceRemark" class="form-control">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-warning" id="modifyDeviceConfirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="modal fade modal-dialog-center" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog ">
 		<div class="modal-content-wrap">
@@ -248,7 +292,34 @@ include("header.php");
 		</div>
 	</div>
 </div>
-<!-- modal end -->
+<div class="modal fade modal-dialog-center" id="deleteDevice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">删除设备安全验证</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+					<div class="form-group last">
+							<label class="control-label col-md-4">请输入验证码：</label>
+							<div class="col-md-8">
+								<input size="16" type="text" class="form-control btn-input">
+								<button class="btn btn-success pull-right" type="button">发送验证码</button>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-warning" data-logdate="" id="logModal1Confirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <?php 
 include("footer.php");
 ?>

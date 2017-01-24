@@ -48,7 +48,7 @@ $('.sidebar-toggle').click(function(){
 	}
 });
 
-//add device
+//add and delete device
 $('#addDeviceModalConfirm').click(function(){
   var deviceName = $('#deviceName').val();
   var deviceRemark = $('#deviceRemark').val();
@@ -80,6 +80,30 @@ $('#addDeviceModalConfirm').click(function(){
             toastr.error("发生错误：");
           }
         });
+  }
+});
+
+//add controller
+$('#controllerType').change(function(){
+  switch(this.selectedIndex){
+    case 0:
+      $('.selectMode').addClass('hide');
+      $('.sliderMode').addClass('hide');
+      break;
+    case 1:
+      $('.selectMode').removeClass('hide');
+      $('.sliderMode').addClass('hide');
+      break;
+    case 2:
+      $('#modeName').text("输入滑块控制范围");
+      $('.selectMode').addClass('hide');
+      $('.sliderMode').removeClass('hide');
+      break;
+    case 3:
+      $('#modeName').text("输入数值正常范围");
+      $('.selectMode').addClass('hide');
+      $('.sliderMode').removeClass('hide');
+
   }
 });
 
@@ -370,24 +394,32 @@ function GetXmlHttpObject()
   var sendMessage = document.getElementById('sendMessage');
   if(sendMessage){
   	sendMessage.onclick = function(){
+      var inputValue = document.getElementById('changePhoneInput').value;
+      var phoneNumber = $('#phoneLabel > span').text();
+      var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+      if(!reg.test(inputValue)){
+        toastr.info("手机格式不正确！");
+        return;
+      }
   		this.disabled = "true";
-  		this.innerHTML = "<span id='text'>60</span>秒后再次发送";
-  		timeCount();
+  		this.innerHTML = "<span class='Secondtext'>60</span>秒再发送";
+  		sendVerifycode("change_phoneNumber",phoneNumber);
+      timeCount();
   	}
 
   	timeCount = function(){
-  		time = parseInt(document.getElementById('text').innerHTML) - 1;
+  		time = parseInt($('.Secondtext').text()) - 1;
   		if(time == 0){
   			document.getElementById('sendMessage').disabled = false;
   			document.getElementById('sendMessage').innerHTML = '发送验证码';
   		}else{
-  			document.getElementById('text').innerHTML = time;
+  			$('.Secondtext').text(time);
   			setTimeout("timeCount()",1000);
   		}
   	}
 
-  	document.getElementById('myModal2Confirm').onclick = function(){
-  		var inputValue = document.getElementById('myModal2Input').value;
+  	document.getElementById('changePhoneConfirm').onclick = function(){
+  		var inputValue = document.getElementById('changePhoneInput').value;
   		if(inputValue == "" || inputValue.length != 11){
   			toastr.info("请填写正确的手机号码！");
   		}else{
@@ -397,16 +429,21 @@ function GetXmlHttpObject()
   				dataType:'json',
   				data: {
   					type: "change_phoneNumber",
+            verifycode:$('.verifycodeInput').val(),
   					phoneNumber:inputValue
   				},
   				success: function(data){
   					if(data.state == "change_phoneNumber_success"){
-  						$('#myModal2').modal('hide');
-  						$('#phoneLabel').text("你当前的手机号是：" + inputValue);
+  						$('#changePhoneModal').modal('hide');
+  						$('#phoneLabel > span').text(inputValue);
   						toastr.success("手机绑定成功！");
   					}else if(data.state == "change_phoneNumber_failed"){
   						toastr.success("手机绑定失败，请重试！");
-  					}
+  					}else if(data.state == "phoneNumber_exit"){
+              toastr.info("手机号已存在");
+            }else if(data.state == "verifycode_wrong"){
+              toastr.info("验证码错误");
+            }
   				},
   				error: function(){
   					toastr.clear();
@@ -415,6 +452,33 @@ function GetXmlHttpObject()
   			});
   		}
   	};
+  }
+
+  //send verifycode
+  //type:the action
+  //phoneNumber:the receiver
+  function sendVerifycode(type,phoneNumber){
+    $.ajax({
+        type: "GET",
+        url: "../message/sendMessage.php",
+        dataType:'json',
+        data: {
+          type: type,
+          phoneNumber:phoneNumber
+        },
+        success: function(data){
+          if(data.state == "sendVerifycode_success"){
+            toastr.success("验证码已发送，请查收");
+          }else if(data.state == "sendVerifycode_failed"){
+            toastr.success("验证码发送出错，请重试获取");
+            $('.Secondtext').text("1");
+          }
+        },
+        error: function(){
+          toastr.clear();
+          toastr.error("验证码请求错误");
+        }
+      });
   }
 
   //change password
@@ -503,12 +567,17 @@ function GetXmlHttpObject()
 
 (function(){
   //check box animation
-  $('.label_check > input').click(function(event){
-    if($(this).parent().hasClass('c_on')){
-      $(this).parent().removeClass('c_on').addClass('c_off');
+  $('#logTable > tr').click(function(event){
+    if($('.label_check',this).hasClass('c_on')){
+      $('.label_check',this).removeClass('c_on').addClass('c_off');
     }else{
-      $(this).parent().removeClass('c_off').addClass('c_on');
+      $('.label_check',this).removeClass('c_off').addClass('c_on');
     }
+  });
+
+  //fix event propagation
+  $('.label_check > input').click(function(event){
+    event.stopPropagation();
   });
 
   //check all and not check
@@ -526,7 +595,7 @@ function GetXmlHttpObject()
 
   //pass the logDate to the modal
   $('.btn.btn-danger.btn-sm').click(function(){
-    $('#logModal1Confirm')[0].dataset.logdate = this.dataset.logdate;
+    $('#deletePasswordButton')[0].dataset.logdate = this.dataset.logdate;
     
   });
 
@@ -534,15 +603,15 @@ function GetXmlHttpObject()
   $('#deleteMore').click(function(){
     if($('.label_check').hasClass('c_on')){
       $(this).addClass('clicked');
-      $('#logModal1').modal('show');
+      $('#deletePasswordConfirm').modal('show');
     }else{
       toastr.info("请勾选要删除的操作记录！");
     }
   });
 
   //modal confirm 
-  $('#logModal1Confirm').click(function(){
-    var password = $('#logModal1Input').val(); 
+  $('#deletePasswordButton').click(function(){
+    var password = $('#deletePasswordInput').val(); 
     if(password.length < 6){
       toastr.info("密码位数不正确，至少6位");
     }else{
@@ -565,10 +634,10 @@ function GetXmlHttpObject()
           success: function(data){
             if(data.state == "password_wrong"){
               toastr.error("密码错误，请重新输入");
-              $('#logModal1Input').val("");
+              $('#deletePasswordInput').val("");
             }else if(data.state == "batch_delete_log_success"){
               toastr.success("删除成功");
-              $('#logModal1').modal('hide');
+              $('#deletePasswordConfirm').modal('hide');
               //delete the logdate in view
               $('#logTable').children().each(function(){
                 //save this object reference using that
@@ -586,14 +655,14 @@ function GetXmlHttpObject()
                 }(that));
               });
               //reset the password in modal input
-              $('#logModal1Input').val("");
+              $('#deletePasswordInput').val("");
             }else if(data.state == "batch_delete_log_failed"){
-              $('#logModal1').modal('hide');
+              $('#deletePasswordConfirm').modal('hide');
               toastr.error("删除失败，请重试");
             }
           },
           error: function(){
-            $('#logModal1').modal('hide');
+            $('#deletePasswordConfirm').modal('hide');
             toastr.clear();
             toastr.error("发生错误：");
           }
@@ -611,22 +680,22 @@ function GetXmlHttpObject()
           success: function(data){
             if(data.state == "password_wrong"){
               toastr.error("密码错误，请重新输入");
-              $('#logModal1Input').val("");
+              $('#deletePasswordInput').val("");
             }else if(data.state == "delete_single_log_success"){
               toastr.success("删除成功");
-              $('#logModal1').modal('hide');
+              $('#deletePasswordConfirm').modal('hide');
               //delete the logdate in view
               $('.btn.btn-danger.btn-sm').each(function(){
-                if(this.dataset.logdate == $('#logModal1Confirm')[0].dataset.logdate){
+                if(this.dataset.logdate == $('#deletePasswordButton')[0].dataset.logdate){
                   window.one = $(this).parent().parent();
                   $(this).parent().parent().animate({"opacity":"0"},1000);
                   setTimeout("$(window.one).remove();window.one = null;",1000);
                   //reset the dateset logdate value of the dialog confirm button
-                  $('#logModal1Confirm')[0].dataset.logdate = "";
+                  $('#deletePasswordButton')[0].dataset.logdate = "";
                 }
               });
               //reset the password in modal input
-              $('#logModal1Input').val("");
+              $('#deletePasswordInput').val("");
             }else if(data.state == "delete_single_log_failed"){
               toastr.error("删除失败，请重试");
             }

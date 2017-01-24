@@ -62,22 +62,24 @@ include("header.php");
 						<p><?php echo get_personal(); ?></p>
 					</div>
 					<ul class="nav nav-pills nav-stacked">
+						
+						
 						<li>
-							<a href="./logbook.php"> 
-								最近操作
-								<span class="label label-info pull-right r-activity"><i class="fa fa-gears"></i></span>
+							<a href="./profile.php">
+								 更多资料
+								<span class="label label-primary pull-right r-activity"><i class="fa fa-user"></i></span>
 							</a>
 						</li>
 						<li>
 							<a> 
-								消息通知
-								<span class="label label-warning pull-right r-activity"><i class="fa fa-bell-o"></i></span>
+								安全设置
+								<span class="label label-warning pull-right r-activity"><i class="fa fa-shield"></i></span>
 							</a>
 						</li>
 						<li>
-							<a href="./profile.php">
-								 修改资料
-								<span class="label label-primary pull-right r-activity"><i class="fa fa-pencil"></i></span>
+							<a href="./logbook.php"> 
+								最近操作
+								<span class="label label-info pull-right r-activity"><i class="fa fa-clock-o"></i></span>
 							</a>
 						</li>
 						<!-- <li>
@@ -98,9 +100,9 @@ include("header.php");
 				<header class="panel-heading">
 					设备
 					<span class="tools pull-right">
-						<button class="btn btn-success btn-xs"><i class="fa fa-plus"></i> 添加设备</button>
-						<a href="javascript:;" class="fa fa-chevron-down"></a>
-						<a href="javascript:;" class="fa fa-times"></a>
+						<button data-toggle="modal" data-target="#addDeviceModal" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> 添加设备</button>
+						<a class="fa fa-chevron-down"></a>
+						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body">
@@ -114,57 +116,7 @@ include("header.php");
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td class="hidden-phone">空调</td>
-								<td>主卧的空调</td>
-								<td><span class="label label-info label-mini">未绑定</span></td>
-								<td>
-									<button id="modify" class="btn btn-success btn-xs" data-toggle="modal" data-target="#myModal4"><i class="fa fa-info-circle"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="hidden-phone">电视机</td>
-								<td>客厅的那个</td>
-								<td><span class="label label-info label-mini">未绑定</span></td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="hidden-phone">小灯</td>
-								<td>小明桌子上的</td>
-								<td><span class="label label-info label-mini">未绑定</span></td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="hidden-phone">插座</td>
-								<td>电脑桌旁的那个</td>
-								<td><span class="label label-info label-mini">未绑定</span></td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="hidden-phone">电风扇</td>
-								<td>奶奶房间的</td>
-								<td><span class="label label-success label-mini">已连接</span></td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-info-circle"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-
+							<?php getDeviceString("table");?>
 						</tbody>
 					</table>
 				</div>
@@ -176,8 +128,8 @@ include("header.php");
 							快捷开关
 							<span class="tools pull-right">
 								<button class="btn btn-success btn-xs"><i class="fa fa-puzzle-piece"></i> 管理快捷</button>
-								<a href="javascript:;" class="fa fa-chevron-down"></a>
-								<a href="javascript:;" class="fa fa-times"></a>
+								<a class="fa fa-chevron-down"></a>
+								<a class="fa fa-times"></a>
 							</span>
 						</header>
 						<div class="panel-body">
@@ -218,8 +170,8 @@ include("header.php");
 							快捷状态选择
 							<span class="tools pull-right">
 								<button class="btn btn-success btn-xs"><i class="fa fa-puzzle-piece"></i> 管理快捷</button>
-								<a href="javascript:;" class="fa fa-chevron-down"></a>
-								<a href="javascript:;" class="fa fa-times"></a>
+								<a class="fa fa-chevron-down"></a>
+								<a class="fa fa-times"></a>
 							</span>
 						</header>
 						<div class="panel-body">
@@ -262,8 +214,8 @@ include("header.php");
 				<header class="panel-heading">
 					操作记录
 					<span class="tools pull-right">
-						<a class="fa fa-chevron-down" href="javascript:;"></a>
-						<a class="fa fa-times" href="javascript:;"></a>
+						<a class="fa fa-chevron-down"></a>
+						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body profile-activity">
@@ -336,8 +288,8 @@ include("header.php");
 				<header class="panel-heading">
 					Chats
 					<span class="tools pull-right">
-						<a class="fa fa-chevron-down" href="javascript:;"></a>
-						<a class="fa fa-times" href="javascript:;"></a>
+						<a class="fa fa-chevron-down"></a>
+						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body">
@@ -412,13 +364,13 @@ include("header.php");
 						</div>
 						<div class="form-group">
 							<div class="pull-right chat-features">
-								<a href="javascript:;">
+								<a>
 									<i class="fa fa-camera"></i>
 								</a>
-								<a href="javascript:;">
+								<a>
 									<i class="fa fa-link"></i>
 								</a>
-								<a class="btn btn-danger" href="javascript:;">Send</a>
+								<a class="btn btn-danger">Send</a>
 							</div>
 						</div>
 

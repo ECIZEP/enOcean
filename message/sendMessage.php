@@ -2,11 +2,11 @@
     include "TopSdk.php";
     date_default_timezone_set('Asia/Shanghai'); 
 
-    function sendMessage($smsTemplateCode,$phoneNumber){
+    function sendVerifycode($action,$phoneNumber){
         $appkey = "23614142";
         $secret = "b31f1b850e9d85ea7fe31f587ff221d2";
         $verifycode = (String)rand(111111,999999);
-        $param = array('verifycode'=>$verifycode);
+        $param = array('action' => $action,'verifycode'=>$verifycode);
         if(!isset($_SESSION)){
           session_start();
         }
@@ -19,7 +19,7 @@
         $req ->setSmsFreeSignName("WGCX物联");
         $req ->setSmsParam(json_encode($param));
         $req ->setRecNum($phoneNumber);
-        $req ->setSmsTemplateCode($smsTemplateCode);
+        $req ->setSmsTemplateCode("SMS_44190061");
         $resp = $c ->execute($req);
         if($resp->result->success){
             $_SESSION["verifycodeResult"] = "success";
@@ -29,13 +29,12 @@
         }
     }
 
-    function sendVerifycode($phoneNumber){
-        sendMessage("SMS_43260267",$phoneNumber);
-    }
 
     if($_SERVER['REQUEST_METHOD'] == "GET"){
         if(isset($_GET["type"]) && $_GET["type"] == "sendVerifycode"){
-            sendVerifycode($_GET["phoneNumber"]);
+            sendVerifycode("注册账号操作",$_GET["phoneNumber"]);
+        }elseif(isset($_GET["type"]) && $_GET["type"] == "change_phoneNumber"){
+            sendVerifycode("修改绑定手机号码操作",$_GET["phoneNumber"]);
         }
     }
     

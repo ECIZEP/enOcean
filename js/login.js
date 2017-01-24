@@ -184,8 +184,29 @@ function GetXmlHttpObject()
 			}
 			this.disabled = "true";
 			$(this).removeClass('btn-success');
-			this.innerHTML = "<span id='text'>60</span>秒后发送";
-			$.ajax({
+			this.innerHTML = "<span class='Secondtext'>60</span>秒后发送";
+			sendVerifycode(phoneNumber);
+			timeCount();
+		}
+
+
+		timeCount = function(){
+			time = parseInt($('.Secondtext').text()) - 1;
+			if(time == 0){
+				var sendMessage = document.getElementById('sendMessage');
+				sendMessage.disabled = false;
+				$(sendMessage).addClass('btn-success');
+				sendMessage.innerHTML = '发送验证码';
+			}else{
+				$('.Secondtext').text(time);
+				setTimeout("timeCount()",1000);
+			}
+		}
+	}
+
+
+	function sendVerifycode(phoneNumber){
+		$.ajax({
 				type: "GET",
 				url: "./message/sendMessage.php",
 				dataType:'json',
@@ -198,7 +219,7 @@ function GetXmlHttpObject()
 						toastr.success("验证码已发送，请查收");
 					}else if(data.state == "sendVerifycode_failed"){
 						toastr.success("验证码发送出错，请重试获取");
-						document.getElementById('text').innerHTML = 1;
+						$('.Secondtext').text("1");
 					}
 				},
 				error: function(){
@@ -206,27 +227,6 @@ function GetXmlHttpObject()
 					toastr.error("验证码请求错误");
 				}
 			});
-			timeCount();
-		}
-
-
-		timeCount = function(){
-			time = parseInt(document.getElementById('text').innerHTML) - 1;
-			if(time == 0){
-				var sendMessage = document.getElementById('sendMessage');
-				sendMessage.disabled = false;
-				$(sendMessage).addClass('btn-success');
-				sendMessage.innerHTML = '发送验证码';
-			}else{
-				document.getElementById('text').innerHTML = time;
-				setTimeout("timeCount()",1000);
-			}
-		}
-	}
-
-
-	function sendVerifycode(){
-
 	}
 
 })(window.jQuery);

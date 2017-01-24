@@ -24,10 +24,10 @@
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">换绑手机</label>
 							<label class="col-sm-6 col-xs-8 control-label" id="phoneLabel">
-								你当前的手机号是：<?php echo get_phone_number()?>
+								你当前的手机号是：<span><?php echo get_phone_number()?></span>
 							</label>
 							<div class="col-sm-4 col-xs-12">
-								<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal2"><i class="fa fa-pencil"></i> 更改</button>
+								<button type="button" class="btn btn-info" data-toggle="modal" data-target="#changePhoneModal"><i class="fa fa-pencil"></i> 更改</button>
 							</div>
 						</div>
 						<div class="form-group">
@@ -84,7 +84,7 @@
 	</div>
 </div>
 
-<div class="modal fade modal-dialog-center" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade modal-dialog-center" id="changePhoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog ">
 		<div class="modal-content-wrap">
 			<div class="modal-content">
@@ -94,13 +94,17 @@
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
-					<div class="form-group last">
-							<label class="control-label col-md-3">更改的手机号</label>
-							<div class="col-md-6 margin">
-								<input size="16" id="myModal2Input" type="text" class="form-control">
+						<div class="form-group last">
+							<label class="control-label col-md-4">更改的手机号</label>
+							<div class="col-md-8">
+								<input size="16" id="changePhoneInput" type="text" class="form-control">
 							</div>
-							<div class="col-md-3 margin">
-								<button class="btn btn-success" id="sendMessage" type="button">发送验证码</button>
+						</div>
+						<div class="form-group last">
+							<label class="control-label col-md-4">验证码</label>
+							<div class="col-md-8">
+								<input size="16" type="text" class="form-control btn-input verifycodeInput">
+								<button class="btn btn-success pull-right" id="sendMessage" type="button">发送验证码</button>
 							</div>
 							
 						</div>
@@ -109,7 +113,7 @@
 				</div>
 				<div class="modal-footer">
 					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-warning" id="myModal2Confirm" type="button">确定</button>
+					<button class="btn btn-warning" id="changePhoneConfirm" type="button">确定</button>
 				</div>
 			</div>
 		</div>

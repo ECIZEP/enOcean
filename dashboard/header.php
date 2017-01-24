@@ -13,15 +13,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-	<META HTTP-EQUIV="pragma" CONTENT="no-cache"> 
-	<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
-	<META HTTP-EQUIV="expires" CONTENT="0">
 	<title>ICON CONTROL</title>
 	<link rel="stylesheet" type="text/css" href="../css/initial.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?v=1">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 	 	document.getElementsByTagName('body')[0].innerHTML = "";
@@ -92,7 +89,7 @@
 				</li>
 				<li class="submenu">
 					<a href="safe_setting.php">
-						<i class="fa fa-plus-circle"></i>
+						<i class="fa fa-shield"></i>
 						<span>安全设置</span>
 					</a>
 				</li>
@@ -103,11 +100,7 @@
 						<span class="folder-icon"></span>
 					</a>
 					<ul class="sub">
-						<li><a href="device.php">空调</a></li>
-						<li><a href="#">电视机</a></li>
-						<li><a href="#">小灯</a></li>
-						<li><a href="#">插座</a></li>
-						<li><a href="#">电风扇</a></li>
+						<?php getDeviceString("header");?>
 					</ul>
 				</li>
 				<li class="submenu">

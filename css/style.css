@@ -874,6 +874,10 @@ a:hover {
     overflow:hidden;
 }
 
+.btn-input{
+    width: initial;
+    display: inline-block;
+}
 /**/
 
 .modal-content {
@@ -905,6 +909,10 @@ a:hover {
 .modal.fade.modal-dialog-center .modal-content-wrap {
     display: table-cell;
     vertical-align: middle;
+}
+
+.hide{
+    display: none;
 }
 
 /*text input*/
