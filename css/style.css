@@ -731,26 +731,28 @@ label.r_on {
 .ui-slider-horizontal .ui-slider-range {
     top: 0;
     height: 100%;
+    width: 0%;
 }
 
 .ui-slider-horizontal .ui-slider-handle {
     top: -7px   !important;
 }
 
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+.ui-state-default, .ui-widget-content .ui-state-default{
     background: #fff !important;
     border: 3px solid #22bacf !important;
     border-radius: 50% !important;
     -webkit-border-radius: 50% !important;
 }
 
-.ui-slider .ui-slider-handle {
+.slider .ui-slider-handle {
     cursor: default;
     height: 22px;
     position: absolute;
     width: 22px;
     z-index: 2;
     margin-left: -11px;
+    left: 0%;
 }
 
 .bound-s {

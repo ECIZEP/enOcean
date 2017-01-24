@@ -138,7 +138,7 @@
         }else if($templet == "table"){
           echo "<tr><td>{$value["devicename"]}</td><td>{$value["remark"]}</td>";
           if($value["connectState"] == "0"){
-            echo "<td><span class='label label-info label-mini'>未连接</span></td>";
+            echo "<td><span class='label label-info label-mini'>已断开</span></td>";
           }else if($value["connectState"] == "1"){
             echo "<td><span class='label label-success label-mini'>已连接</span></td>";
           }

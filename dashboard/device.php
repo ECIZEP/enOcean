@@ -8,6 +8,12 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 	}
 }
 
+
+function getConnectState(){
+	$sql = "select connectState from devices where deviceId = '{$_GET["unique"]}'";
+	return DBManager::query_mysql($sql)["0"]["connectState"];
+}
+
 function printController($resultArray){
 	foreach ($resultArray as $key => $value) {
 		echo '<tr><td>'.$value["controName"].'</td><td>'.$value["typeName"].'</td><td>';
@@ -18,13 +24,57 @@ function printController($resultArray){
 				echo "ON</td>";
 			}
 		}elseif($value["typeName"] == "下拉选择"){
-
+			echo IndexOfModeName($value["modeNames"],$value["data"]);
 		}else{
 			echo $value["data"]."</td>";
 		}
 		echo '<td><button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button></td></tr>';
 	}
 }
+
+function printSwitcher($resultArray){
+	foreach ($resultArray as $key => $value) {
+		if($value["typeName"] == "开关"){
+			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label>';
+			echo '<div class="col-xs-8 text-right"><div class="switch has-switch">';
+			if($value["data"] == 1){
+				echo '<div class="switch-on switch-animate">';
+			}else{
+				echo '<div class="switch-off switch-animate">';
+			}
+			echo '<input type="checkbox" checked="" data-toggle="switch"><span class="switch-left">ON</span><label>&nbsp;</label><span class="switch-right">OFF</span></div></div></div></div>';
+		}
+	}
+}
+
+function getSliderRange($deviceId){
+	$sql = "select data,minValue,maxValue_ from controller where deviceId = '{$deviceId}'";
+	$result = DBManager::query_mysql($sql)["0"];
+
+}
+
+function printSelectorAndSlider($resultArray){
+	foreach ($resultArray as $key => $value) {
+		if($value["typeName"] == "下拉选择"){
+			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label><div class="col-xs-8"><select data-controllerid="'.$value["controllerId"].'" class="form-control bound-s selector">';
+			$optionArray = explode(" ",$value["modeNames"]);
+			foreach ($optionArray as $key => $value) {
+				echo '<option>'.$value.'</option>';
+			}
+			echo '</select></div></div>';
+		}elseif($value["typeName"] == "滑块控制"){
+			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label><div class="col-xs-8"><div class="slider-container"><div class="slider ui-slider-horizontal ui-widget-content">';
+			$sql = "select controName,data,minValue,maxValue_ from controller where controllerId = '{$value["controllerId"]}'";
+			$result = DBManager::query_mysql($sql)["0"];
+			$range = floatval($value['data'] - $result["minValue"])/floatval($result["maxValue_"] - $result["minValue"]) * 100;
+			echo '<div class="ui-slider-range ui-widget-header" style="width:'.$range.'%"></div>';
+			echo '<a class="ui-slider-handle ui-state-default" style="left:'.$range.'%"></a></div>';
+			echo '<div class="slider-info">当前值:<span id="slider-amount">'.$value['data'].'</span></div></div></div></div>';
+		}
+	}
+}
+
+
 ?>
 <script src="../js/echarts.js"></script>
 <!-- main content start -->
@@ -35,22 +85,29 @@ function printController($resultArray){
 				<header class="panel-heading">
 					空调
 					<span class="tools pull-right">
-						<button class="btn btn-success btn-xs">已连接</button>
-						<a href="javascript:;" class="fa fa-chevron-down"></a>
-						<a href="javascript:;" class="fa fa-times"></a>
+						<?php
+							$connectState = getConnectState();
+						 	if($connectState == 0){
+						 		echo '<span class="label label-info label-mini">已断开</span>';
+						 	}elseif ($connectState == 1) {
+						 		echo '<span class="label label-success label-mini">已连接</span>';
+						 	}
+						 ?>
+						<a class="fa fa-chevron-down"></a>
+						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body">
 					<div class="row no-padding" style="margin-bottom: 15px;">
 						<div class="col-sm-8 col-xs-8">
-							<button data-toggle="modal" data-target="#modifyDevice" style="vertical-align: top;" class="btn btn-primary">
+							<button data-toggle="modal" data-target="#modifyDevice" style="vertical-align: top;" class="btn btn-primary btn-responsive">
 								<i class="fa fa-pencil"></i> 编辑设备
 							</button>
-							<button data-toggle="modal" data-target="#addControllerModal" class="btn btn-success"><i class="fa fa-plus"></i> 添加控制器
+							<button data-toggle="modal" data-target="#addControllerModal" class="btn btn-success btn-responsive"><i class="fa fa-plus"></i> 添加控制器
 							</button>
 						</div>
 						<div class="col-sm-4 col-xs-4">
-							<button data-toggle="modal" data-target="#deleteDevice" class="btn btn-danger pull-right"><i class="fa fa-trash-o"></i> 删除设备
+							<button data-toggle="modal" data-target="#deleteDevice" class="btn btn-danger pull-right btn-responsive"><i class="fa fa-trash-o"></i> 删除设备
 							</button>
 						</div>
 					</div>
@@ -65,47 +122,6 @@ function printController($resultArray){
 						</thead>
 						<tbody>
 							<?php printController($resultArray);?>
-							<!-- <tr>
-								<td class="hidden-phone">温度控制</td>
-								<td>多值型</td>
-								<td>27</td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="hidden-phone">屏幕开关</td>
-								<td>开关</td>
-								<td>ON</td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="hidden-phone">空调模式</td>
-								<td>多值型</td>
-								<td>制冷模式</td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td class="hidden-phone">功率监控</td>
-								<td>数值型</td>
-								<td>100W</td>
-								<td>
-									<button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-									<button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-									<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-								</td>
-							</tr> -->
-
 						</tbody>
 					</table>
 				</div>
@@ -118,15 +134,16 @@ function printController($resultArray){
 				<header class="panel-heading">
 					开关控制
 					<span class="tools pull-right">
-						<a href="javascript:;" class="fa fa-chevron-down"></a>
-						<a href="javascript:;" class="fa fa-times"></a>
+						<a class="fa fa-chevron-down"></a>
+						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body">
 					<form class="form-horizontal tasi-form">
-						<div class="form-group">
-							<label class="col-sm-4 col-xs-4 control-label text-center">电源开关</label>
-							<div class="col-sm-8 col-xs-8 text-right">
+						<?php printSwitcher($resultArray);?>
+						<!-- <div class="form-group">
+							<label class=" col-xs-4 control-label">电源开关</label>
+							<div class=" col-xs-8 text-right">
 								<div class="switch has-switch">
 									<div class="switch-on switch-animate">
 										<input type="checkbox" checked="" data-toggle="switch">
@@ -136,20 +153,7 @@ function printController($resultArray){
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-sm-4 col-xs-4 control-label text-center">屏幕开关</label>
-							<div class="col-sm-8 col-xs-8 text-right">
-								<div class="switch has-switch">
-									<div class="switch-on switch-animate">
-										<input type="checkbox" checked="" data-toggle="switch">
-										<span class="switch-left">ON</span>
-										<label>&nbsp;</label>
-										<span class="switch-right">OFF</span>
-									</div>
-								</div>
-							</div>
-						</div>
+						</div>-->
 					</form>
 				</div>
 			</section>
@@ -159,33 +163,49 @@ function printController($resultArray){
 				<header class="panel-heading">
 					状态选择
 					<span class="tools pull-right">
-						<a href="javascript:;" class="fa fa-chevron-down"></a>
-						<a href="javascript:;" class="fa fa-times"></a>
+						<a class="fa fa-chevron-down"></a>
+						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body">
 					<form class="form-horizontal tasi-form">
-						<div class="form-group">
-							<label class="col-sm-4 col-xs-4 control-label">空调模式</label>
-							<div class="col-sm-8 col-xs-8">
+						<?php printSelectorAndSlider($resultArray);?>
+						<!-- <div class="form-group">
+							<label class="col-xs-4 control-label">空调模式</label>
+							<div class="col-xs-8">
 								<select name="minbeds" id="minbeds" class="form-control bound-s">
 									<option>制冷模式</option>
 									<option>暖气模式</option>
 									<option>睡眠模式</option>
 								</select>
 							</div>
-						</div>
+						</div> -->
 						<div class="form-group">
-							<label class="col-sm-4 control-label">温度控制</label>
-							<div class="col-sm-8">
+							<label class="col-xs-4 control-label">温度控制</label>
+							<div class="col-xs-8">
 								<div class="slider-container">
-									<div id="slider-range-min" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
+									<div id="slider-range-min" class="slider ui-slider-horizontal ui-widget-content" aria-disabled="false">
 										<div class="ui-slider-range ui-widget-header"></div>
 										<a class="ui-slider-handle ui-state-default" ></a>
 									</div>
 									<div class="slider-info">
 										当前值:
-										<span class="slider-info" id="slider-amount">0</span>
+										<span id="slider-amount">0</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-4 control-label">温度控制</label>
+							<div class="col-xs-8">
+								<div class="slider-container">
+									<div id="slider-range-min" class="slider ui-slider-horizontal ui-widget-content" aria-disabled="false">
+										<div class="ui-slider-range ui-widget-header"></div>
+										<a class="ui-slider-handle ui-state-default" ></a>
+									</div>
+									<div class="slider-info">
+										当前值:
+										<span id="slider-amount">0</span>
 									</div>
 								</div>
 							</div>
@@ -201,8 +221,8 @@ function printController($resultArray){
 				<header class="panel-heading">
 					功率监控
 					<span class="tools pull-right">
-						<a href="javascript:;" class="fa fa-chevron-down"></a>
-						<a href="javascript:;" class="fa fa-times"></a>
+						<a class="fa fa-chevron-down"></a>
+						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body" id="echart" style="width: 100%;height:500px">

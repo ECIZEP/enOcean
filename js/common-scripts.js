@@ -243,7 +243,7 @@ $('.ui-slider-handle').mousedown(function(event){
 	var target = event.target?event.target:event.srcElement;
 	if(!startX){
 		startX = event.clientX;
-		rangeWidth = jQuery(target).parents(".slider").children(".ui-slider-range")[0].offsetWidth;
+		rangeWidth = jQuery(target).parents(".slider")[0].offsetWidth;
 	}
 	jQuery(this).addClass("ui-state-move");
 	animate = true;
@@ -255,8 +255,9 @@ document.onmousemove = function(event){
 		var offsetX = event.clientX - startX;
 		var leftValue = offsetX/rangeWidth * 100;
 		if(leftValue >= 0 && leftValue <= 100){
-			$('.ui-state-move')[0].style.left = leftValue + "%";
-			$('#slider-amount')[0].innerHTML = Math.floor(leftValue);
+			$('.ui-state-move').css("left",leftValue + "%");
+      $('.ui-slider-range').css("width",leftValue + "%");
+			$('#slider-amount').text(Math.floor(leftValue));
 		}
 	}
 }
