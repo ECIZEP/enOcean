@@ -1,5 +1,5 @@
 
-	<div class="modal fade modal-dialog-center" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModal" aria-hidden="true">
+	<div class="modal fade modal-dialog-center" id="addDeviceModal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog ">
 			<div class="modal-content-wrap">
 				<div class="modal-content">
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade modal-dialog-center" id="addControllerModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModal" aria-hidden="true">
+	<div class="modal fade modal-dialog-center" id="addControllerModal" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog ">
 			<div class="modal-content-wrap">
 				<div class="modal-content">
@@ -111,6 +111,6 @@
 	<script src="../js/jquery.nicescroll.js"></script>
 	<script src="../assets/toastr/toastr.min.js"></script>
 	<script src="../assets/bootstap-fileupload/bootstrap-fileupload.js"></script>
-	<script src="../js/common-scripts.js?v=1.7"></script>
+	<script src="../js/common-scripts.js?v=1.1"></script>
 </body>
 </html>

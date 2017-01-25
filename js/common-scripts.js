@@ -29,7 +29,7 @@ $('div.sidebar').ready(function(){
 	}
 });
 
-$('.sidebar-toggle').click(function(){
+$('.sidebar-toggle').click(function(event){
 	if(document.body.clientWidth > 768){
 		if($('div.content').css("marginLeft") == "0px"){
 			$('div.content').animate({marginLeft:'210px'},400);
@@ -45,8 +45,59 @@ $('.sidebar-toggle').click(function(){
 		}else{
 			$('div.sidebar').animate({top:"60px"},200);
 		}
+    event.stopPropagation();
+    //when sidebar display,click document can hide sidebar menu
+    document.addEventListener('click',function(event){
+      var top = 59 - parseInt($('div.sidebar').css("height"));
+      $('div.sidebar').animate({top:top + "px"},200);
+    });
 	}
 });
+
+
+//sidebar menu animate
+(function(){
+  var sidebarItems = document.getElementById('sidebar').getElementsByTagName('li');
+  for (var i = 0; i < sidebarItems.length; i++) {
+    sidebarItems[i].index = i;
+    sidebarItems[i].addEventListener('click',function(){
+      for(var j = 0;j < sidebarItems.length;j++){
+        if(j != this.index){
+          sidebarItems[j].className = "subitem";
+        }else{
+          sidebarItems[j].className = "subitem active";
+        }
+      }
+
+      var submenu;
+      for (var j = 0; j < sidebarItems.length; j++) {
+        if(this.index != j){
+          sidebarItems[j].getElementsByTagName('a')[0].className = "";
+          submenu = sidebarItems[j].getElementsByTagName('ul')[0];
+          if(submenu){
+            submenu.style.display = "none";
+          }
+        }
+      }
+      submenu = this.getElementsByTagName('ul')[0];
+      if(submenu){
+        if(submenu.style.display == "block"){
+          submenu.style.display = "none";
+        }else{
+          submenu.style.display = "block";
+        } 
+      }
+    },false);
+  }
+})();
+
+//stop propagation,otherwise clicking sidebar item will triggle document's click event
+//then will hide sidebar,this is not what we want
+$('.sidebar').click(function(event){
+  event.stopPropagation();
+});
+
+/*----------------------some thing about device and controller start---------------------------*/
 
 //add and delete device
 $('#addDeviceModalConfirm').click(function(){
@@ -83,6 +134,50 @@ $('#addDeviceModalConfirm').click(function(){
   }
 });
 
+//modify device infomation
+$('.modifyDevice').click(function(){
+  $('#modifyDeviceConfirm').attr("data-deviceid",this.getAttribute("data-deviceid"));
+  $('.modal-title span').text($(this).parent().parent().children()[0].innerHTML);
+});
+
+$('#modifyDeviceConfirm').click(function(){
+  var deviceName = $('#modifyDeviceName').val();
+  var deviceRemark = $('#modifyDeviceRemark').val();
+  if(deviceName == "" || deviceRemark == ""){
+    toastr.info("请将表单填写完整！");
+  }else{
+    var deviceId = this.getAttribute("data-deviceid");
+    $.ajax({
+    type: "GET",
+    url: "./functions.php",
+    dataType:'json',
+    data: {
+      type: "modify_device",
+      deviceId:deviceId,
+      deviceName: deviceName,
+      deviceRemark: deviceRemark
+    },
+    success: function(data){
+      if(data.state == "modify_device_success"){
+        $('#modifyDevice').modal("hide");
+        toastr.success("修改设备信息成功");
+        $('#modefyDeviceName').val("");
+        $('#modifyDeviceRemark').val("");
+      }else if(data.state == "modify_device_failed"){
+        toastr.error("修改失败，请重试");
+      }
+    },
+    error: function(){
+      toastr.clear();
+      toastr.error("发生错误：");
+    }
+  });
+  }
+});
+
+
+
+
 //add controller
 $('#controllerType').change(function(){
   switch(this.selectedIndex){
@@ -102,7 +197,7 @@ $('#controllerType').change(function(){
       $('.selectMode').addClass('hide');
       $('.sliderMode').removeClass('hide');
       break;
-    //observer
+    //chart
     case 3:
       $('#modeName').text("输入数值正常范围");
       $('.selectMode').addClass('hide');
@@ -111,7 +206,7 @@ $('#controllerType').change(function(){
   }
 });
 
-
+//add all kinds of controllers
 $('#addControllerConfirm').click(function(){
   var controllerName = $('#controllerName').val();
   var deviceSelecter = $('#select-bindDevice')[0];
@@ -133,7 +228,7 @@ $('#addControllerConfirm').click(function(){
       var minValue = "0";
       var maxValue = modeNames.split(" ").length.toString();
       break;
-    //slider and observer
+    //slider and chart
     case 3:
     case 4:
       var minValue = $('#minValueInput').val();
@@ -170,43 +265,15 @@ $('#addControllerConfirm').click(function(){
   });
 });
 
-//sidebar menu animate
-(function(){
-	var sidebarItems = document.getElementById('sidebar').getElementsByTagName('li');
-	for (var i = 0; i < sidebarItems.length; i++) {
-		sidebarItems[i].index = i;
-		sidebarItems[i].addEventListener('click',function(){
-			for(var j = 0;j < sidebarItems.length;j++){
-				if(j != this.index){
-					sidebarItems[j].className = "subitem";
-				}else{
-					sidebarItems[j].className = "subitem active";
-				}
-			}
 
-			var submenu;
-			for (var j = 0; j < sidebarItems.length; j++) {
-				if(this.index != j){
-					sidebarItems[j].getElementsByTagName('a')[0].className = "";
-					submenu = sidebarItems[j].getElementsByTagName('ul')[0];
-					if(submenu){
-						submenu.style.display = "none";
-					}
-				}
-			}
-			submenu = this.getElementsByTagName('ul')[0];
-			if(submenu){
-				if(submenu.style.display == "block"){
-					submenu.style.display = "none";
-				}else{
-					submenu.style.display = "block";
-				} 
-			}
-		},false);
-	}
-})();
+/*----------------------some thing about device and controller end---------------------------*/
 
-/*panel animate---device*/
+//alert
+if($('#deviceState').hasClass('label-info')){
+  $('.alert').css("display","block");
+}
+
+/*panel animation---device*/
 jQuery('.panel .tools .fa-chevron-down').click(function () {
 	var el = jQuery(this).parents(".panel").children(".panel-body");
 	if (jQuery(this).hasClass("fa-chevron-down")) {
@@ -224,6 +291,7 @@ jQuery('.fa.fa-times').click(function () {
 });
 
 
+/*switcher animation---device*/
 $('.switch-animate').click(function(){
 	if(jQuery(this).hasClass("switch-on")){
 		jQuery(this).removeClass("switch-on").addClass("switch-off");
@@ -233,52 +301,82 @@ $('.switch-animate').click(function(){
 });
 
 
-/*panel slider animate---device*/
-
-var startX;
-var animate = false;
-var rangeWidth;
+/*slider animation---device*/
 
 $('.ui-slider-handle').mousedown(function(event){
-	var target = event.target?event.target:event.srcElement;
-	if(!startX){
-		startX = event.clientX;
-		rangeWidth = jQuery(target).parents(".slider")[0].offsetWidth;
-	}
-	jQuery(this).addClass("ui-state-move");
-	animate = true;
+  var container = $(this).parents(".slider").parents(".slider-container")[0];
+	$(container).attr("data-offsetwidth",container.offsetWidth);
+	$(container).addClass("ui-state-move");
+  $('.ui-state-move').attr("data-startx",container.getBoundingClientRect().left);
+});
+
+$('.ui-slider-handle').each(function(){
+  this.addEventListener("touchstart",function(){
+    var container = $(this).parents(".slider").parents(".slider-container")[0];
+    $(container).attr("data-offsetwidth",container.offsetWidth);
+    $(container).addClass("ui-state-move");
+    $('.ui-state-move').attr("data-startx",container.getBoundingClientRect().left);
+  });
+  this.addEventListener("touchmove",function(){
+     console.log("move");
+    var rangeWidth = $('.ui-state-move').attr("data-offsetwidth");
+    var startX = $('.ui-state-move').attr("data-startx");
+    var offsetX = event.clientX - startX;
+    var leftValue = offsetX/rangeWidth * 100;
+    if(leftValue >= 0 && leftValue <= 100){
+      console.log(leftValue);
+      $('.ui-state-move .ui-slider-handle').css("left",leftValue + "%");
+      $('.ui-state-move .ui-slider-range').css("width",leftValue + "%");
+      $('.ui-state-move #slider-amount').text(Math.round(leftValue));
+    }
+  });
+  this.addEventListener("touchend",function(){
+    console.log("end");
+    $('.ui-state-move').removeClass("ui-state-move");
+  });
 });
 
 document.onmousemove = function(event){
-	var target = event.target?event.target:event.srcElement;
-	if(startX && animate){
-		var offsetX = event.clientX - startX;
-		var leftValue = offsetX/rangeWidth * 100;
-		if(leftValue >= 0 && leftValue <= 100){
-			$('.ui-state-move').css("left",leftValue + "%");
-      $('.ui-slider-range').css("width",leftValue + "%");
-			$('#slider-amount').text(Math.floor(leftValue));
-		}
-	}
+  var rangeWidth = $('.ui-state-move').attr("data-offsetwidth");
+  var startX = $('.ui-state-move').attr("data-startx");
+  var offsetX = event.clientX - startX;
+  var leftValue = offsetX/rangeWidth * 100;
+  if(leftValue >= 0 && leftValue <= 100){
+    if(leftValue > 99.5){
+      leftValue = 100;
+    }else if(leftValue < 0.3){
+      leftValue = 0;
+    }
+    $('.ui-state-move .ui-slider-handle').css("left",leftValue + "%");
+    $('.ui-state-move .ui-slider-range').css("width",leftValue + "%");
+    var max = $('.ui-state-move #slider-amount').attr("data-max");
+    var min = $('.ui-state-move #slider-amount').attr("data-min");
+    var mount = parseFloat(min) + parseFloat((max-min)*(leftValue/100));
+    $('.ui-state-move #slider-amount').text(Math.floor(mount));
+  }
+};
+
+function addMousemove(newFunc){
+  if(typeof document.onmousemove == "function"){
+    var oldFunc = document.onmousemove;
+    document.onmousemove = function(event){
+      newFunc(event);
+      oldFunc();
+    }
+  }else{
+    document.onmousemove = newFunc;
+  }
 }
 
 document.onmouseup = function(event){
-	animate = false;
-	$('.ui-slider-handle').removeClass("ui-state-move");
-}
-
-var modify = document.getElementById('modify');
-if(modify){
-	modify.onclick = function(){
-		var modal = document.getElementById('myModal4');
-		$(modal).addClass('in');
-	}
-}
+	$('.ui-state-move').removeClass("ui-state-move");
+};
 
 
 
 
-/*content modified--profile */
+
+/*profile modified-- profile page */
 
 (function(){
 
@@ -394,8 +492,8 @@ if(modify){
 })();
 
 
-function GetXmlHttpObject()
-{ 
+
+function GetXmlHttpObject(){ 
 	var objXMLHttp = null;
 	if (window.XMLHttpRequest)
 	{
@@ -475,7 +573,7 @@ function GetXmlHttpObject()
       this.disabled = "true";
       this.innerHTML = "<span class='Secondtext'>60</span>秒再发送";
       //here the action goes
-      //sendVerifycode(this.value,this.dataset.phonenumber);
+      //sendVerifycode(this.value,$(this).attr("data-phonenumber"));
       timeCount();
     });
   	
@@ -491,7 +589,6 @@ function GetXmlHttpObject()
   		}
   	}
 
-    //
 
     //change phonenumber
   	$('#changePhoneConfirm').click(function(){
@@ -670,7 +767,7 @@ function GetXmlHttpObject()
 
   //pass the logDate to the modal
   $('.btn.btn-danger.btn-sm').click(function(){
-    $('#deletePasswordButton')[0].dataset.logdate = this.dataset.logdate;
+    $('#deletePasswordButton')[0].setAttribute("data-logdate",$(this).attr("data-logdate"));
     
   });
 
@@ -750,7 +847,7 @@ function GetXmlHttpObject()
           data: {
             type: "delete_single_log",
             password: password,
-            logDate: this.dataset.logdate
+            logDate: $(this).attr("data-logdate")
           },
           success: function(data){
             if(data.state == "password_wrong"){
@@ -761,12 +858,12 @@ function GetXmlHttpObject()
               $('#deletePasswordConfirm').modal('hide');
               //delete the logdate in view
               $('.btn.btn-danger.btn-sm').each(function(){
-                if(this.dataset.logdate == $('#deletePasswordButton')[0].dataset.logdate){
+                if($(this).attr("data-logdate") == $('#deletePasswordButton')[0].getAttribute("data-logdate")){
                   window.one = $(this).parent().parent();
                   $(this).parent().parent().animate({"opacity":"0"},1000);
                   setTimeout("$(window.one).remove();window.one = null;",1000);
                   //reset the dateset logdate value of the dialog confirm button
-                  $('#deletePasswordButton')[0].dataset.logdate = "";
+                  $('#deletePasswordButton')[0].setAttribute("data-logdate","");
                 }
               });
               //reset the password in modal input
@@ -784,6 +881,3 @@ function GetXmlHttpObject()
     }
   });
 })(jQuery);
-
-
-

@@ -110,6 +110,16 @@
       }
     }
 
+    //modify device
+    function modifyDevice($deviceId,$devicename,$remark){
+      $sql = "update devices set devicename = '{$devicename}',remark = '{$remark}' where deviceId = '{$deviceId}'";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"modify_device_success"}';
+      }else{
+        echo '{"state":"modify_device_failed"}';
+      }
+    }
+
     //delete device
     function deleteDevice($deviceId){
       if(!isset($_SESSION)){
@@ -142,7 +152,7 @@
           }else if($value["connectState"] == "1"){
             echo "<td><span class='label label-success label-mini'>已连接</span></td>";
           }
-          echo '<td><button data-toggle="modal" data-target="#modifyDevice" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>&nbsp;<button data-toggle="modal" data-target="#deleteDevice" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></td></tr>';
+          echo '<td><button data-toggle="modal" data-target="#modifyDevice" data-deviceid="'.$value["deviceId"].'" class="btn btn-primary btn-xs modifyDevice"><i class="fa fa-pencil"></i></button>&nbsp;<button data-toggle="modal" data-target="#deleteDevice" data-deviceid="'.$value["deviceId"].'" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></td></tr>';
         }
         
       }
@@ -403,6 +413,9 @@
               break;
           case "add_controller":
               addController($_GET["controllerType"],$_GET["controllerName"],$_GET["deviceId"],$_GET["modeNames"],$_GET["minValue"],$_GET["maxValue"]);
+              break;
+          case "modify_device":
+              modifyDevice($_GET["deviceId"],$_GET["deviceName"],$_GET["deviceRemark"]);
               break;
         }
       }

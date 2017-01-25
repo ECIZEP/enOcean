@@ -1,5 +1,42 @@
 <?php 
 include("header.php");
+if(!isset($_SESSION)){
+	session_start();
+}
+
+function getDeviceCount(){
+	$sql = "select COUNT(*) from devices where owner ='{$_SESSION["username"]}'";
+	echo DBManager::query_mysql($sql)["0"]["0"];
+}
+
+function getControllerCount(){
+	$sql = "select count(*) from devices,controller where devices.owner = '{$_SESSION["username"]}' and devices.deviceId = controller.deviceId";
+	echo DBManager::query_mysql($sql)["0"]["0"];
+}
+
+
+function getLogCount(){
+	$sql = "select count(*) from logbook where username = '{$_SESSION["username"]}'";
+	echo DBManager::query_mysql($sql)["0"]["0"];
+}
+
+
+function format($a,$b){
+	if(strtotime($a)>strtotime($b)) list($a,$b)=array($b,$a);
+	$start  = strtotime($a);
+	$stop   = strtotime($b);
+	$extend = ($stop-$start)/86400;
+	return intval($extend);
+}
+
+function getDayCount(){
+	$sql = "select registerDate from account where username = '{$_SESSION["username"]}'";
+	$date = DBManager::query_mysql($sql)["0"]["registerDate"];
+	$date = explode(" ", $date)["0"];
+	$nowDate = date("Y-m-d");
+	echo format($date,$nowDate);
+}
+
 ?>
 <!-- main content start -->
 <div class="content">
@@ -10,7 +47,7 @@ include("header.php");
 					<i class="fa fa-laptop"></i>
 				</div>
 				<div class="value">
-					<h1 class="count">5</h1>
+					<h1 class="count"><?php getDeviceCount();?></h1>
 					<p>设备数</p>
 				</div>
 			</section>
@@ -21,7 +58,7 @@ include("header.php");
 					<i class="fa fa-magnet"></i>
 				</div>
 				<div class="value">
-					<h1 class=" count2">18</h1>
+					<h1 class=" count2"><?php getControllerCount();?></h1>
 					<p>控制器</p>
 				</div>
 			</section>
@@ -32,7 +69,7 @@ include("header.php");
 					<i class="fa fa-gears"></i>
 				</div>
 				<div class="value">
-					<h1 class=" count3">328</h1>
+					<h1 class=" count3"><?php getLogCount();?></h1>
 					<p>操作记录</p>
 				</div>
 			</section>
@@ -43,7 +80,7 @@ include("header.php");
 					<i class="fa fa-clock-o"></i>
 				</div>
 				<div class="value">
-					<h1 class=" count4">10328</h1>
+					<h1 class=" count4"><?php  getDayCount();?></h1>
 					<p>使用时间/天</p>
 				</div>
 			</section>
@@ -82,14 +119,7 @@ include("header.php");
 								<span class="label label-info pull-right r-activity"><i class="fa fa-clock-o"></i></span>
 							</a>
 						</li>
-						<!-- <li>
-							<a>
-								<i class="fa fa-envelope-o"></i> Message
-								<span class="label label-success pull-right r-activity">10</span>
-							</a>
-						</li> -->
 					</ul>
-
 				</section>
 			</aside>
 			<!--widget end-->
@@ -189,14 +219,14 @@ include("header.php");
 								<div class="form-group">
 									<label class="col-sm-4 control-label">温度控制</label>
 									<div class="col-sm-8">
-										<div class="slider-container">
-											<div id="slider-range-min" class="slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false">
-												<div class="ui-slider-range ui-widget-header"></div>
-												<a class="ui-slider-handle ui-state-default" ></a>
+										<div class="slider-container" data-offsetwidth="">
+											<div class="slider ui-slider-horizontal ui-widget-content">
+												<div class="ui-slider-range ui-widget-header" style="width: 0%;"></div>
+												<a href="javascript:;" class="ui-slider-handle ui-state-default" style="left: 0%"></a>
 											</div>
 											<div class="slider-info">
 												当前值:
-												<span class="slider-info" id="slider-amount">0</span>
+												<span data-min="10" data-max="30" id="slider-amount">10</span>
 											</div>
 										</div>
 									</div>
@@ -383,6 +413,38 @@ include("header.php");
 <!-- main content end -->
 
 <!-- modal dialog start -->
+<div class="modal fade modal-dialog-center" id="modifyDevice" tabindex="-1" role="dialog" aria-labelledby="addDeviceModal" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">修改<span></span>设备信息</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-md-4">设备名称：</label>
+							<div class="col-md-8">
+								<input size="16" type="text" id="modifyDeviceName" class="form-control">
+							</div>
+						</div>
+						<div class="form-group last">
+							<label class="control-label col-md-4">设备的备注：</label>
+							<div class="col-md-8">
+								<input size="16" type="text" id="modifyDeviceRemark" class="form-control">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button data-deviceid="" class="btn btn-warning" id="modifyDeviceConfirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <?php 
 include("footer.php");
 ?>

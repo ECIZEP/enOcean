@@ -87,7 +87,6 @@
         global $password,$username,$phoneNumber;
         if(check_account()){
             $regitserData = date("Y-m-d H:i:s");
-           
             $sql = "insert into account (username,password,phoneNumber,registerDate) ";
             $sql .= " values ('{$username}','{$password}','{$phoneNumber}','{$regitserData}')";
             if(DBManager::register_account($sql,$username)){
