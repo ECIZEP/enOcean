@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?v=1.4">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?v=1.5">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 	 	document.getElementsByTagName('body')[0].innerHTML = "";
@@ -88,12 +88,6 @@
 					</a>
 				</li>
 				<li class="submenu">
-					<a href="safe_setting.php">
-						<i class="fa fa-shield"></i>
-						<span>安全设置</span>
-					</a>
-				</li>
-				<li class="submenu">
 					<a>
 						<i class="fa fa-laptop"></i>
 						<span>我的设备</span>
@@ -122,6 +116,12 @@
 					<a href="./logbook.php">
 						<i class="fa fa-gears"></i>
 						<span>操作日志</span>
+					</a>
+				</li>
+				<li class="submenu">
+					<a href="safe_setting.php">
+						<i class="fa fa-shield"></i>
+						<span>安全设置</span>
 					</a>
 				</li>
 				

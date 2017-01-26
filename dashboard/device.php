@@ -66,7 +66,7 @@ function printSelectorAndSlider($resultArray){
 			echo '</select></div></div>';
 		}elseif($value["typeName"] == "滑块控制"){
 			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label><div class="col-xs-8"><div class="slider-container" data-controllerid="'.$value["controllerId"].'" data-offsetwidth=""><div class="slider ui-slider-horizontal ui-widget-content">';
-			$sql = "select controName,data,minValue,maxValue_ from controller where controllerId = '{$value["controllerId"]}'";
+			$sql = "select controName,data,minValue,maxValue_ from controller where controllerId = '{$value["controllerId"]}' limit 1";
 			$result = DBManager::query_mysql($sql)["0"];
 			$range = floatval($value['data'] - $result["minValue"])/floatval($result["maxValue_"] - $result["minValue"]) * 100;
 			echo '<div class="ui-slider-range ui-widget-header" style="width:'.$range.'%"></div>';
@@ -76,9 +76,17 @@ function printSelectorAndSlider($resultArray){
 	}
 }
 
+function printCharts($resultArray){
+	foreach ($resultArray as $key => $value) {
+		if($value["typeName"] == "数值监控"){
+			$sql = "select * from controller where controllerId ='{$value["controllerId"]}' limit 1";
+			$result = DBManager::query_mysql($sql)["0"];
+			echo '<div class="charts" style="width: 100%;height:600px;margin-bottom:20px;" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'" data-title="'.$value["controName"].'" data-controllerid="'.$value["controllerId"].'"></div>';
+		}	
+	}
+}
 
 ?>
-<script src="../js/echarts.js"></script>
 <!-- main content start -->
 <div class="content">
 	<div class="alert alert-danger" style="display: none;">
@@ -170,48 +178,22 @@ function printSelectorAndSlider($resultArray){
 			</section>
 		</div>
 	</div>
-	<div class="row"  >
+	<div class="row">
 		<div class="col-md-12" >
 			<section class="panel">
 				<header class="panel-heading">
-					功率监控
+					数据监控
 					<span class="tools pull-right">
 						<a class="fa fa-chevron-down"></a>
 						<a class="fa fa-times"></a>
 					</span>
 				</header>
-				<div class="panel-body" id="echart" style="width: 100%;height:500px">
-
+				<div class="panel-body">
+					<?php printCharts($resultArray);?>
 				</div>
 			</section>
 		</div>
 	</div>
-	<script type="text/javascript">
-	        // 基于准备好的dom，初始化echarts实例
-	        var myChart = echarts.init(document.getElementById('echart'));
-
-	        // 指定图表的配置项和数据
-	        var option = {
-	        	title: {
-	        		text: '电压实时监控'
-	        	},
-	        	tooltip: {},
-	        	legend: {
-	        		data:['电压']
-	        	},
-	        	xAxis: {
-	        		data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-	        	},
-	        	yAxis: {},
-	        	series: [{
-	        		name: '电压',
-	        		type: 'line',
-	        		data: [5, 20, 36, 10, 10, 20]
-	        	}]
-	        };
-	        // 使用刚指定的配置项和数据显示图表。
-	        myChart.setOption(option);
-	</script>
 </div>
 <!-- main content end -->
 
@@ -329,6 +311,9 @@ function printSelectorAndSlider($resultArray){
 		</div>
 	</div>
 </div>
+
+<script src="../js/echarts.min.js"></script>
+<script src="../js/deviceChart.js"></script>
 <?php 
 include("footer.php");
 ?>

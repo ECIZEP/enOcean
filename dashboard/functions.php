@@ -219,6 +219,17 @@
       return DBManager::query_mysql($sql);
     }
 
+    //get controller data
+    function getControllerData($controllerId){
+      $sql = "select data from tablecontroller where controllerId = '{$controllerId}' limit 1";
+      $result = DBManager::query_mysql($sql);
+      if($result){
+        echo '{"state":"get_controller_data_success","data":"'.$result["0"]["data"].'"}';
+      }else{
+        echo '{"state":"get_controller_data_failed"}';
+      }
+    }
+
     /*profile update information*/
     function update_account_all(){
     	if(!isset($_SESSION)){
@@ -470,6 +481,9 @@
               break;
           case "change_controller_data":
               changeControllerData($_GET["controllerId"],$_GET["data"]);
+              break;
+          case "get_controller_data":
+              getControllerData($_GET["controllerId"]);
               break;
         }
       }

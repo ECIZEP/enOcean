@@ -37,6 +37,37 @@ function getDayCount(){
 	echo format($date,$nowDate);
 }
 
+function printLastestLog(){
+	$sql = "select * from logbook where username = '{$_SESSION["username"]}' order by logDate DESC	 limit 4";
+	$fourLogs = DBManager::query_mysql($sql);
+	//initial odd true
+	$odd = true;
+	foreach ($fourLogs as $key => $value) {
+		echo '<div class="activity ';
+		if(!$odd){
+			echo 'alt ';
+		}
+		if($value["noticeLevel"] == "0"){
+			echo 'normal"><span><i class="fa fa-flag"></i></span>';
+		}elseif($value["noticeLevel"] == "1"){
+			echo 'warning"><span><i class="fa fa-info-circle"></i></span>';
+		}elseif($value["noticeLevel"] ==  "2"){
+			echo 'danger"><span><i class="fa fa-bullhorn"></i></span>';
+		}
+		echo '<div class="activity-desk"><div class="panel"><div class="panel-body">';
+		if($odd){
+			echo '<div class="arrow"></div>';
+			//now is odd,the next is even
+			$odd = false;
+		}else{
+			echo '<div class="arrow-alt"></div>';
+			//now is even,the next is odd
+			$odd = true;
+		}
+		echo '<i class=" fa fa-clock-o"></i><h4>'.$value["logDate"].'</h4><p>'.$value["content"].'</p></div></div></div></div>';
+	}
+}
+
 ?>
 <!-- main content start -->
 <div class="content">
@@ -242,74 +273,15 @@ function getDayCount(){
 		<div class="col-lg-6">
 			<section class="panel ">
 				<header class="panel-heading">
-					操作记录
+					最近操作
 					<span class="tools pull-right">
+						<a href="./logbook.php" style="color: white" class="btn btn-success btn-xs"><i class="fa fa-tags"></i> 更多记录</a>
 						<a class="fa fa-chevron-down"></a>
 						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body profile-activity">
-
-					<div class="activity terques">
-						<span>
-							<i class="fa fa-info-circle"></i>
-						</span>
-						<div class="activity-desk">
-							<div class="panel">
-								<div class="panel-body">
-									<div class="arrow"></div>
-									<i class=" fa fa-clock-o"></i>
-									<h4>10:45 AM</h4>
-									<p>Purchased new equipments for zonal office setup and stationaries.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="activity alt purple">
-						<span>
-							<i class="fa fa-rocket"></i>
-						</span>
-						<div class="activity-desk">
-							<div class="panel">
-								<div class="panel-body">
-									<div class="arrow-alt"></div>
-									<i class=" fa fa-clock-o"></i>
-									<h4>12:30 AM</h4>
-									<p>Lorem ipsum dolor sit amet consiquest dio</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="activity blue">
-						<span>
-							<i class="fa fa-bullhorn"></i>
-						</span>
-						<div class="activity-desk">
-							<div class="panel">
-								<div class="panel-body">
-									<div class="arrow"></div>
-									<i class=" fa fa-clock-o"></i>
-									<h4>10:45 AM</h4>
-									<p>Please note which location you will consider, or both. Reporting to the VP  you will be responsible for managing.. </p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="activity alt green">
-						<span>
-							<i class="fa fa-beer"></i>
-						</span>
-						<div class="activity-desk">
-							<div class="panel">
-								<div class="panel-body">
-									<div class="arrow-alt"></div>
-									<i class=" fa fa-clock-o"></i>
-									<h4>12:30 AM</h4>
-									<p>Please note which location you will consider, or both.</p>
-								</div>
-							</div>
-						</div>
-					</div>
+					<?php printLastestLog(); ?>
 				</div>
 			</section>
 		</div>

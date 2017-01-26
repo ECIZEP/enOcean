@@ -426,33 +426,26 @@ ul.sub li a:hover{
 
 
 
-.activity.terques span {
+.activity.warning span {
     background: #8dd7d6;
 }
 
-.activity.terques h4 {
+.activity.warning h4 {
     color: #8dd7d6;
 }
-.activity.purple span {
+.activity.normal span {
     background: #b984dc;
 }
 
-.activity.purple h4 {
+.activity.normal h4 {
     color: #b984dc;
 }
-.activity.blue span {
-    background: #90b4e6;
+.activity.danger span {
+    background: #ff766c;
 }
 
-.activity.blue h4 {
-    color: #90b4e6;
-}
-.activity.green span {
-    background: #aec785;
-}
-
-.activity.green h4 {
-    color: #aec785;
+.activity.danger h4 {
+    color: #ff766c;
 }
 
 .activity h4 {

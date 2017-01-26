@@ -509,18 +509,6 @@ document.onmousemove = function(event){
   }
 };
 
-/*function addMousemove(newFunc){
-  if(typeof document.onmousemove == "function"){
-    var oldFunc = document.onmousemove;
-    document.onmousemove = function(event){
-      newFunc(event);
-      oldFunc();
-    }
-  }else{
-    document.onmousemove = newFunc;
-  }
-}*/
-
 document.onmouseup = function(event){
   if($('.ui-state-move').length != 0){
     changeControllerData($('.ui-state-move').attr("data-controllerid"),$('.ui-state-move #slider-amount').text());
