@@ -110,9 +110,12 @@
 						<span class="folder-icon"></span>
 					</a>
 					<ul class="sub">
-						<li><a data-toggle="modal" data-target="#addDeviceModal">添加设备</a></li>
-						<li><a data-toggle="modal" data-target="#addControllerModal">添加控制器</a></li>
-						
+						<li data-toggle="modal" data-target="#addDeviceModal">
+							<a href="javascript:;">添加设备</a>
+						</li>
+						<li data-toggle="modal" data-target="#addControllerModal">
+							<a href="javascript:;" >添加控制器</a>
+						</li>
 					</ul>
 				</li>
 				<li class="submenu">

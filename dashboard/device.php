@@ -30,7 +30,7 @@ function printController($resultArray){
 		}else{
 			echo $value["data"]."</td>";
 		}
-		echo '<td><button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button></td></tr>';
+		echo '<td><button data-toggle="modal" data-target="#modifyController" data-controllerid="'.$value["controllerId"].'" class="btn btn-primary btn-xs midifyController"><i class="fa fa-pencil"></i></button>&nbsp;<button data-toggle="modal" data-target="#deleteController" data-controllerid="'.$value["controllerId"].'" class="btn btn-danger btn-xs deleteController"><i class="fa fa-trash-o"></i></button></td></tr>';
 	}
 }
 
@@ -40,9 +40,9 @@ function printSwitcher($resultArray){
 			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label>';
 			echo '<div class="col-xs-8 text-right"><div class="switch has-switch">';
 			if($value["data"] == 1){
-				echo '<div class="switch-on switch-animate">';
+				echo '<div class="switch-on switch-animate" data-controllerid="'.$value["controllerId"].'">';
 			}else{
-				echo '<div class="switch-off switch-animate">';
+				echo '<div class="switch-off switch-animate" data-controllerid="'.$value["controllerId"].'">';
 			}
 			echo '<input type="checkbox" checked="" data-toggle="switch"><span class="switch-left">ON</span><label>&nbsp;</label><span class="switch-right">OFF</span></div></div></div></div>';
 		}
@@ -65,7 +65,7 @@ function printSelectorAndSlider($resultArray){
 			}
 			echo '</select></div></div>';
 		}elseif($value["typeName"] == "滑块控制"){
-			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label><div class="col-xs-8"><div class="slider-container" data-offsetwidth=""><div class="slider ui-slider-horizontal ui-widget-content">';
+			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label><div class="col-xs-8"><div class="slider-container" data-controllerid="'.$value["controllerId"].'" data-offsetwidth=""><div class="slider ui-slider-horizontal ui-widget-content">';
 			$sql = "select controName,data,minValue,maxValue_ from controller where controllerId = '{$value["controllerId"]}'";
 			$result = DBManager::query_mysql($sql)["0"];
 			$range = floatval($value['data'] - $result["minValue"])/floatval($result["maxValue_"] - $result["minValue"]) * 100;
@@ -128,7 +128,7 @@ function printSelectorAndSlider($resultArray){
 								<th>操作</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="fortr">
 							<?php printController($resultArray);?>
 						</tbody>
 					</table>
@@ -248,34 +248,13 @@ function printSelectorAndSlider($resultArray){
 		</div>
 	</div>
 </div>
-<div class="modal fade modal-dialog-center" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog ">
-		<div class="modal-content-wrap">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title">Modal Tittle</h4>
-				</div>
-				<div class="modal-body">
-
-					Body goes here...
-
-				</div>
-				<div class="modal-footer">
-					<button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-					<button class="btn btn-warning" type="button"> Confirm</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <div class="modal fade modal-dialog-center" id="deleteDevice" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog ">
 		<div class="modal-content-wrap">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title">删除设备安全验证</h4>
+					<h4 class="modal-title">删除<?php echo $deviceInfo["devicename"];?>安全验证</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
@@ -291,7 +270,60 @@ function printSelectorAndSlider($resultArray){
 				</div>
 				<div class="modal-footer">
 					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-					<button class="btn btn-warning" id="deleteDeviceConfirm" type="button">确定</button>
+					<button data-deviceid="<?php echo $_GET["unique"];?>" class="btn btn-warning" id="deleteDeviceConfirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-dialog-center" id="modifyController" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">修改控制器信息</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-md-4">控制器名称：</label>
+							<div class="col-md-8">
+								<input size="16" type="text" id="modifyControllerName" class="form-control">
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button data-controllerid="" class="btn btn-warning" id="modifyControllerConfirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-dialog-center" id="deleteController" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">删除操作安全验证</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+					<div class="form-group last">
+							<label class="control-label col-md-4">请输入密码完成操作：</label>
+							<div class="col-md-8">
+								<input size="16" id="deleteControllerInput" type="password" class="form-control">
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button class="btn btn-warning" data-controllerid="" id="deleteControllerConfirm" type="button">确定</button>
 				</div>
 			</div>
 		</div>

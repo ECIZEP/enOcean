@@ -134,10 +134,50 @@ $('#addDeviceModalConfirm').click(function(){
   }
 });
 
+//delete device
+$('.deleteDevice').click(function(){
+  $('#deleteDeviceConfirm').attr("data-deviceid",this.getAttribute("data-deviceid"));
+  $('.modal-title > .deleteTitle').text($(this).parent().parent().children()[0].innerHTML);
+});
+
+$('#deleteDeviceConfirm').click(function(){
+  var verifycode = $('.verifycodeInput').val();
+  var deviceId = $('#deleteDeviceConfirm').attr("data-deviceId");
+  if(verifycode == ""){
+    toastr.info("请填写验证码");
+  }else{
+    $.ajax({
+      type: "GET",
+      url: "./functions.php",
+      dataType:'json',
+      data: {
+        type: "delete_device",
+        deviceId:deviceId,
+        verifycode:verifycode
+      },
+      success: function(data){
+        if(data.state == "delete_device_success"){
+          $('#deleteDevice').modal("hide");
+          toastr.success("删除设备信息成功");
+          $('.verifycodeInput').val("")
+        }else if(data.state == "delete_device_failed"){
+          toastr.error("修改失败，请重试");
+        }else if(data.state == "verifycode_wrong"){
+          toastr.error("验证码错误，请重新输入");
+        }
+      },
+      error: function(){
+        toastr.clear();
+        toastr.error("发生错误：");
+      }
+    });
+  }
+});
+
 //modify device infomation
 $('.modifyDevice').click(function(){
   $('#modifyDeviceConfirm').attr("data-deviceid",this.getAttribute("data-deviceid"));
-  $('.modal-title span').text($(this).parent().parent().children()[0].innerHTML);
+  $('.modal-title > .modifyTitle').text($(this).parent().parent().children()[0].innerHTML);
 });
 
 $('#modifyDeviceConfirm').click(function(){
@@ -148,34 +188,32 @@ $('#modifyDeviceConfirm').click(function(){
   }else{
     var deviceId = this.getAttribute("data-deviceid");
     $.ajax({
-    type: "GET",
-    url: "./functions.php",
-    dataType:'json',
-    data: {
-      type: "modify_device",
-      deviceId:deviceId,
-      deviceName: deviceName,
-      deviceRemark: deviceRemark
-    },
-    success: function(data){
-      if(data.state == "modify_device_success"){
-        $('#modifyDevice').modal("hide");
-        toastr.success("修改设备信息成功");
-        $('#modefyDeviceName').val("");
-        $('#modifyDeviceRemark').val("");
-      }else if(data.state == "modify_device_failed"){
-        toastr.error("修改失败，请重试");
+      type: "GET",
+      url: "./functions.php",
+      dataType:'json',
+      data: {
+        type: "modify_device",
+        deviceId:deviceId,
+        deviceName: deviceName,
+        deviceRemark: deviceRemark
+      },
+      success: function(data){
+        if(data.state == "modify_device_success"){
+          $('#modifyDevice').modal("hide");
+          toastr.success("修改设备信息成功");
+          $('#modefyDeviceName').val("");
+          $('#modifyDeviceRemark').val("");
+        }else if(data.state == "modify_device_failed"){
+          toastr.error("修改失败，请重试");
+        }
+      },
+      error: function(){
+        toastr.clear();
+        toastr.error("发生错误：");
       }
-    },
-    error: function(){
-      toastr.clear();
-      toastr.error("发生错误：");
-    }
-  });
+    });
   }
 });
-
-
 
 
 //add controller
@@ -265,6 +303,113 @@ $('#addControllerConfirm').click(function(){
   });
 });
 
+//delete controller
+$('.deleteController').click(function(){
+  $('#deleteControllerConfirm').attr("data-controllerid",this.getAttribute("data-controllerid"));
+  $('.deleteController').parent().parent().addClass("deleteTarget");
+});
+
+$('#deleteControllerConfirm').click(function(){
+  var password = $("#deleteControllerInput").val();
+  if(password == ""){
+    toastr.info("请将表单填写完整");
+  }else{
+    $.ajax({
+      type: "GET",
+      url: "./functions.php",
+      dataType:'json',
+      data: {
+        type: "delete_controller",
+        controllerId:this.getAttribute("data-controllerid"),
+        password: password
+      },
+      success: function(data){
+        if(data.state == "delete_controller_success"){
+          $('#deleteController').modal("hide");
+          $('.deleteTarget').animate({"opacity":"0"},1000);
+          setTimeout("$('.deleteTarget').remove();",1000);
+          toastr.success("删除控制器信息成功");
+          $('#deleteControllerInput').val("");
+        }else if(data.state == "delete_controller_failed"){
+          toastr.error("修改失败，请重试");
+        }else if(data.state == "password_incorrect"){
+          toastr.error("密码输入错误");
+        }
+      },
+      error: function(){
+        toastr.clear();
+        toastr.error("发生错误：");
+      }
+    });
+  }
+});
+
+//modify controller
+$('.midifyController').click(function(){
+  $('#modifyControllerConfirm').attr("data-controllerid",this.getAttribute("data-controllerid"));
+  var nametd = $(this).parents('tr').children()[0];
+  nametd.className = "targetController";
+  $('#modifyControllerName').val(nametd.innerHTML);
+});
+
+$('#modifyControllerConfirm').click(function(){
+  var controllerName = $('#modifyControllerName').val();
+  if(controllerName == ""){
+    toastr.info("请将表单填写完整");
+  }else{
+    var controllerId = this.getAttribute("data-controllerid");
+    $.ajax({
+      type: "GET",
+      url: "./functions.php",
+      dataType:'json',
+      data: {
+        type: "modify_controller",
+        controllerId:controllerId,
+        controllerName: controllerName
+      },
+      success: function(data){
+        if(data.state == "modify_controller_success"){
+          $('.targetController').text(controllerName).removeClass('targetController');
+          $('#modifyController').modal("hide");
+          toastr.success("修改控制器信息成功");
+          $('#modifyControllerName').val("");
+        }else if(data.state == "modify_controller_failed"){
+          toastr.error("修改失败，请重试");
+        }
+      },
+      error: function(){
+        toastr.clear();
+        toastr.error("发生错误：");
+      }
+    });
+  }
+});
+
+
+//change controller data
+function changeControllerData(controllerId,data){
+  $.ajax({
+    type: "GET",
+    url: "./functions.php",
+    dataType:'json',
+    data: {
+      type: "change_controller_data",
+      controllerId: controllerId,
+      data: data
+    },
+    success: function(data){
+      if(data.state == "change_controller_data_success"){
+        toastr.success("更新成功！");
+      }else if(data.state == "change_controller_data_failed"){
+        toastr.error("修改失败，请重试");
+      }
+    },
+    error: function(){
+      toastr.clear();
+      toastr.error("发生错误：");
+    }
+  });
+}
 
 /*----------------------some thing about device and controller end---------------------------*/
 
@@ -295,11 +440,19 @@ jQuery('.fa.fa-times').click(function () {
 $('.switch-animate').click(function(){
 	if(jQuery(this).hasClass("switch-on")){
 		jQuery(this).removeClass("switch-on").addClass("switch-off");
+    //update data in database
+    changeControllerData(this.getAttribute("data-controllerid"),0);
 	}else{
 		jQuery(this).removeClass("switch-off").addClass("switch-on");
+    //update data in database
+    changeControllerData(this.getAttribute("data-controllerid"),1);
 	}
 });
 
+/*selector */
+$('.selector').change(function(){
+    changeControllerData(this.getAttribute("data-controllerid"),this.selectedIndex);
+});
 
 /*slider animation---device*/
 
@@ -356,7 +509,7 @@ document.onmousemove = function(event){
   }
 };
 
-function addMousemove(newFunc){
+/*function addMousemove(newFunc){
   if(typeof document.onmousemove == "function"){
     var oldFunc = document.onmousemove;
     document.onmousemove = function(event){
@@ -366,10 +519,14 @@ function addMousemove(newFunc){
   }else{
     document.onmousemove = newFunc;
   }
-}
+}*/
 
 document.onmouseup = function(event){
-	$('.ui-state-move').removeClass("ui-state-move");
+  if($('.ui-state-move').length != 0){
+    changeControllerData($('.ui-state-move').attr("data-controllerid"),$('.ui-state-move #slider-amount').text());
+    $('.ui-state-move').removeClass("ui-state-move");
+  }
+  
 };
 
 
@@ -573,7 +730,7 @@ function GetXmlHttpObject(){
       this.disabled = "true";
       this.innerHTML = "<span class='Secondtext'>60</span>秒再发送";
       //here the action goes
-      //sendVerifycode(this.value,$(this).attr("data-phonenumber"));
+      sendVerifycode(this.value,$(this).attr("data-phonenumber"));
       timeCount();
     });
   	
@@ -588,6 +745,33 @@ function GetXmlHttpObject(){
   			setTimeout("timeCount()",1000);
   		}
   	}
+
+    //send verifycode
+  //type:the action
+  //phoneNumber:the receiver
+  function sendVerifycode(type,phoneNumber){
+    $.ajax({
+      type: "GET",
+      url: "../message/sendMessage.php",
+      dataType:'json',
+      data: {
+        type: type,
+        phoneNumber:phoneNumber
+      },
+      success: function(data){
+        if(data.state == "sendVerifycode_success"){
+          toastr.success("验证码已发送，请查收");
+        }else if(data.state == "sendVerifycode_failed"){
+          toastr.success("验证码发送出错，请重试获取");
+          $('.Secondtext').text("1");
+        }
+      },
+      error: function(){
+        toastr.clear();
+        toastr.error("验证码请求错误");
+      }
+    });
+  }
 
 
     //change phonenumber
@@ -626,32 +810,6 @@ function GetXmlHttpObject(){
   		}
   	});
 
-  //send verifycode
-  //type:the action
-  //phoneNumber:the receiver
-  function sendVerifycode(type,phoneNumber){
-    $.ajax({
-        type: "GET",
-        url: "../message/sendMessage.php",
-        dataType:'json',
-        data: {
-          type: type,
-          phoneNumber:phoneNumber
-        },
-        success: function(data){
-          if(data.state == "sendVerifycode_success"){
-            toastr.success("验证码已发送，请查收");
-          }else if(data.state == "sendVerifycode_failed"){
-            toastr.success("验证码发送出错，请重试获取");
-            $('.Secondtext').text("1");
-          }
-        },
-        error: function(){
-          toastr.clear();
-          toastr.error("验证码请求错误");
-        }
-      });
-  }
 
   //change password
   var modal3 =  document.getElementById('myModal3Confirm');

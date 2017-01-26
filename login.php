@@ -1,5 +1,7 @@
 <?php
-  session_start();
+  if(!isset($_SESSION)){
+    session_start();
+  }
   header("Content-Type: text/plain;charset=utf-8"); 
   /*
     return value:
@@ -13,7 +15,6 @@
     $checks = strtolower($checks);
     if($checks==$_SESSION["check_checks"]){
       include("db.class.php");
-
       $username = $_POST["username"];
       $password = $_POST["password"];
       $sql = "select  *  from account where username='{$username}'  limit 1 ";

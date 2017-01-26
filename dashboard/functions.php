@@ -121,11 +121,15 @@
     }
 
     //delete device
-    function deleteDevice($deviceId){
+    function deleteDevice($deviceId,$verifycode){
       if(!isset($_SESSION)){
         session_start();
       }
-      $sql = "selete devices where deviceId='{$deviceId}' and owner = '{$_SESSION["username"]}'";
+      if($_SESSION["verifycode"] != $verifycode){
+        echo '{"state":"verifycode_wrong"}';
+        exit;
+      }
+      $sql = "delete from devices where deviceId='{$deviceId}' and owner = '{$_SESSION["username"]}'";
       if(DBManager::update_mysql($sql)){
         echo '{"state":"delete_device_success"}';
       }else{
@@ -152,7 +156,7 @@
           }else if($value["connectState"] == "1"){
             echo "<td><span class='label label-success label-mini'>已连接</span></td>";
           }
-          echo '<td><button data-toggle="modal" data-target="#modifyDevice" data-deviceid="'.$value["deviceId"].'" class="btn btn-primary btn-xs modifyDevice"><i class="fa fa-pencil"></i></button>&nbsp;<button data-toggle="modal" data-target="#deleteDevice" data-deviceid="'.$value["deviceId"].'" class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button></td></tr>';
+          echo '<td><button data-toggle="modal" data-target="#modifyDevice" data-deviceid="'.$value["deviceId"].'" class="btn btn-primary btn-xs modifyDevice"><i class="fa fa-pencil"></i></button>&nbsp;<button data-toggle="modal" data-target="#deleteDevice" data-deviceid="'.$value["deviceId"].'" class="btn btn-danger btn-xs deleteDevice"><i class="fa fa-trash-o "></i></button></td></tr>';
         }
         
       }
@@ -168,6 +172,47 @@
       }
     }
 
+    //update controller information
+    function modifyController($controllerId,$controName){
+      //update the view,DBMS will update the table automatically
+      $sql = "update tablecontroller set controName = '{$controName}' where controllerId = {$controllerId}";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"modify_controller_success"}';
+      }else{
+        echo '{"state":"modify_controller_failed"}';
+      }
+    }
+
+    //delete controller
+    function deleteController($password,$controllerId){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      if($password != DBManager::query_account_by_username($_SESSION["username"])["password"]){
+        echo '{"state":"password_incorrect"}';
+      }else{
+        $sql = "delete from controller where controllerId = '{$controllerId}'";
+        if(DBManager::update_mysql($sql)){
+          echo '{"state":"delete_controller_success"}';
+        }else{
+          echo '{"state":"delete_controller_failed"}';
+        }
+      }
+
+    }
+    //change controller data
+    function changeControllerData($controllerId,$data){
+      if($controllerId == ""){
+        echo '{"state":"change_controller_data_failed"}';
+        exit;
+      }
+      $sql = "update controller set data = '{$data}' where controllerId = '{$controllerId}'";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"change_controller_data_success"}';
+      }else{
+        echo '{"state":"change_controller_data_failed"}';
+      }
+    }
 
     function getControllerTypeName(){
       $sql = "select typeName from type";
@@ -409,13 +454,22 @@
               addDevice($_GET["initialName"],$_GET["deviceName"],$_GET["deviceRemark"]);
               break;
           case "delete_device":
-              delete_device($_GET["deviceId"]);
+              deleteDevice($_GET["deviceId"],$_GET["verifycode"]);
               break;
           case "add_controller":
               addController($_GET["controllerType"],$_GET["controllerName"],$_GET["deviceId"],$_GET["modeNames"],$_GET["minValue"],$_GET["maxValue"]);
               break;
           case "modify_device":
               modifyDevice($_GET["deviceId"],$_GET["deviceName"],$_GET["deviceRemark"]);
+              break;
+          case "modify_controller":
+              modifyController($_GET["controllerId"],$_GET["controllerName"]);
+              break;
+          case "delete_controller":
+              deleteController($_GET["password"],$_GET["controllerId"]);
+              break;
+          case "change_controller_data":
+              changeControllerData($_GET["controllerId"],$_GET["data"]);
               break;
         }
       }

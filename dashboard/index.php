@@ -252,7 +252,7 @@ function getDayCount(){
 
 					<div class="activity terques">
 						<span>
-							<i class="fa fa-shopping-cart"></i>
+							<i class="fa fa-info-circle"></i>
 						</span>
 						<div class="activity-desk">
 							<div class="panel">
@@ -419,7 +419,7 @@ function getDayCount(){
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title">修改<span></span>设备信息</h4>
+					<h4 class="modal-title">修改<span class="modifyTitle"></span>设备信息</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
@@ -440,6 +440,34 @@ function getDayCount(){
 				<div class="modal-footer">
 					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
 					<button data-deviceid="" class="btn btn-warning" id="modifyDeviceConfirm" type="button">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade modal-dialog-center" id="deleteDevice" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog ">
+		<div class="modal-content-wrap">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">删除<span class="deleteTitle"></span>安全验证</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+					<div class="form-group last">
+							<label class="control-label col-md-4">请输入验证码：</label>
+							<div class="col-md-8">
+								<input size="16" type="text" class="form-control btn-input verifycodeInput">
+								<button value="delete_device" data-phonenumber="<?php echo get_phone_number();?>" class="btn btn-success pull-right sendMessage" type="button">发送验证码</button>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+					<button data-deviceid="" class="btn btn-warning" id="deleteDeviceConfirm" type="button">确定</button>
 				</div>
 			</div>
 		</div>
