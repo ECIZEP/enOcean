@@ -57,38 +57,29 @@ $('.sidebar-toggle').click(function(event){
 
 //sidebar menu animate
 (function(){
-  var sidebarItems = document.getElementById('sidebar').getElementsByTagName('li');
+  var sidebarItems = document.getElementsByClassName('submenu');
   for (var i = 0; i < sidebarItems.length; i++) {
     sidebarItems[i].index = i;
-    sidebarItems[i].addEventListener('click',function(){
-      for(var j = 0;j < sidebarItems.length;j++){
-        if(j != this.index){
-          sidebarItems[j].className = "subitem";
-        }else{
-          sidebarItems[j].className = "subitem active";
-        }
-      }
-
-      var submenu;
-      for (var j = 0; j < sidebarItems.length; j++) {
-        if(this.index != j){
-          sidebarItems[j].getElementsByTagName('a')[0].className = "";
-          submenu = sidebarItems[j].getElementsByTagName('ul')[0];
-          if(submenu){
-            submenu.style.display = "none";
-          }
-        }
-      }
-      submenu = this.getElementsByTagName('ul')[0];
-      if(submenu){
-        if(submenu.style.display == "block"){
-          submenu.style.display = "none";
-        }else{
-          submenu.style.display = "block";
-        } 
+    sidebarItems[i].addEventListener('click',function(event){
+      if($(this).hasClass('active')){
+        this.className = "submenu";
+      }else{
+        this.className = "submenu active";
       }
     },false);
   }
+
+  $('.sub').click(function(event){
+    event.stopPropagation();
+  });
+
+  $('#addDeviceHeader').click(function(){
+    $('#addDeviceModal').modal('show');
+  });
+
+  $('#addControllerHeader').click(function(){
+    $('#addControllerModal').modal('show');
+  });
 })();
 
 //stop propagation,otherwise clicking sidebar item will triggle document's click event
@@ -441,11 +432,19 @@ $('.switch-animate').click(function(){
 	if(jQuery(this).hasClass("switch-on")){
 		jQuery(this).removeClass("switch-on").addClass("switch-off");
     //update data in database
-    changeControllerData(this.getAttribute("data-controllerid"),0);
+    if($(this).hasClass("setting")){
+
+    }else{
+      changeControllerData(this.getAttribute("data-controllerid"),0);
+    }
 	}else{
 		jQuery(this).removeClass("switch-off").addClass("switch-on");
     //update data in database
-    changeControllerData(this.getAttribute("data-controllerid"),1);
+    if($(this).hasClass("setting")){
+
+    }else{
+      changeControllerData(this.getAttribute("data-controllerid"),1);
+    }
 	}
 });
 
@@ -656,13 +655,14 @@ function GetXmlHttpObject(){
 /*safe setting*/
 
 (function(){
+
   var data = new Array();
   $('#optgroup option').each(function(){
     if(this.getAttribute("selected") != null){
       data.push(this.value);
     }
   });
-  
+
   //change quick
   $('#optgroup').multiSelect({
     selectableOptgroup: true,
@@ -932,6 +932,7 @@ function GetXmlHttpObject(){
 
 
 (function(){
+
   //check box animation
   $('#logTable > tr').click(function(event){
     if($('.label_check',this).hasClass('c_on')){

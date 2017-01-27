@@ -68,14 +68,13 @@ function printLastestLog(){
 	}
 }
 
-/*<div class="form-group"><label class="col-xs-4 control-label">电源开关</label><div class="col-xs-8 text-right"><div class="switch has-switch"><div class="switch-on switch-animate" data-controllerid="3"><input type="checkbox" checked="" data-toggle="switch"><span class="switch-left">ON</span><label>&nbsp;</label><span class="switch-right">OFF</span></div></div></div></div>*/
-
 function printQuickSwitcher($para){
 	$selected = str_replace(" ",",",get_quickCon());
 	$sql = "select * from tablecontroller,devices where tablecontroller.controllerId in({$selected}) and tablecontroller.deviceId = devices.deviceId";
 	$resultArray = DBManager::query_mysql($sql);
 	$switcher = "";
 	$selectorAndSlider = "";
+	$observer = "";
 	foreach ($resultArray as $key => $value) {
 		if($value["typeName"] == "开关"){
 			$switcher = $switcher.'<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'-'.$value["devicename"].'</label>';
@@ -101,12 +100,18 @@ function printQuickSwitcher($para){
 			$selectorAndSlider = $selectorAndSlider.'<div class="ui-slider-range ui-widget-header" style="width:'.$range.'%"></div>';
 			$selectorAndSlider = $selectorAndSlider.'<a href="javascript:;" class="ui-slider-handle ui-state-default" style="left:'.$range.'%"></a></div>';
 			$selectorAndSlider = $selectorAndSlider.'<div class="slider-info">当前值:<span id="slider-amount" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'">'.$value['data'].'</span></div></div></div></div>';
+		}elseif($value["typeName"] == "数值监控"){
+			$sql = "select minValue,maxValue_ from controller where controllerId = '{$value["controllerId"]}' limit 1";
+			$result = DBManager::query_mysql($sql)["0"];
+			$observer = $observer.'<div class="charts charts-dashboard" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'" data-title="'.$value["controName"].'-'.$value["devicename"].'" data-controllerid="'.$value["controllerId"].'"></div>';
 		}
 	}
 	if($para == "switcher"){
 		echo $switcher;
-	}else{
+	}elseif($para == "selectorAndSlider"){
 		echo $selectorAndSlider;
+	}elseif($para == "observer"){
+		echo $observer;
 	}
 	
 }
@@ -239,32 +244,6 @@ function printQuickSwitcher($para){
 						<div class="panel-body">
 							<form class="form-horizontal tasi-form">
 								<?php printQuickSwitcher("switcher");?>
-								<!-- <div class="form-group">
-									<label class="col-xs-6 control-label text-center">空调——电源开关</label>
-									<div class="col-xs-6 text-right">
-										<div class="switch has-switch">
-											<div class="switch-on switch-animate">
-												<input type="checkbox" checked="" data-toggle="switch">
-												<span class="switch-left">ON</span>
-												<label>&nbsp;</label>
-												<span class="switch-right">OFF</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-xs-6 control-label text-center">电视机——屏幕开关</label>
-									<div class="col-xs-6 text-right">
-										<div class="switch has-switch">
-											<div class="switch-on switch-animate">
-												<input type="checkbox" checked="" data-toggle="switch">
-												<span class="switch-left">ON</span>
-												<label>&nbsp;</label>
-												<span class="switch-right">OFF</span>
-											</div>
-										</div>
-									</div>
-								</div> -->
 							</form>
 						</div>
 					</section>
@@ -281,32 +260,7 @@ function printQuickSwitcher($para){
 						</header>
 						<div class="panel-body">
 							<form class="form-horizontal tasi-form">
-								<?php printQuickSwitcher("df");?>
-								<!-- <div class="form-group">
-									<label class="col-sm-4 col-xs-4 control-label">空调模式</label>
-									<div class="col-sm-8 col-xs-8">
-										<select name="minbeds" id="minbeds" class="form-control bound-s">
-											<option>制冷模式</option>
-											<option>暖气模式</option>
-											<option>睡眠模式</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label">温度控制</label>
-									<div class="col-sm-8">
-										<div class="slider-container" data-offsetwidth="">
-											<div class="slider ui-slider-horizontal ui-widget-content">
-												<div class="ui-slider-range ui-widget-header" style="width: 0%;"></div>
-												<a href="javascript:;" class="ui-slider-handle ui-state-default" style="left: 0%"></a>
-											</div>
-											<div class="slider-info">
-												当前值:
-												<span data-min="10" data-max="30" id="slider-amount">10</span>
-											</div>
-										</div>
-									</div>
-								</div> -->
+								<?php printQuickSwitcher("selectorAndSlider");?>
 							</form>
 						</div>
 					</section>
@@ -333,95 +287,14 @@ function printQuickSwitcher($para){
 		<div class="col-lg-6">
 			<section class="panel">
 				<header class="panel-heading">
-					Chats
+					数值监控
 					<span class="tools pull-right">
 						<a class="fa fa-chevron-down"></a>
 						<a class="fa fa-times"></a>
 					</span>
 				</header>
 				<div class="panel-body">
-					<div class="timeline-messages">
-						<!-- Comment -->
-						<div class="msg-time-chat">
-							<a href="#" class="message-img"><img class="avatar" src="img/chat-avatar.jpg" alt=""></a>
-							<div class="message-body msg-in">
-								<span class="arrow"></span>
-								<div class="text">
-									<p class="attribution"><a href="#">Jhon Doe</a> at 1:55pm, 13th April 2013</p>
-									<p>Hello, How are you brother?</p>
-								</div>
-							</div>
-						</div>
-						<!-- /comment -->
-
-						<!-- Comment -->
-						<div class="msg-time-chat">
-							<a href="#" class="message-img"><img class="avatar" src="img/chat-avatar2.jpg" alt=""></a>
-							<div class="message-body msg-out">
-								<span class="arrow"></span>
-								<div class="text">
-									<p class="attribution"> <a href="#">Jonathan Smith</a> at 2:01pm, 13th April 2013</p>
-									<p>I'm Fine, Thank you. What about you? How is going on?</p>
-								</div>
-							</div>
-						</div>
-						<!-- /comment -->
-
-						<!-- Comment -->
-						<div class="msg-time-chat">
-							<a href="#" class="message-img"><img class="avatar" src="img/chat-avatar.jpg" alt=""></a>
-							<div class="message-body msg-in">
-								<span class="arrow"></span>
-								<div class="text">
-									<p class="attribution"><a href="#">Jhon Doe</a> at 2:03pm, 13th April 2013</p>
-									<p>Yeah I'm fine too. Everything is going fine here.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /comment -->
-
-						<!-- Comment -->
-						<div class="msg-time-chat">
-							<a href="#" class="message-img"><img class="avatar" src="img/chat-avatar2.jpg" alt=""></a>
-							<div class="message-body msg-out">
-								<span class="arrow"></span>
-								<div class="text">
-									<p class="attribution"><a href="#">Jonathan Smith</a> at 2:05pm, 13th April 2013</p>
-									<p>well good to know that. anyway how much time you need to done your task?</p>
-								</div>
-							</div>
-						</div>
-						<!-- /comment -->
-						<!-- Comment -->
-						<div class="msg-time-chat">
-							<a href="#" class="message-img"><img class="avatar" src="img/chat-avatar.jpg" alt=""></a>
-							<div class="message-body msg-in">
-								<span class="arrow"></span>
-								<div class="text">
-									<p class="attribution"><a href="#">Jhon Doe</a> at 1:55pm, 13th April 2013</p>
-									<p>Hello, How are you brother?</p>
-								</div>
-							</div>
-						</div>
-						<!-- /comment -->
-					</div>
-					<div class="chat-form">
-						<div class="input-cont ">
-							<input type="text" class="form-control col-lg-12" placeholder="Type a message here...">
-						</div>
-						<div class="form-group">
-							<div class="pull-right chat-features">
-								<a>
-									<i class="fa fa-camera"></i>
-								</a>
-								<a>
-									<i class="fa fa-link"></i>
-								</a>
-								<a class="btn btn-danger">Send</a>
-							</div>
-						</div>
-
-					</div>
+					<?php printQuickSwitcher("observer");?>
 				</div>
 			</section>
 		</div>
@@ -490,6 +363,8 @@ function printQuickSwitcher($para){
 		</div>
 	</div>
 </div>
+<script src="../js/echarts.min.js"></script>
+<script src="../js/deviceChart.js?v=2"></script>
 <?php 
 include("footer.php");
 ?>

@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?v=1.6">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?v=12.0">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 	 	document.getElementsByTagName('body')[0].innerHTML = "";
@@ -104,11 +104,11 @@
 						<span class="folder-icon"></span>
 					</a>
 					<ul class="sub">
-						<li data-toggle="modal" data-target="#addDeviceModal">
-							<a href="javascript:;">添加设备</a>
+						<li>
+							<a href="javascript:;" id="addDeviceHeader">添加设备</a>
 						</li>
-						<li data-toggle="modal" data-target="#addControllerModal">
-							<a href="javascript:;" >添加控制器</a>
+						<li >
+							<a href="javascript:;" id="addControllerHeader">添加控制器</a>
 						</li>
 					</ul>
 				</li>

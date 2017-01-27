@@ -50,7 +50,7 @@ for (var i = charts.length - 1; i >= 0; i--) {
 		},
 		visualMap: {
 			top:0,
-			right:'20%',
+			right:'30%',
 			type: 'piecewise',
 			pieces: [{
 				gt: parseInt(lowest),

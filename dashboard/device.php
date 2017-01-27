@@ -81,7 +81,7 @@ function printCharts($resultArray){
 		if($value["typeName"] == "数值监控"){
 			$sql = "select * from controller where controllerId ='{$value["controllerId"]}' limit 1";
 			$result = DBManager::query_mysql($sql)["0"];
-			echo '<div class="charts" style="width: 100%;height:600px;margin-bottom:20px;" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'" data-title="'.$value["controName"].'" data-controllerid="'.$value["controllerId"].'"></div>';
+			echo '<div class="charts charts-device" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'" data-title="'.$value["controName"].'" data-controllerid="'.$value["controllerId"].'"></div>';
 		}	
 	}
 }
@@ -313,7 +313,7 @@ function printCharts($resultArray){
 </div>
 
 <script src="../js/echarts.min.js"></script>
-<script src="../js/deviceChart.js?v=1"></script>
+<script src="../js/deviceChart.js?v=2"></script>
 <?php 
 include("footer.php");
 ?>

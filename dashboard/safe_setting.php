@@ -7,6 +7,7 @@
 		$switcher = "<optgroup label='开关'>";
 		$selector = "<optgroup label='下拉选择'>";
 		$slider = "<optgroup label='滑块控制'>";
+		$observer = "<optgroup label='数值监控'>";
 		foreach ($controllerArray as $key => $value) {
 			if ($value["typeName"] == "开关"){
 				if(in_array($value["controllerId"], $selectedArray)){
@@ -27,11 +28,18 @@
 				}else{
 					$slider = $slider."<option value='{$value["controllerId"]}'>{$value["controName"]}-{$value["devicename"]}</option>";
 				}
+			}elseif ($value["typeName"] == "数值监控"){
+				if(in_array($value["controllerId"], $selectedArray)){
+					$observer = $observer."<option value='{$value["controllerId"]}' selected>{$value["controName"]}-{$value["devicename"]}</option>";
+				}else{
+					$observer = $observer."<option value='{$value["controllerId"]}'>{$value["controName"]}-{$value["devicename"]}</option>";
+				}
 			}
 		}
 		echo $switcher."</optgroup>";
 		echo $selector."</optgroup>";
 		echo $slider."</optgroup>";
+		echo $observer."</optgroup>";
 	}
 ?>
 <!-- main content start -->
@@ -45,14 +53,30 @@
 				<div class="panel-body bg-white">
 					<form class="form-horizontal tasi-form" method="get">
 						<div class="form-group">
-							<label class="control-label col-sm-2">快捷设置</label>
+							<label class="col-sm-2 col-xs-4 control-label">短信警报</label>
+							<label class="col-sm-6 col-xs-8 control-label">
+								数据监控不在正常范围内时短信通知		
+							</label>
+							<div class="col-sm-4 col-xs-12">
+								<div class="switch has-switch">
+									<div class="switch-on switch-animate setting">
+										<input type="checkbox" checked="" data-toggle="switch">
+										<span class="switch-left">ON</span>
+										<label>&nbsp;</label>
+										<span class="switch-right">OFF</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">首页控制器</label>
 							<div class="col-sm-6">
 								<select id='optgroup' multiple='multiple'>
 								  	<?php printOptgroup(); ?>
 								</select>
 							</div>
 							<div class="col-sm-4 col-xs-12">
-								<button type="button" id="changeQuick" class="btn btn-info"><i class="fa fa-pencil"></i> 更改</button>
+								<button style="margin-top: 10px;" type="button" id="changeQuick" class="btn btn-info"><i class="fa fa-pencil"></i> 更改</button>
 							</div>
 						</div>
 						

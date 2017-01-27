@@ -192,6 +192,10 @@ ul.sub{
 	overflow:hidden;
 }
 
+.submenu.active ul.sub{
+    display: block;
+}
+
 ul.sub li{
 	padding-left: 37px;
 }
@@ -238,6 +242,19 @@ ul.sub li a:hover{
 .spinner-buttons.btn-group-vertical .btn:last-child {
     border-radius: 0 0 4px 0 !important;
     -webkit-border-radius: 0 0 4px 0 !important;
+}
+
+.charts{
+    width: 100%;
+    margin-bottom:20px;
+}
+
+.charts-device{
+    height: 600px;
+}
+
+.charts-dashboard{
+    height: 450px;
 }
 
 
@@ -1502,5 +1519,16 @@ tr{
     .ms-container{
       background: transparent url('../assets/jquery-multi-select/switch.png') no-repeat 50% 50%;
       width: 100%;
-  }
+    }
+
+    .btn-responsive{
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+    }
+
+    .charts{
+        height: 350px;
+    }
 } 

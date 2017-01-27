@@ -112,7 +112,7 @@
 	<script src="../assets/toastr/toastr.min.js"></script>
 	<script src="../assets/bootstap-fileupload/bootstrap-fileupload.js"></script>
 	<script src="../assets/jquery-multi-select/jquery.multi-select.js"></script>
-	<script src="../js/common-scripts.js?v=1.8"></script>
+	<script src="../js/common-scripts.js?v=2.2"></script>
 	
 </body>
 </html>
