@@ -18,7 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?v=1.5">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?v=1.6">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 	 	document.getElementsByTagName('body')[0].innerHTML = "";
@@ -43,22 +43,22 @@
 				<b class="caret"></b>
 			</a>
 			<ul class="dropdown-menu extented" role="menu">
+				<li>
+		      		<a href="./index.php">
+		      			<i class="fa fa-dashboard"></i>
+		      			控制台
+		      		</a>
+		      	</li>
 		      	<li>
-		      		<a href="profile.php">
+		      		<a href="./profile.php">
 		      			<i class="fa fa-user"></i>
 		      			个人信息
 		      		</a>
 		      	</li>
 		      	<li>
-		      		<a href="safe_setting.php">
+		      		<a href="./safe_setting.php">
 		      			<i class="fa fa-cog"></i>
-		      			设置
-		      		</a>
-		      	</li>
-		      	<li>
-		      		<a href="#">
-		      			<i class="fa fa-bell-o"></i>
-		      			通知
+		      			设置中心
 		      		</a>
 		      	</li>
 		      	<li>

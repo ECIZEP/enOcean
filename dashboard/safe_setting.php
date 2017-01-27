@@ -1,5 +1,38 @@
 <?php 
 	include("header.php");
+	function printOptgroup(){
+		$sql = "select tablecontroller.controllerId,tablecontroller.controName,tablecontroller.typeName,devices.devicename from tablecontroller,devices where devices.owner = '{$_SESSION["username"]}' and devices.deviceId = tablecontroller.deviceId";
+		$controllerArray = DBManager::query_mysql($sql);
+		$selectedArray = get_quickCon_array();
+		$switcher = "<optgroup label='开关'>";
+		$selector = "<optgroup label='下拉选择'>";
+		$slider = "<optgroup label='滑块控制'>";
+		foreach ($controllerArray as $key => $value) {
+			if ($value["typeName"] == "开关"){
+				if(in_array($value["controllerId"], $selectedArray)){
+					$switcher = $switcher."<option value='{$value["controllerId"]}' selected>{$value["controName"]}-{$value["devicename"]}</option>";
+				}else{
+					$switcher = $switcher."<option value='{$value["controllerId"]}'>{$value["controName"]}-{$value["devicename"]}</option>";
+				}
+				
+			}elseif ($value["typeName"] == "下拉选择"){
+				if(in_array($value["controllerId"], $selectedArray)){
+					$selector = $selector."<option value='{$value["controllerId"]}' selected>{$value["controName"]}-{$value["devicename"]}</option>";
+				}else{
+					$selector = $selector."<option value='{$value["controllerId"]}'>{$value["controName"]}-{$value["devicename"]}</option>";
+				}
+			}elseif ($value["typeName"] == "滑块控制") {
+				if(in_array($value["controllerId"], $selectedArray)){
+					$slider = $slider."<option value='{$value["controllerId"]}' selected>{$value["controName"]}-{$value["devicename"]}</option>";
+				}else{
+					$slider = $slider."<option value='{$value["controllerId"]}'>{$value["controName"]}-{$value["devicename"]}</option>";
+				}
+			}
+		}
+		echo $switcher."</optgroup>";
+		echo $selector."</optgroup>";
+		echo $slider."</optgroup>";
+	}
 ?>
 <!-- main content start -->
 <div class="content">
@@ -11,6 +44,18 @@
 				</header>
 				<div class="panel-body bg-white">
 					<form class="form-horizontal tasi-form" method="get">
+						<div class="form-group">
+							<label class="control-label col-sm-2">快捷设置</label>
+							<div class="col-sm-6">
+								<select id='optgroup' multiple='multiple'>
+								  	<?php printOptgroup(); ?>
+								</select>
+							</div>
+							<div class="col-sm-4 col-xs-12">
+								<button type="button" id="changeQuick" class="btn btn-info"><i class="fa fa-pencil"></i> 更改</button>
+							</div>
+						</div>
+						
 						<div class="form-group">
 							<label class="col-sm-2 col-xs-4 control-label">更改邮箱</label>
 							<label class="col-sm-6 col-xs-8 control-label">

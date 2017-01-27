@@ -77,6 +77,16 @@
       return $account["token"];
     }
 
+    function get_quickCon(){
+      global $account;
+      return $account["quickCon"];
+    }
+
+    function get_quickCon_array(){
+      global $account;
+      return explode(" ", $account["quickCon"]);
+    }
+
     function fileExtName ($fStr) {
       $retval = "";
       $pt = strrpos($fStr, ".");
@@ -377,6 +387,21 @@
       }
     }
 
+    // change quickCon  ---sefa setting page
+    function changeQuickCon($quickCon){
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "update account set quickCon = '{$quickCon}' where username = '{$_SESSION["username"]}'";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"change_quickCon_success"}';
+        exit;
+      }else{
+        echo '{"state":"change_quickCon_failed"}';
+        exit;
+      }
+    }
+
     //delete logbook --logbook page
     function delete_single_log($logDate,$password){
       if(!isset($_SESSION)){
@@ -484,6 +509,9 @@
               break;
           case "get_controller_data":
               getControllerData($_GET["controllerId"]);
+              break;
+          case "change_quickCon":
+              changeQuickCon($_GET["data"]);
               break;
         }
       }

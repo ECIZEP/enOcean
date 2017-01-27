@@ -64,8 +64,51 @@ function printLastestLog(){
 			//now is even,the next is odd
 			$odd = true;
 		}
-		echo '<i class=" fa fa-clock-o"></i><h4>'.$value["logDate"].'</h4><p>'.$value["content"].'</p></div></div></div></div>';
+		echo '<h4><i class=" fa fa-clock-o"></i>'.$value["logDate"].'</h4><p>'.$value["content"].'</p></div></div></div></div>';
 	}
+}
+
+/*<div class="form-group"><label class="col-xs-4 control-label">电源开关</label><div class="col-xs-8 text-right"><div class="switch has-switch"><div class="switch-on switch-animate" data-controllerid="3"><input type="checkbox" checked="" data-toggle="switch"><span class="switch-left">ON</span><label>&nbsp;</label><span class="switch-right">OFF</span></div></div></div></div>*/
+
+function printQuickSwitcher($para){
+	$selected = str_replace(" ",",",get_quickCon());
+	$sql = "select * from tablecontroller,devices where tablecontroller.controllerId in({$selected}) and tablecontroller.deviceId = devices.deviceId";
+	$resultArray = DBManager::query_mysql($sql);
+	$switcher = "";
+	$selectorAndSlider = "";
+	foreach ($resultArray as $key => $value) {
+		if($value["typeName"] == "开关"){
+			$switcher = $switcher.'<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'-'.$value["devicename"].'</label>';
+			$switcher = $switcher.'<div class="col-xs-8 text-right"><div class="switch has-switch">';
+			if($value["data"] == 1){
+				$switcher = $switcher.'<div class="switch-on switch-animate" data-controllerid="'.$value["controllerId"].'">';
+			}else{
+				$switcher = $switcher.'<div class="switch-off switch-animate" data-controllerid="'.$value["controllerId"].'">';
+			}
+			$switcher = $switcher.'<input type="checkbox" checked="" data-toggle="switch"><span class="switch-left">ON</span><label>&nbsp;</label><span class="switch-right">OFF</span></div></div></div></div>';
+		}elseif($value["typeName"] == "下拉选择"){
+			$selectorAndSlider = $selectorAndSlider.'<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'-'.$value["devicename"].'</label><div class="col-xs-8"><select data-controllerid="'.$value["controllerId"].'" class="form-control bound-s selector">';
+			$optionArray = explode(" ",$value["modeNames"]);
+			foreach ($optionArray as $key => $value) {
+				$selectorAndSlider = $selectorAndSlider.'<option>'.$value.'</option>';
+			}
+			$selectorAndSlider = $selectorAndSlider.'</select></div></div>';
+		}elseif($value["typeName"] == "滑块控制"){
+			$selectorAndSlider = $selectorAndSlider.'<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'-'.$value["devicename"].'</label><div class="col-xs-8"><div class="slider-container" data-controllerid="'.$value["controllerId"].'" data-offsetwidth=""><div class="slider ui-slider-horizontal ui-widget-content">';
+			$sql = "select controName,data,minValue,maxValue_ from controller where controllerId = '{$value["controllerId"]}' limit 1";
+			$result = DBManager::query_mysql($sql)["0"];
+			$range = floatval($value['data'] - $result["minValue"])/floatval($result["maxValue_"] - $result["minValue"]) * 100;
+			$selectorAndSlider = $selectorAndSlider.'<div class="ui-slider-range ui-widget-header" style="width:'.$range.'%"></div>';
+			$selectorAndSlider = $selectorAndSlider.'<a href="javascript:;" class="ui-slider-handle ui-state-default" style="left:'.$range.'%"></a></div>';
+			$selectorAndSlider = $selectorAndSlider.'<div class="slider-info">当前值:<span id="slider-amount" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'">'.$value['data'].'</span></div></div></div></div>';
+		}
+	}
+	if($para == "switcher"){
+		echo $switcher;
+	}else{
+		echo $selectorAndSlider;
+	}
+	
 }
 
 ?>
@@ -188,14 +231,15 @@ function printLastestLog(){
 						<header class="panel-heading">
 							快捷开关
 							<span class="tools pull-right">
-								<button class="btn btn-success btn-xs"><i class="fa fa-puzzle-piece"></i> 管理快捷</button>
+								<a href="./safe_setting.php"><button class="btn btn-success btn-xs"><i class="fa fa-puzzle-piece"></i> 管理快捷</button></a>
 								<a class="fa fa-chevron-down"></a>
 								<a class="fa fa-times"></a>
 							</span>
 						</header>
 						<div class="panel-body">
 							<form class="form-horizontal tasi-form">
-								<div class="form-group">
+								<?php printQuickSwitcher("switcher");?>
+								<!-- <div class="form-group">
 									<label class="col-xs-6 control-label text-center">空调——电源开关</label>
 									<div class="col-xs-6 text-right">
 										<div class="switch has-switch">
@@ -220,7 +264,7 @@ function printLastestLog(){
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</form>
 						</div>
 					</section>
@@ -230,14 +274,15 @@ function printLastestLog(){
 						<header class="panel-heading">
 							快捷状态选择
 							<span class="tools pull-right">
-								<button class="btn btn-success btn-xs"><i class="fa fa-puzzle-piece"></i> 管理快捷</button>
+								<a href="./safe_setting.php"><button class="btn btn-success btn-xs"><i class="fa fa-puzzle-piece"></i> 管理快捷</button></a>
 								<a class="fa fa-chevron-down"></a>
 								<a class="fa fa-times"></a>
 							</span>
 						</header>
 						<div class="panel-body">
 							<form class="form-horizontal tasi-form">
-								<div class="form-group">
+								<?php printQuickSwitcher("df");?>
+								<!-- <div class="form-group">
 									<label class="col-sm-4 col-xs-4 control-label">空调模式</label>
 									<div class="col-sm-8 col-xs-8">
 										<select name="minbeds" id="minbeds" class="form-control bound-s">
@@ -261,7 +306,7 @@ function printLastestLog(){
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</form>
 						</div>
 					</section>

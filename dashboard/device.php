@@ -313,7 +313,7 @@ function printCharts($resultArray){
 </div>
 
 <script src="../js/echarts.min.js"></script>
-<script src="../js/deviceChart.js"></script>
+<script src="../js/deviceChart.js?v=1"></script>
 <?php 
 include("footer.php");
 ?>

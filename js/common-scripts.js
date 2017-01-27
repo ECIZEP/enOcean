@@ -306,7 +306,7 @@ $('#addControllerConfirm').click(function(){
 //delete controller
 $('.deleteController').click(function(){
   $('#deleteControllerConfirm').attr("data-controllerid",this.getAttribute("data-controllerid"));
-  $('.deleteController').parent().parent().addClass("deleteTarget");
+  $(this).parent().parent().addClass("deleteTarget");
 });
 
 $('#deleteControllerConfirm').click(function(){
@@ -656,6 +656,54 @@ function GetXmlHttpObject(){
 /*safe setting*/
 
 (function(){
+  var data = new Array();
+  $('#optgroup option').each(function(){
+    if(this.getAttribute("selected") != null){
+      data.push(this.value);
+    }
+  });
+  
+  //change quick
+  $('#optgroup').multiSelect({
+    selectableOptgroup: true,
+    afterSelect: function(values){
+      var index = data.indexOf(values[0]);
+      if(index == -1){
+        data.push(values[0]);
+      }
+      console.log(data);
+    },
+    afterDeselect: function(values){
+      var index = data.indexOf(values[0]);
+      if(index != -1){
+        data.splice(index,1);
+      }
+      console.log(data);
+    },
+  });
+
+  $('#changeQuick').click(function(){
+    $.ajax({
+      type: "GET",
+      url: "./functions.php",
+      dataType:'json',
+      data: {
+        type: "change_quickCon",
+        data: data.join(" ")
+      },
+      success: function(data){
+        if(data.state == "change_quickCon_success"){
+          toastr.success("修改成功");
+        }else if(data.state == "change_quickCon_failed"){
+          toastr.error("修改失败，请重试");
+        }
+      },
+      error: function(){
+        toastr.clear();
+        toastr.error("发生错误：");
+      }
+    });
+  });
   //change email
   var modal1 = document.getElementById('myModal1Confirm');
   if(modal1){

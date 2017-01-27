@@ -10,7 +10,9 @@ for (var i = charts.length - 1; i >= 0; i--) {
 	data[i] = {
 		time:[],
 		data:[],
-	}
+		lowest:lowest,
+		highest:highest
+	};
 	var option = {
 		title: {
 			text: charts[i].getAttribute("data-title")
@@ -46,25 +48,24 @@ for (var i = charts.length - 1; i >= 0; i--) {
 			min:lowest,
 			max:highest
 		},
-
 		visualMap: {
 			top:0,
 			right:'20%',
 			type: 'piecewise',
 			pieces: [{
-				gt: lowest,
-				lte: minValue,
-				label:"低于",
+				gt: parseInt(lowest),
+				lte: parseInt(minValue),
+				label:"低于 <" + minValue,
 				color: '#ff9933'
 			}, {
-				gt: minValue,
-				lte: maxValue,
+				gt: parseInt(minValue),
+				lte: parseInt(maxValue),
 				label:"正常",
 				color: '#096'
 			}, {
-				gt: maxValue,
-				lte:highest,
-				label:"超过",
+				gt: parseInt(maxValue),
+				lte:parseInt(highest),
+				label:"超过 >" + maxValue,
 				color: '#cc0033'
 			}],
 			outOfRange: {
@@ -72,7 +73,7 @@ for (var i = charts.length - 1; i >= 0; i--) {
 			}
 		},
 		series: {
-			name: '温度',
+			name: '数值',
 			type: 'line',
 			symbolSize:10,
 			symbol:'circle',
@@ -90,7 +91,22 @@ for (var i = charts.length - 1; i >= 0; i--) {
 	myCharts[i].setOption(option);
 	setInterval(function (i) {
 		return function(){
-			getData(i);
+			//getData(i);
+			if(data[i].data.length >= 30){
+				data[i].data.shift();
+				data[i].time.shift();
+			}
+			data[i].time.push(getTimeNow());
+			data[i].data.push(parseInt(data[i].lowest) + parseInt(Math.random()*(data[i].highest - data[i].lowest)));
+			myCharts[i].setOption({
+				xAxis: {
+					data: data[i].time
+				},
+				series: [{
+					name:'数值',
+					data: data[i].data
+				}]
+			});
 		}
 	}(i), 3000);
 
@@ -139,7 +155,7 @@ function getData(i) {
 			if(xmlHttp.status == 200){
 				var mydata = JSON.parse(xmlHttp.responseText);
 				if(mydata.state == "get_controller_data_success"){
-					if(data[i].data.length >= 5){
+					if(data[i].data.length >= 30){
 						data[i].data.shift();
 						data[i].time.shift();
 					}
@@ -150,7 +166,7 @@ function getData(i) {
 							data: data[i].time
 						},
 						series: [{
-							name:'温度',
+							name:'数值',
 							data: data[i].data
 						}]
 					});
@@ -166,4 +182,3 @@ function getData(i) {
 	xmlHttp.send(null);
 }
 
-// 使用刚指定的配置项和数据显示图表。
