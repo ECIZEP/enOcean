@@ -13,12 +13,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-	<title>ICON CONTROL</title>
+	<title>WGCX物联——智能家居</title>
 	<link rel="stylesheet" type="text/css" href="../css/initial.css">
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="../assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/style.css?v=12.0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css?v=12.1">
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
 	 	document.getElementsByTagName('body')[0].innerHTML = "";

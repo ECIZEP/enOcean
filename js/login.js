@@ -21,7 +21,7 @@ function tabSwitcher(){
 	var register = document.getElementById('register');
 	for (var i = 0; i < lis.length; i++) {
 		$(lis[i]).bind("click",function(index){
-			return function(){
+			return function(event){
 				if(index == 0){
 					lis[0].className = "";
 					lis[1].className = "inactive";
@@ -33,6 +33,7 @@ function tabSwitcher(){
 					login.className = "login-form none";
 					register.className = "login-form"
 				}
+				event.stopPropagation();
 			}
 		}(i));
 	}
@@ -173,6 +174,28 @@ function GetXmlHttpObject()
 
 (function() {  
 	tabSwitcher();
+
+	if(document.body.clientWidth <= 768){
+		document.getElementById('click').addEventListener("click",function(event){
+			var modallogin = document.getElementById('logincontainer');
+			modallogin.style.zIndex = 999;
+			modallogin.style.opacity = "1";
+			modallogin.style.top = "50%";
+			event.stopPropagation();
+		},false);
+
+		document.addEventListener("click",function(event){
+			if(event.target.nodeName == "BODY"){
+				var modallogin = document.getElementById('logincontainer');
+				modallogin.style.zIndex = -1;
+				modallogin.style.opacity = "0";
+				modallogin.style.top = "0px";
+			}
+
+		},false);
+	}
+	
+
 	var sendMessage = document.getElementById('sendMessage');
 	if(sendMessage){
 		sendMessage.onclick = function(){

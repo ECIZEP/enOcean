@@ -187,7 +187,7 @@ function printQuickSwitcher($para){
 							</a>
 						</li>
 						<li>
-							<a> 
+							<a href="./safe_setting.php"> 
 								安全设置
 								<span class="label label-warning pull-right r-activity"><i class="fa fa-shield"></i></span>
 							</a>

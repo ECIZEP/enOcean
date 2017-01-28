@@ -694,8 +694,6 @@ label.r_on {
     position: relative;
     text-align: left;
     width: 80px;
-    -webkit-mask: url('../img/mask.png') 0 0 no-repeat;
-    mask: url('../img/mask.png') 0 0 no-repeat;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -1530,5 +1528,14 @@ tr{
 
     .charts{
         height: 350px;
+    }
+
+
+}
+
+@media screen and (min-width: 768px){
+    .has-switch{
+         -webkit-mask: url('../images/mask.png') 0 0 no-repeat;
+         mask: url('../images/mask.png') 0 0 no-repeat;
     }
 } 
