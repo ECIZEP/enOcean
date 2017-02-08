@@ -60,8 +60,15 @@ function printSelectorAndSlider($resultArray){
 		if($value["typeName"] == "下拉选择"){
 			echo '<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'</label><div class="col-xs-8"><select data-controllerid="'.$value["controllerId"].'" class="form-control bound-s selector">';
 			$optionArray = explode(" ",$value["modeNames"]);
+			$data = intval($value["data"]);
+			$i = 0;
 			foreach ($optionArray as $key => $value) {
-				echo '<option>'.$value.'</option>';
+				if ($data == $i){
+					echo '<option selected>'.$value.'</option>';
+				}else {
+					echo '<option>'.$value.'</option>';
+				}
+				$i++;
 			}
 			echo '</select></div></div>';
 		}elseif($value["typeName"] == "滑块控制"){

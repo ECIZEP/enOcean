@@ -88,8 +88,15 @@ function printQuickSwitcher($para){
 		}elseif($value["typeName"] == "下拉选择"){
 			$selectorAndSlider = $selectorAndSlider.'<div class="form-group"><label class="col-xs-4 control-label">'.$value["controName"].'-'.$value["devicename"].'</label><div class="col-xs-8"><select data-controllerid="'.$value["controllerId"].'" class="form-control bound-s selector">';
 			$optionArray = explode(" ",$value["modeNames"]);
+			$data = intval($value["data"]);
+			$i = 0;
 			foreach ($optionArray as $key => $value) {
-				$selectorAndSlider = $selectorAndSlider.'<option>'.$value.'</option>';
+				if ($data == $i){
+					$selectorAndSlider = $selectorAndSlider.'<option selected>'.$value.'</option>';
+				}else {
+					$selectorAndSlider = $selectorAndSlider.'<option>'.$value.'</option>';
+				}
+				$i++;
 			}
 			$selectorAndSlider = $selectorAndSlider.'</select></div></div>';
 		}elseif($value["typeName"] == "滑块控制"){
