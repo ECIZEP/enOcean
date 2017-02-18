@@ -87,6 +87,7 @@ function ajaxRegisterPost(username, password, phoneNumber, verifycode) {
 				switch (xmlHttp.responseText) {
 					case "register_verifycode_wrong":
 						toastr.error("验证码不正确！");
+						document.getElementById('checkCode').setAttribute("src", "checks.php?code=" + Math.random());
 						break;
 					case "register_name_exist":
 						toastr.info("用户名已经被注册");
@@ -99,8 +100,6 @@ function ajaxRegisterPost(username, password, phoneNumber, verifycode) {
 						break;
 					case "register_success":
 						toastr.success("注册成功，你可以登录账户了");
-						/*var lis = document.getElementById('tabs').getElementsByTagName('li');
-						lis[0].onclick();*/
 						break;
 					case "register_failed":
 						toastr.error("注册失败，请重试");
@@ -128,7 +127,6 @@ function ajaxLoginPost(username, password, verification) {
 	xmlHttp.onreadystatechange = function () {
 		if (xmlHttp.readyState == 4) {
 			if (xmlHttp.status == 200) {
-				console.log(xmlHttp.responseText);
 				switch (xmlHttp.responseText) {
 					case "1":
 						toastr.error("密码不正确");
@@ -189,7 +187,6 @@ function GetXmlHttpObject() {
 
 	document.addEventListener("mousemove", function (event) {
 		var clientWidth = document.body.clientWidth;
-		console.log(event.clientY);
 		var offsetX = (event.clientX / clientWidth - 0.5) * 40;
 		var offsetY = (event.clientY / document.body.clientHeight - 0.5) * 40;
 		$('.wholePic').css("transform", "matrix(1.1, 0, 0, 1.1," + offsetX + "," + offsetY + ")");
@@ -215,7 +212,6 @@ function GetXmlHttpObject() {
 			timeCount();
 		}
 
-
 		timeCount = function () {
 			time = parseInt($('.Secondtext').text()) - 1;
 			if (time == 0) {
@@ -230,6 +226,20 @@ function GetXmlHttpObject() {
 		}
 	}
 
+	//enter event
+	document.addEventListener('keydown', function(event){
+		if (event.keyCode == 13){
+			if(document.getElementById('tabs').getElementsByTagName('li')[1].className == "inactive"){
+				validate_form({
+					value: "登录"
+				});
+			}else{
+				validate_form({
+					value: "注册"
+				});
+			}
+		}
+	},false);
 
 	function sendVerifycode(phoneNumber) {
 		$.ajax({

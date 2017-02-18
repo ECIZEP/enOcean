@@ -49,7 +49,7 @@
 			<div class="form-group">
 				<input style="width: 60%" type="text" class="form-control login-field" value="" placeholder="输入验证码" id="login-verify">
 				<label style="right: 140px" class="login-field-icon fa fa-eye"></label>
-				<img style="padding:0px 5px;width: 35%;" src="checks.php" align="top">
+				<img id="checkCode" style="padding:0px 5px;width: 35%;" src="checks.php" align="top">
 			</div>
 			<button value="登录" class="btn btn-primary btn-large btn-block" onclick="validate_form(this);" type="submit" >登录</button>
 			<a class="login-link" href="#">忘记密码?</a>
@@ -92,7 +92,7 @@
 	</div> -->
   <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   <script src="assets/toastr/toastr.min.js"></script>
-  <script src="js/login.js?v=1.5"></script>
+  <script src="js/login.js"></script>
   <?php 
   	$msg = "";
   	if(isset($_GET["m"])){
