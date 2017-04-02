@@ -89,9 +89,11 @@ for (var i = charts.length - 1; i >= 0; i--) {
 		}
 	};
 	myCharts[i].setOption(option);
+
+
 	setInterval(function (i) {
 		return function(){
-			//getData(i);
+			/*getData(i);*/
 			if(data[i].data.length >= 30){
 				data[i].data.shift();
 				data[i].time.shift();

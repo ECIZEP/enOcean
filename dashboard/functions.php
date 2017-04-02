@@ -99,7 +99,7 @@
     }
 
     //show unbinded device for binding device
-    function getUnbindDeviceOption(){
+    function getUnbindController(){
       $sql = "select devicename from devices where owner = 'root'";
       $resultArray = DBManager::query_mysql($sql);
       foreach ($resultArray as $key => $value) {
@@ -108,11 +108,11 @@
     }
 
     //add device
-    function addDevice($initialName,$devicename,$remark){
+    function addDevice($devicename,$remark){
       if(!isset($_SESSION)){
         session_start();
       }
-      $sql = "update devices set devicename = '{$devicename}',remark = '{$remark}',owner = '{$_SESSION["username"]}' where devicename = '{$initialName}' and owner = 'root'";
+      $sql = "insert into devices (devicename,remark,owner) values('{$devicename}','{$remark}','{$_SESSION["username"]}')";
       if(DBManager::update_mysql($sql)){
         echo '{"state":"add_device_success"}';
       }else{
@@ -173,12 +173,21 @@
     }
 
     //add controller
-    function addController($controllerType,$controllerName,$deviceId,$modeNames,$minValue,$maxValue){
-      $sql = "insert into controller(deviceId,controName,typeId,minValue,maxValue_,modeNames) values('{$deviceId}','{$controllerName}','{$controllerType}','{$minValue}','{$maxValue}','$modeNames')";
+    function firstUpdateController($controllerId,$controllerType,$controllerName,$deviceId,$modeNames,$minValue,$maxValue){
+      $sql = "update controller set deviceId = {$deviceId}, controName = '{$controllerName}',typeId = {$controllerType},minValue = {$minValue},maxValue_ = {$maxValue},modeNames = '{$modeNames}' where controllerId = '{$controllerId}'";
       if(DBManager::update_mysql($sql)){
         echo '{"state":"add_controller_success"}';
       }else{
         echo '{"state":"add_controller_failed"}';
+      }
+    }
+
+    function addDeviceHardware($controllerId) {
+      $sql = "insert into controller (controllerId) values ('{$controllerId}')";
+      if(DBManager::update_mysql($sql)){
+        echo '{"state":"add_controller_hardware_success"}';
+      }else{
+        echo '{"state":"add_controller_hardware_failed"}';
       }
     }
 
@@ -447,6 +456,18 @@
       return DBManager::query_mysql($sql)["0"]["password"] == $password;
     }
 
+    // is serial exist
+    function isControllerIdExist($controllerId) {
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $sql = "select * from controller where controllerId = '{$controllerId}' and deviceId = 0";
+      if (count(DBManager::query_mysql($sql)) == 0) {
+        echo '{"state": false}';
+      } else {
+        echo '{"state": true}';
+      }
+    }
 
     if($_SERVER['REQUEST_METHOD'] == "POST"){
       if(isset($_POST["type"])){
@@ -487,13 +508,16 @@
               batch_delete_log($_GET["logDate"],$_GET["password"]);
               break;
           case "add_device":
-              addDevice($_GET["initialName"],$_GET["deviceName"],$_GET["deviceRemark"]);
+              addDevice($_GET["deviceName"],$_GET["deviceRemark"]);
               break;
           case "delete_device":
               deleteDevice($_GET["deviceId"],$_GET["verifycode"]);
               break;
           case "add_controller":
-              addController($_GET["controllerType"],$_GET["controllerName"],$_GET["deviceId"],$_GET["modeNames"],$_GET["minValue"],$_GET["maxValue"]);
+              firstUpdateController($_GET["controllerId"],$_GET["controllerType"],$_GET["controllerName"],$_GET["deviceId"],$_GET["modeNames"],$_GET["minValue"],$_GET["maxValue"]);
+              break;
+          case "add_controller_hardware":
+              addDeviceHardware($_GET["controllerId"]);
               break;
           case "modify_device":
               modifyDevice($_GET["deviceId"],$_GET["deviceName"],$_GET["deviceRemark"]);
@@ -512,6 +536,9 @@
               break;
           case "change_quickCon":
               changeQuickCon($_GET["data"]);
+              break;
+          case "controller_exist":
+              isControllerIdExist($_GET["controllerId"]);
               break;
         }
       }

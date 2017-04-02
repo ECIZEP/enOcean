@@ -77,7 +77,7 @@ function printSelectorAndSlider($resultArray){
 			$result = DBManager::query_mysql($sql)["0"];
 			$range = floatval($value['data'] - $result["minValue"])/floatval($result["maxValue_"] - $result["minValue"]) * 100;
 			echo '<div class="ui-slider-range ui-widget-header" style="width:'.$range.'%"></div>';
-			echo '<a href="javascript:;" class="ui-slider-handle ui-state-default" style="left:'.$range.'%"></a></div>';
+			echo '<a class="ui-slider-handle ui-state-default" style="left:'.$range.'%"></a></div>';
 			echo '<div class="slider-info">当前值:<span id="slider-amount" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'">'.$value['data'].'</span></div></div></div></div>';
 		}
 	}

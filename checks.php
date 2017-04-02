@@ -57,6 +57,7 @@ class ValidateCode {
     private function outPut() {
         ob_clean();
         header('Content-type:image/png');
+        header('code:'.$this->code);
         imagepng($this->img);
         imagedestroy($this->img);
     }
@@ -68,6 +69,8 @@ class ValidateCode {
         $this->createLine();
         $this->createFont();
         $this->outPut();
+        session_start();
+        $_SESSION["check_checks"] = $this->getCode();//验证码保存到SESSION中
     }
 
     //获取验证码
@@ -78,11 +81,9 @@ class ValidateCode {
 
 
 define('ROOT_PATH', dirname(__FILE__));
+
 $_vc = new ValidateCode(); //实例化一个对象
+
 $_vc->doimg();
-if(!isset($_SESSION)){
-  session_start();
-}
-$_SESSION['check_checks'] = $_vc->getCode();//验证码保存到SESSION中
 
 ?>

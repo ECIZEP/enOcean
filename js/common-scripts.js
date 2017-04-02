@@ -97,8 +97,6 @@ $('#addDeviceModalConfirm').click(function () {
   if (deviceName == "" || deviceRemark == "") {
     toastr.info("请把表单输入完整!");
   } else {
-    var selectCon = document.getElementById('select-device');
-    var initialName = selectCon.options[selectCon.selectedIndex].text;
     $.ajax({
       type: "GET",
       url: "./functions.php",
@@ -106,8 +104,7 @@ $('#addDeviceModalConfirm').click(function () {
       data: {
         type: "add_device",
         deviceName: deviceName,
-        deviceRemark: deviceRemark,
-        initialName: initialName
+        deviceRemark: deviceRemark
       },
       success: function (data) {
         if (data.state == "add_device_success") {
@@ -236,7 +233,36 @@ $('#controllerType').change(function () {
 });
 
 //add all kinds of controllers
+$('#serialInput').bind("blur", function(){
+  $.ajax({
+    type: "GET",
+    url: "./functions.php",
+    dataType: 'json',
+    data: {
+      type: "controller_exist",
+      controllerId: this.value
+    },
+    success: function (data) {
+      if(data.state) {
+        $('.fa.serial').removeClass('none').removeClass('fa-close').addClass('fa-check');
+      } else {
+        $('.fa.serial').removeClass('none').removeClass('fa-check').addClass('fa-close');
+      }
+    },
+    error: function () {
+      toastr.clear();
+      toastr.error("发生错误：");
+    }
+  });
+});
+
+
 $('#addControllerConfirm').click(function () {
+  if (!$('.fa.serial').hasClass('fa-check')) {
+    toastr.info("请输入正确的控制器编号");
+    return ;
+  }
+  var controllerId = $('#serialInput').val();
   var controllerName = $('#controllerName').val();
   var deviceSelecter = $('#select-bindDevice')[0];
   var deviceId = deviceSelecter.options[deviceSelecter.selectedIndex].value;
@@ -270,6 +296,7 @@ $('#addControllerConfirm').click(function () {
     dataType: 'json',
     data: {
       type: "add_controller",
+      controllerId: controllerId,
       controllerType: typeId,
       controllerName: controllerName,
       deviceId: deviceId,
@@ -302,7 +329,7 @@ $('.deleteController').click(function () {
 $('#deleteControllerConfirm').click(function () {
   var password = $("#deleteControllerInput").val();
   if (password == "") {
-    toastr.info("请将表单填写完整");
+    toastr.info("请将表单填写完整"); 
   } else {
     $.ajax({
       type: "GET",

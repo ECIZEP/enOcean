@@ -13,7 +13,7 @@
   function check_login(){
     $checks=$_POST["verification"];
     $checks = strtolower($checks);
-    if($checks==$_SESSION["check_checks"]){
+    if($checks == $_SESSION["check_checks"]){
       include("db.class.php");
       $username = $_POST["username"];
       $password = $_POST["password"];

@@ -638,6 +638,22 @@ ul.sub li a:hover{
 }
 
 /* 网页脚部 */
+.serial {
+    margin-top:9px;
+}
+
+.fa-check.serial {
+    color:#78CD51;
+}
+
+.fa-close.serial {
+    color:#ff6c60;
+}
+
+.none {
+    display: none;
+}
+
 footer{
 	background-color: #5b6e84;
 	color: #ffffff;
@@ -855,6 +871,7 @@ label.r_on {
     z-index: 2;
     margin-left: -11px;
     left: 0%;
+    cursor: move;
 }
 
 .bound-s {

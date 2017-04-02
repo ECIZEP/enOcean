@@ -68,9 +68,28 @@ function printLastestLog(){
 	}
 }
 
+function convert ($str) {
+	$newstr = array();
+	$j = 0;
+	$newstr[$j++] = "'";
+	for ($i = 0; $i < strlen($str); $i++) {
+		if ($str[$i] != ',') {
+			if ($i == strlen($str) - 1) {
+				$newstr[$j++] =  $str[$i]."'";
+			} else {
+				$newstr[$j++] = $str[$i];
+			}
+		} else {
+			$newstr[$j++] = "','";
+		}
+	}
+	return implode("",$newstr);
+}
+
 function printQuickSwitcher($para){
 	$selected = str_replace(" ",",",get_quickCon());
-	$sql = "select * from tablecontroller,devices where tablecontroller.controllerId in({$selected}) and tablecontroller.deviceId = devices.deviceId";
+	$selected = convert($selected);
+	$sql = "select * from tablecontroller,devices where tablecontroller.controllerId in ({$selected}) and tablecontroller.deviceId = devices.deviceId";
 	$resultArray = DBManager::query_mysql($sql);
 	$switcher = "";
 	$selectorAndSlider = "";
@@ -105,7 +124,7 @@ function printQuickSwitcher($para){
 			$result = DBManager::query_mysql($sql)["0"];
 			$range = floatval($value['data'] - $result["minValue"])/floatval($result["maxValue_"] - $result["minValue"]) * 100;
 			$selectorAndSlider = $selectorAndSlider.'<div class="ui-slider-range ui-widget-header" style="width:'.$range.'%"></div>';
-			$selectorAndSlider = $selectorAndSlider.'<a href="javascript:;" class="ui-slider-handle ui-state-default" style="left:'.$range.'%"></a></div>';
+			$selectorAndSlider = $selectorAndSlider.'<a class="ui-slider-handle ui-state-default" style="left:'.$range.'%"></a></div>';
 			$selectorAndSlider = $selectorAndSlider.'<div class="slider-info">当前值:<span id="slider-amount" data-min="'.$result["minValue"].'" data-max="'.$result["maxValue_"].'">'.$value['data'].'</span></div></div></div></div>';
 		}elseif($value["typeName"] == "数值监控"){
 			$sql = "select minValue,maxValue_ from controller where controllerId = '{$value["controllerId"]}' limit 1";
@@ -372,6 +391,7 @@ function printQuickSwitcher($para){
 </div>
 <script src="../js/echarts.min.js"></script>
 <script src="../js/deviceChart.js?v=2"></script>
+
 <?php 
 include("footer.php");
 ?>

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/initial.css">
 	<link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/toastr/toastr.min.css">
-	<link rel="stylesheet" type="text/css" href="css/login.css?v=1.3">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
 	<title>WGCX物联——智能家居</title>
 	<!--[if lt IE 9]>
 	 <script type="text/javascript">
@@ -25,7 +25,7 @@
 			物联
 		</a>
 		<p>Enocean技术无线无源智能家居</p>
-		<p style="font-size: 20px">More Details Will Coming Soon</p>
+		<p style="font-size: 20px">More Details Will Come Soon</p>
 		<button id="click" class="btn btn-primary btn-large btn-border" >Get Start</button>
 	</div>
 
@@ -76,23 +76,53 @@
 			<button value="注册" class="btn btn-primary btn-large btn-block" onclick="validate_form(this);" type="submit">注册</button>
 		</div>
 	</div>
-	<!-- <div class="header">
-		<span class="logo font-art">I CONTROL</span>
-	</div>
-	<div class="container">
-		<div class="login">
-			<div class="login-screen">
-				<div class="login-icon">
-		            <img src="images/Compas.png" alt="Welcome to I Control">
-		            <h4>智能家居<small>WGCX物联</small></h4>
-		        </div>
-		        
-			</div>
-		</div>
-	</div> -->
   <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
   <script src="assets/toastr/toastr.min.js"></script>
   <script src="js/login.js"></script>
+  <script>
+
+	/*function HAHA() {
+		var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function () {
+				console.log(xhr.readyState);
+				if (xhr.readyState === 3) {
+					console.log("haha");
+				}
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						console.log(xhr.responseText);
+					}
+					// HAHA(); //长轮询
+				}
+				
+			}
+			xhr.open('POST', 'http://en.com/ajax.php');
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xhr.setRequestHeader('Cache-Control', 'no-cache');
+			// 带上cookie
+			xhr.withCredentials = true;
+			var data = {
+				type : "test"
+			}
+			xhr.send("type=test");
+	}
+	
+	 HAHA();
+
+	function myPromise(url) {
+		var promise = new Promise(function (resolve, reject) {
+			
+		});
+
+		return promise;
+	}*/
+
+	/*myPromise('http://en.com/ajax.php').then(function (data) {
+		data = JSON.parse(data);
+		console.log(data);
+	});*/
+	
+  </script>
   <?php 
   	$msg = "";
   	if(isset($_GET["m"])){
@@ -117,7 +147,6 @@
   			break;
   		}
   	}
-	
     if($msg != ""){
     	echo "<script type='text/javascript'>toastr.info('{$msg}');</script>";
     }

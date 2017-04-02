@@ -10,15 +10,6 @@
 					<div class="modal-body">
 						<form class="form-horizontal">
 							<div class="form-group">
-								<label class="control-label col-md-4">选择已检测到的设备</label>
-								<div class="col-md-8">
-									<select id="select-device" style="width: auto;display: inline-block;vertical-align: middle;" class="form-control">
-										<?php getUnbindDeviceOption(); ?>
-									</select>
-									<button class="btn btn-success pull-right" type="button"><i class="fa fa-refresh"></i> 刷新</button>
-								</div>
-							</div>
-							<div class="form-group">
 								<label class="control-label col-md-4">输入新设备的名称</label>
 								<div class="col-md-8">
 									<input size="16" type="text" id="deviceName" class="form-control">
@@ -50,6 +41,13 @@
 					</div>
 					<div class="modal-body">
 						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="control-label col-md-4">请输入控制器产品序号</label>
+								<div class="col-md-4">
+									<input type="text" id="serialInput" class="form-control">
+								</div>
+								<i class="fa serial none"></i>
+							</div>
 							<div class="form-group">
 								<label class="control-label col-md-4">请选择所属设备</label>
 								<div class="col-md-8">
