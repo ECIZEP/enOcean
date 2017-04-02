@@ -1,0 +1,1 @@
+CREATE VIEW `tablecontroller` AS select `controller`.`deviceId` AS `deviceId`,`controller`.`controllerId` AS `controllerId`,`controller`.`controName` AS `controName`,`controller`.`data` AS `data`,`type`.`typeName` AS `typeName`,`controller`.`modeNames` AS `modeNames` from (`controller` join `type`) where (`type`.`typeId` = `controller`.`typeId`);
